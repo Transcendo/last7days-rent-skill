@@ -1,0 +1,11 @@
+[project]
+name = "last7days-rent-skill"
+version = "0.1.0"
+description = "Agent Skill and local CLI engine for helping users complete rental decisions in 7 days."
+requires-python = ">=3.11"
+dependencies = []
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["skills/last7days-rent/scripts"]
+addopts = "-q"

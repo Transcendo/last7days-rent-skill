@@ -1,0 +1,21 @@
+{
+  "office_anchor": {
+    "company": "示例公司",
+    "office_name": "上海五角场",
+    "address_hint": "五角场地铁站附近",
+    "city": "上海",
+    "confidence": 0.9
+  },
+  "commute": {
+    "max_minutes": 35,
+    "preferred_transit": ["metro"],
+    "derived_areas": ["五角场", "政立路", "江湾体育场"]
+  },
+  "housing_constraints": {
+    "budget_min": 3500,
+    "budget_max": 5200,
+    "rental_mode": "whole",
+    "move_in_by": null
+  },
+  "open_questions": []
+}
