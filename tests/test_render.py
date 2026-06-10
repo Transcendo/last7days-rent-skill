@@ -14,5 +14,6 @@ def test_fixture_search_outputs_report_and_evidence(tmp_path, monkeypatch):
     assert "L1 不是已验真" in result.markdown
     assert public_text_violations(result.markdown) == []
     evidence = json.loads(result.evidence_path.read_text(encoding="utf-8"))
-    assert evidence["privacy"]["no_plain_phone_wechat_group_real_name"] is True
+    assert evidence["privacy"]["contact_methods_preserved_for_action"] is True
+    assert evidence["privacy"]["secret_guard_enabled"] is True
     assert evidence["clusters"]

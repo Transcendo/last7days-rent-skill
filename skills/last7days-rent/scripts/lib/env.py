@@ -5,7 +5,7 @@ import os
 from pathlib import Path
 
 
-DEFAULT_STATE_DIR = Path.home() / ".nesthub-rent"
+DEFAULT_STATE_DIR = Path.home() / ".last7days-rent"
 
 
 @dataclass(frozen=True)
@@ -14,6 +14,7 @@ class LocalPaths:
     profile_json: Path
     profile_md: Path
     feedback_jsonl: Path
+    cache_dir: Path
     reports_dir: Path
 
 
@@ -29,6 +30,7 @@ def get_paths() -> LocalPaths:
         profile_json=state_dir / "profile.json",
         profile_md=state_dir / "profile.md",
         feedback_jsonl=state_dir / "feedback.jsonl",
+        cache_dir=state_dir / "cache",
         reports_dir=state_dir / "reports",
     )
 
@@ -36,5 +38,19 @@ def get_paths() -> LocalPaths:
 def ensure_local_dirs(paths: LocalPaths | None = None) -> LocalPaths:
     paths = paths or get_paths()
     paths.state_dir.mkdir(parents=True, exist_ok=True)
+    paths.cache_dir.mkdir(parents=True, exist_ok=True)
     paths.reports_dir.mkdir(parents=True, exist_ok=True)
     return paths
+
+
+def should_cache_raw() -> bool:
+    return os.environ.get("LAST7DAYS_RENT_CACHE_RAW") == "1"
+
+
+def http_timeout_seconds() -> float:
+    raw = os.environ.get("LAST7DAYS_RENT_HTTP_TIMEOUT", "15")
+    try:
+        value = float(raw)
+    except ValueError:
+        return 15.0
+    return max(1.0, min(value, 60.0))

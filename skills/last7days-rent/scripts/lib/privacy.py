@@ -5,6 +5,7 @@ import re
 from typing import Any
 
 from .schema import ListingCluster, ListingItem
+from .secret_guard import assert_no_secrets, secret_violations, sanitize_text
 
 
 PHONE_RE = re.compile(r"(?<!\d)1[3-9]\d{9}(?!\d)")
@@ -37,6 +38,16 @@ def redact_value(value: Any) -> Any:
     return value
 
 
+def sanitize_secret_value(value: Any) -> Any:
+    if isinstance(value, str):
+        return sanitize_text(value)
+    if isinstance(value, list):
+        return [sanitize_secret_value(item) for item in value]
+    if isinstance(value, dict):
+        return {key: sanitize_secret_value(item) for key, item in value.items()}
+    return value
+
+
 def redact_profile(profile_dict: dict[str, Any]) -> dict[str, Any]:
     redacted = redact_value(copy.deepcopy(profile_dict))
     if isinstance(redacted, dict):
@@ -46,10 +57,8 @@ def redact_profile(profile_dict: dict[str, Any]) -> dict[str, Any]:
 
 def sanitize_listing(item: ListingItem) -> ListingItem:
     data = item.to_dict()
-    data = redact_value(data)
-    data["raw_contact_redacted"] = True
-    if data.get("contact_route") and data["contact_route"] not in {"platform", "official_verifier", "through_nesthub", "unknown"}:
-        data["contact_route"] = "through_nesthub"
+    data = sanitize_secret_value(data)
+    data["raw_contact_redacted"] = False
     return ListingItem.from_dict(data)
 
 
@@ -66,28 +75,15 @@ def sanitize_cluster(cluster: ListingCluster) -> ListingCluster:
         risk_score=cluster.risk_score,
         final_score=cluster.final_score,
         risk_flags=cluster.risk_flags,
-        match_reasons=redact_value(cluster.match_reasons),
-        next_questions=redact_value(cluster.next_questions),
-        field_provenance=redact_value(cluster.field_provenance),
+        match_reasons=sanitize_secret_value(cluster.match_reasons),
+        next_questions=sanitize_secret_value(cluster.next_questions),
+        field_provenance=sanitize_secret_value(cluster.field_provenance),
     )
 
 
 def public_text_violations(text: str) -> list[str]:
-    violations: list[str] = []
-    if PHONE_RE.search(text):
-        violations.append("phone")
-    if WECHAT_RE.search(text):
-        violations.append("wechat")
-    if GROUP_RE.search(text):
-        violations.append("private_group")
-    if NAME_WITH_LABEL_RE.search(text):
-        violations.append("real_name")
-    if AVATAR_SOURCE_RE.search(text):
-        violations.append("source_image_identity")
-    return violations
+    return secret_violations(text)
 
 
 def assert_public_safe(text: str) -> None:
-    violations = public_text_violations(text)
-    if violations:
-        raise ValueError(f"public output contains sensitive fields: {', '.join(violations)}")
+    assert_no_secrets(text)

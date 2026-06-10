@@ -39,6 +39,10 @@ def maybe_same_listing(left: ListingItem, right: ListingItem) -> bool:
         return True
     if left.image_hashes and set(left.image_hashes) & set(right.image_hashes):
         return True
+    left_contacts = {(m.contact_type, m.value or m.entry_url) for m in left.contact_methods if m.value or m.entry_url}
+    right_contacts = {(m.contact_type, m.value or m.entry_url) for m in right.contact_methods if m.value or m.entry_url}
+    if left_contacts and left_contacts & right_contacts:
+        return True
     similarity = SequenceMatcher(None, left.title, right.title).ratio()
     return similarity > 0.86 and left.price_monthly == right.price_monthly
 

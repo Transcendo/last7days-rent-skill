@@ -4,15 +4,17 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from .commute_plan import profile_to_search_plan
+from .commute_plan import derive_commute_areas
 from .dedupe import dedupe_listings
 from .env import ensure_local_dirs
 from .normalize import normalize_listings
 from .profile_store import load_profile
 from .render import render_chat_shortlist, render_evidence_package, render_markdown_report, write_outputs
-from .schema import ListingItem, RentProfile, VerificationEvidence, now_iso
+from .schema import ListingItem, RentProfile, SearchRequest, SourceFetchResult, VerificationEvidence, now_iso
 from .scoring import score_clusters
 from .rerank import rerank_clusters
-from .sources.router import load_fixture_sources
+from .sources.query import build_search_plan, request_from_profile
+from .sources.router import fetch_live_sources, load_fixture_sources
 
 
 @dataclass
@@ -22,6 +24,7 @@ class SearchResult:
     evidence_path: Path
     markdown: str
     evidence: dict
+    source_fetches: list[SourceFetchResult]
 
 
 def default_fixture_profile() -> RentProfile:
@@ -150,15 +153,62 @@ def collect_fixture_inputs() -> tuple[RentProfile, list[ListingItem], list[Verif
     return profile, listings, evidences, warnings
 
 
-def run_search(fixture: bool = False, limit: int = 5, output_dir: str | None = None) -> SearchResult:
+def profile_from_request(request: SearchRequest) -> RentProfile:
+    return RentProfile.from_dict(
+        {
+            "office_anchor": {
+                "office_name": request.office_anchor,
+                "address_hint": request.office_anchor,
+                "city": request.city,
+                "confidence": 0.6 if request.office_anchor else 0.0,
+            },
+            "commute": {"max_minutes": 35, "derived_areas": derive_commute_areas(request.office_anchor)},
+            "housing_constraints": {
+                "budget_min": request.budget_min,
+                "budget_max": request.budget_max,
+                "rental_mode": "either",
+            },
+            "open_questions": [] if request.office_anchor and request.city else ["请确认办公点、城市和通勤上限。"],
+        }
+    )
+
+
+def run_search(
+    fixture: bool = False,
+    limit: int = 5,
+    output_dir: str | None = None,
+    office_anchor: str | None = None,
+    city: str | None = None,
+    budget_min: int | None = None,
+    budget_max: int | None = None,
+    days: int = 7,
+    sources: list[str] | None = None,
+) -> SearchResult:
     paths = ensure_local_dirs()
+    source_fetches: list[SourceFetchResult] = []
     if fixture:
         profile, raw_listings, evidences, warnings = collect_fixture_inputs()
     else:
+        request = SearchRequest(
+            city=city,
+            office_anchor=office_anchor,
+            budget_min=budget_min,
+            budget_max=budget_max,
+            days=days,
+            limit=limit,
+            sources=sources or ["beike_lianjia", "fang"],
+        )
         profile = load_profile()
-        if not profile:
-            raise SystemExit("尚未找到本地 profile。请先运行 profile init，或使用 search --fixture。")
-        raw_listings, evidences, warnings = [], [], ["MVP 当前只实现 fixture/offline dry run；真实网络采集需由后续 adapter 调用。"]
+        if profile and not any([office_anchor, city, budget_min, budget_max]):
+            request = request_from_profile(profile, limit=limit, days=days, sources=sources)
+        else:
+            if not request.office_anchor or not request.city:
+                raise SystemExit("live search 需要 --office-anchor 和 --city，或先运行 profile init。")
+            profile = profile_from_request(request)
+        plan = build_search_plan(request, profile)
+        raw_listings, evidences, warnings, source_fetches = fetch_live_sources(plan)
+        if not raw_listings:
+            warnings.append("live search did not produce shortlist candidates; see source coverage and blocking warnings.")
     profile_to_search_plan(profile)
     accepted, rejected = normalize_listings(raw_listings, profile)
     warnings.extend(f"rejected {item.source_id}:{item.item_id} due to {', '.join(item.risk_flags)}" for item in rejected)
@@ -166,9 +216,9 @@ def run_search(fixture: bool = False, limit: int = 5, output_dir: str | None = N
     scored = score_clusters(clusters, profile)
     ranked = rerank_clusters(scored, limit=limit)
     reports_dir = Path(output_dir).expanduser() if output_dir else paths.reports_dir
-    basename = "last7days-rent-fixture" if fixture else "last7days-rent-report"
-    markdown = render_markdown_report(profile, ranked, evidences, warnings)
-    evidence = render_evidence_package(profile, ranked, evidences, warnings)
+    basename = "last7days-rent-fixture" if fixture else "last7days-rent-live"
+    markdown = render_markdown_report(profile, ranked, evidences, warnings, live=not fixture, source_fetches=source_fetches)
+    evidence = render_evidence_package(profile, ranked, evidences, warnings, live=not fixture, source_fetches=source_fetches)
     markdown_path, evidence_path = write_outputs(reports_dir, basename, markdown, evidence)
     chat_summary = render_chat_shortlist(profile, ranked)
-    return SearchResult(chat_summary, markdown_path, evidence_path, markdown, evidence)
+    return SearchResult(chat_summary, markdown_path, evidence_path, markdown, evidence, source_fetches)

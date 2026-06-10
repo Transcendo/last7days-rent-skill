@@ -1,4 +1,15 @@
-from lib.schema import ListingItem, RentProfile, SourceCandidate, VerificationEvidence
+from lib.schema import (
+    ContactMethod,
+    FeedbackEvent,
+    ListingCluster,
+    ListingItem,
+    RentProfile,
+    SearchPlan,
+    SearchRequest,
+    SourceCandidate,
+    SourceFetchResult,
+    VerificationEvidence,
+)
 
 
 def test_profile_is_office_anchor_first():
@@ -18,5 +29,16 @@ def test_missing_fields_stay_none():
 def test_shared_contracts_importable():
     candidate = SourceCandidate(candidate_id="c1", source_id="wellcee", source_tier="P0", source_url=None, title="t")
     evidence = VerificationEvidence(evidence_id="e1", source_id="official_verifier", evidence_type="code", value=None)
+    request = SearchRequest(city="上海", office_anchor="五角场", budget_max=5200)
+    plan = SearchPlan(request=request, source_queries={"fang": [{"url": "https://sh.zu.fang.com/"}]})
+    fetch = SourceFetchResult(source_id="fang", url="https://sh.zu.fang.com/", status="ok", http_status=200)
+    contact = ContactMethod("platform", entry_url="https://example.com")
+    listing = ListingItem(item_id="l1", source_id="fang", source_tier="P0", title="t", contact_methods=[contact], contact_route="platform")
+    cluster = ListingCluster(cluster_id="c1", canonical_listing=listing, source_items=[listing])
+    feedback = FeedbackEvent(event_id="f1", listing_id="l1", event_type="real_viewable")
     assert candidate.can_promote is True
     assert evidence.value is None
+    assert plan.request.city == "上海"
+    assert fetch.http_status == 200
+    assert cluster.trust_level == "L1"
+    assert feedback.event_type == "real_viewable"

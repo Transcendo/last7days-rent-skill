@@ -1,5 +1,6 @@
 from pathlib import Path
 
+from lib.contact import has_actionable_contact
 from lib.sources.beike_lianjia import parse_beike_lianjia_html
 from lib.sources.fang import parse_fang_html
 from lib.sources.official_verifier import parse_official_verifier_text
@@ -24,6 +25,7 @@ def test_beike_lianjia_fixture_parser():
     assert len(items) == 2
     assert items[0].platform_id == "SH2143668995679584256"
     assert items[0].price_monthly == 4200
+    assert has_actionable_contact(items[0])
 
 
 def test_wellcee_jsonld_parser():
@@ -31,6 +33,7 @@ def test_wellcee_jsonld_parser():
     assert len(items) == 1
     assert items[0].source_id == "wellcee"
     assert items[0].price_monthly == 4200
+    assert has_actionable_contact(items[0])
 
 
 def test_fang_parser_and_official_verifier():
@@ -38,4 +41,5 @@ def test_fang_parser_and_official_verifier():
     evidence = parse_official_verifier_text((FIXTURES / "official_verifier.txt").read_text(encoding="utf-8"))
     assert items[0].source_id == "fang"
     assert items[0].price_monthly == 5100
+    assert has_actionable_contact(items[0])
     assert evidence[0].source_id == "official_verifier"

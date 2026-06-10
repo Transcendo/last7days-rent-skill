@@ -5,7 +5,7 @@ import re
 from html import unescape
 from urllib.parse import urljoin
 
-from ..privacy import redact_text, sanitize_listing
+from ..contact import attach_contact_methods, extract_contact_methods, platform_contact
 from ..schema import ListingItem, now_iso
 
 
@@ -43,8 +43,8 @@ def parse_beike_lianjia_html(html: str, base_url: str = "https://sh.zu.ke.com") 
             source_tier="P0",
             source_url=href,
             platform_id=code,
-            title=redact_text(title),
-            body=redact_text(text),
+            title=title,
+            body=text,
             price_monthly=price,
             layout=layout,
             area_sqm=area,
@@ -59,7 +59,8 @@ def parse_beike_lianjia_html(html: str, base_url: str = "https://sh.zu.ke.com") 
             confidence={"source_parse": 0.78},
             collected_at=now_iso(),
         )
-        items.append(sanitize_listing(item))
+        attach_contact_methods(item, [platform_contact(href, "beike_lianjia.card.href"), *extract_contact_methods(text, entry_url=href, source_field="beike_lianjia.card.text")])
+        items.append(item)
     return items
 
 

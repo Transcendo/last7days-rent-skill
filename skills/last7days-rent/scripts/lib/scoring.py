@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 
-from .feedback import feedback_boost_for_listing
+from .feedback import feedback_boost_for_listing, load_feedback
 from .risk import risk_score
 from .schema import ListingCluster, RentProfile
 
@@ -63,6 +63,8 @@ def trust_score(cluster: ListingCluster) -> tuple[float, str]:
 
 def score_cluster(cluster: ListingCluster, profile: RentProfile) -> ListingCluster:
     listing = cluster.canonical_listing
+    if _has_real_viewable_feedback(cluster):
+        cluster.trust_level = "L3"
     risk_flags = sorted(set(flag for item in cluster.source_items for flag in item.risk_flags))
     cluster.risk_flags = risk_flags
     cluster.risk_score = risk_score(risk_flags)
@@ -91,6 +93,17 @@ def score_cluster(cluster: ListingCluster, profile: RentProfile) -> ListingClust
     return cluster
 
 
+def _has_real_viewable_feedback(cluster: ListingCluster) -> bool:
+    ids = {item.item_id for item in cluster.source_items}
+    source_ids = {item.source_id for item in cluster.source_items}
+    for row in load_feedback():
+        if row.get("event_type") != "real_viewable":
+            continue
+        if row.get("listing_id") in ids or row.get("source_id") in source_ids:
+            return True
+    return False
+
+
 def score_clusters(clusters: list[ListingCluster], profile: RentProfile) -> list[ListingCluster]:
     return [score_cluster(cluster, profile) for cluster in clusters]
 
@@ -112,4 +125,8 @@ def collect_field_provenance(cluster: ListingCluster) -> dict:
     for item in cluster.source_items:
         for field, source in item.provenance.items():
             provenance.setdefault(field, []).append(source)
+        if item.contact_methods:
+            provenance.setdefault("contact_methods", []).extend(
+                method.source_field or method.contact_type for method in item.contact_methods
+            )
     return provenance

@@ -3,8 +3,9 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from .contact import contact_display_text
 from .privacy import assert_public_safe, redact_profile, sanitize_cluster
-from .schema import ListingCluster, RentProfile, VerificationEvidence, to_plain
+from .schema import ListingCluster, RentProfile, SourceFetchResult, VerificationEvidence, to_plain
 from .seven_day_plan import build_seven_day_plan
 from .sources.registry import source_registry
 from .store import write_json, write_text
@@ -24,6 +25,7 @@ def render_chat_shortlist(profile: RentProfile, clusters: list[ListingCluster]) 
             [
                 f"{idx}. [{cluster.trust_level}] {item.title}，{price}",
                 f"   匹配：{'；'.join(cluster.match_reasons)}",
+                f"   联系：{contact_display_text(item.contact_methods)}",
                 f"   风险：{', '.join(cluster.risk_flags) if cluster.risk_flags else '未发现高风险标签'}",
                 f"   下一步：{cluster.next_questions[0] if cluster.next_questions else '联系前核验是否仍在租'}",
                 "",
@@ -39,6 +41,9 @@ def render_markdown_report(
     clusters: list[ListingCluster],
     evidences: list[VerificationEvidence],
     warnings: list[str],
+    *,
+    live: bool = False,
+    source_fetches: list[SourceFetchResult] | None = None,
 ) -> str:
     safe_clusters = [sanitize_cluster(cluster) for cluster in clusters]
     data = redact_profile(profile.to_dict())
@@ -46,6 +51,8 @@ def render_markdown_report(
         "# last7days-rent 候选短名单",
         "",
         "last7days = 帮助用户 7 天完成租房",
+        "",
+        f"- 搜索模式: {'live P0 source search' if live else 'fixture test mode'}",
         "",
         "## Profile 脱敏摘要",
         "",
@@ -60,7 +67,16 @@ def render_markdown_report(
     registry = source_registry()
     for source_id in ["beike_lianjia", "wellcee", "fang", "official_verifier"]:
         meta = registry[source_id]
-        lines.append(f"- {source_id}: {meta['status']} / {meta['allowed_output_type']} / default {meta['default_trust_level']}")
+        lines.append(
+            f"- {source_id}: {meta['status']} / {meta['allowed_output_type']} / contact={', '.join(meta['contact_capability'])}"
+        )
+    if source_fetches:
+        lines.extend(["", "## Live Fetch Results", ""])
+        for fetch in source_fetches:
+            lines.append(
+                f"- {fetch.source_id}: status={fetch.status}, HTTP={fetch.http_status or 'unknown'}, "
+                f"candidates={fetch.candidate_count}, url={fetch.url}, warning={fetch.warning or 'none'}"
+            )
     if warnings:
         lines.extend(["", "## Warnings", ""])
         lines.extend(f"- {warning}" for warning in warnings)
@@ -75,6 +91,8 @@ def render_markdown_report(
                 f"- 月租: {price}",
                 f"- 来源: {item.source_id}",
                 f"- URL: {item.source_url or 'unknown'}",
+                f"- 抓取时间: {item.collected_at}",
+                f"- 联系路径: {contact_display_text(item.contact_methods)}",
                 f"- 匹配理由: {'；'.join(cluster.match_reasons)}",
                 f"- 风险标签: {', '.join(cluster.risk_flags) if cluster.risk_flags else 'none'}",
                 f"- 合并原因: {', '.join(cluster.merge_reasons) if cluster.merge_reasons else '单源结构化'}",
@@ -84,6 +102,18 @@ def render_markdown_report(
         )
         lines.extend(f"  - {question}" for question in cluster.next_questions)
         lines.append("")
+    total_clusters = len(safe_clusters)
+    contact_ready = sum(1 for cluster in safe_clusters if cluster.canonical_listing.contact_methods)
+    lines.extend(
+        [
+            "## Contact Coverage",
+            "",
+            f"- 核心短名单数量: {total_clusters}",
+            f"- 有可行动联系方式或平台入口: {contact_ready}",
+            f"- 覆盖率: {contact_ready}/{total_clusters}" if total_clusters else "- 覆盖率: 0/0",
+            "",
+        ]
+    )
     lines.extend(["## 官方核验证据", ""])
     if evidences:
         for evidence in evidences:
@@ -98,7 +128,7 @@ def render_markdown_report(
             "",
             "## 隐私说明",
             "",
-            "公开报告已脱敏手机号、微信号、群名、真实姓名、头像或截图来源身份线索。缺失字段保持 unknown/None，不由 LLM 或代码补全。L1 不是已验真，L3 只来自用户联系确认或明确反馈。",
+            "公开报告保留公开页面或用户授权导入里的联系方式和平台联系入口，便于行动；cookie、token、secret、session、authorization 等凭证不会进入报告或 cache。缺失字段保持 unknown/None，不由 LLM 或代码补全。L1 不是已验真，L3 只来自用户联系确认或明确反馈。",
         ]
     )
     output = "\n".join(lines).rstrip() + "\n"
@@ -111,20 +141,26 @@ def render_evidence_package(
     clusters: list[ListingCluster],
     evidences: list[VerificationEvidence],
     warnings: list[str],
+    *,
+    live: bool = False,
+    source_fetches: list[SourceFetchResult] | None = None,
 ) -> dict:
     safe_clusters = [sanitize_cluster(cluster) for cluster in clusters]
     package = {
         "schema_version": "0.1.0",
         "slogan": "last7days = 帮助用户 7 天完成租房",
+        "mode": "live" if live else "fixture",
         "profile_redacted_summary": redact_profile(profile.to_dict()),
         "source_coverage": source_registry(),
+        "source_fetches": [fetch.to_dict() for fetch in (source_fetches or [])],
         "clusters": [cluster.to_dict() for cluster in safe_clusters],
         "verification_evidence": [to_plain(evidence) for evidence in evidences],
         "seven_day_plan": build_seven_day_plan(),
         "warnings": warnings,
         "privacy": {
-            "redacted": True,
-            "no_plain_phone_wechat_group_real_name": True,
+            "redacted_profile": True,
+            "contact_methods_preserved_for_action": True,
+            "secret_guard_enabled": True,
             "unknown_fields_are_not_filled": True,
         },
     }

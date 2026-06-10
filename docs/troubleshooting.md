@@ -1,30 +1,78 @@
-# Troubleshooting
+# 排障说明
 
-## `python` command not found
+## 搜索没有结果
 
-本机可能只有 `python3`。可以在用户级 PATH 中创建轻量入口：
-
-```bash
-mkdir -p ~/.local/bin
-ln -s "$(command -v python3)" ~/.local/bin/python
-```
-
-## `profile show --redacted` 返回未找到 profile
-
-这是预期行为。先运行：
+先确认输入是否足够具体：
 
 ```bash
-python skills/last7days-rent/scripts/last7days_rent.py profile init --office-anchor "上海五角场"
+python skills/last7days-rent/scripts/last7days_rent.py search \
+  --office-anchor "上海五角场" \
+  --city 上海 \
+  --budget-max 5200 \
+  --days 7 \
+  --limit 10
 ```
 
-## fixture search 没有网络
+如果报告只有 warnings，说明 source 获取或解析没有成功。不要把空报告当成“没有房源”，应查看 source coverage 和 warning。
 
-MVP 的 `search --fixture` 必须离线运行，不依赖网络。它使用合成 P0 fixture 或内置 fixture。
+## Source 被 403、429 或 captcha 阻断
 
-## 报告被隐私守卫拦截
+这是预期边界。这个 skill 不绕验证码、不要求 cookie、不使用登录态批量抓取。遇到阻断时，报告应记录 source、URL、HTTP 状态或 captcha warning。
 
-说明公开输出中仍包含手机号、微信号、私域群名、真实姓名、头像或截图来源身份线索。先修 `privacy.py` 的脱敏规则，再重新生成报告。
+可尝试：
 
-## 看到 P1/P2 来源进入报告
+- 换一个 P0 来源。
+- 缩小城市/区域关键词。
+- 使用用户显式提供的公开 URL。
+- 手动打开平台页面确认是否需要登录或验证码。
 
-这是阻断失败。检查 `sources/registry.py`、`risk.py` 和 `normalize.py`，确保自如、我爱我家、58/安居客、豆瓣、小红书、微博、公众号、私域、WebSearch discovery、用户授权导入都不能进入 MVP listing pipeline。
+## 报告只有 warnings
+
+这通常表示所有 live source 都失败、被阻断或没有解析出候选。报告仍然有价值，因为它记录了失败来源和下一步动作。
+
+需要检查：
+
+- source 是否仍在 registry 中启用。
+- 查询 URL 是否生成正确。
+- 页面结构是否变化。
+- 网络是否能访问目标站点。
+
+## 房源没有联系方式
+
+没有联系方式且没有可打开平台入口的房源，对用户来说不可行动。核心短名单不应推荐这类候选。
+
+需要检查：
+
+- adapter 是否提取了页面里的电话、微信、邮箱或原帖联系说明。
+- 平台是否只允许站内联系；如果是，报告应展示 source URL 和联系动作。
+- 该来源是否只适合作为 L0 线索，而不是正式 listing。
+
+## 平台只允许站内联系
+
+这是可接受的联系路径。报告应展示：
+
+- 原始房源 URL。
+- 联系动作，例如“打开平台页面后点击联系/预约看房”。
+- 该联系路径的 provenance 和采集时间。
+
+如果平台入口需要登录或验证码，不要绕过，应记录 warning。
+
+## 联系方式疑似引流
+
+如果房源只给微信/电话、拒绝看房、催定金、要求看房费或资料费，应保留联系方式事实，同时打上风险标签。不要因为有联系方式就把房源写成可信。
+
+## L1、L2、L3 被误解
+
+L1 不是已验真，只表示单源结构化且有来源证据和可行动联系路径。
+
+L2 表示多源佐证或重复字段一致，但仍不保证仍在租。
+
+L3 只能来自用户联系确认或明确反馈，例如“已联系，确认可看房”。平台编号、核验码或多源重复都不能自动变成 L3。
+
+## 本地测试模式
+
+```bash
+python skills/last7days-rent/scripts/last7days_rent.py search --fixture
+```
+
+该模式只验证本地链路和报告格式，不请求网络，也不代表真实房源获取成功。

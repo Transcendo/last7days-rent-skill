@@ -20,8 +20,12 @@ def canonical_url(url: str | None) -> str | None:
 
 
 def normalize_listing(item: ListingItem, profile: RentProfile | None = None) -> ListingItem | None:
+    item.risk_flags = risk_flags_for_listing(item, profile)
+    budget_max = profile.housing_constraints.get("budget_max") if profile else None
+    if budget_max and item.price_monthly and item.price_monthly > float(budget_max) * 1.2:
+        item.risk_flags = sorted(set([*item.risk_flags, "hard_filter_over_budget"]))
+        return None
     if should_reject_listing(item):
-        item.risk_flags = risk_flags_for_listing(item, profile)
         return None
     sanitized = sanitize_listing(item)
     sanitized.source_url = canonical_url(sanitized.source_url)

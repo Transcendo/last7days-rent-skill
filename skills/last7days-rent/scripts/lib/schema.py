@@ -8,6 +8,7 @@ from typing import Any, Literal
 TrustLevel = Literal["L0", "L1", "L2", "L3"]
 SourceTier = Literal["P0", "P1", "P2", "private", "websearch", "non_mvp"]
 RentalMode = Literal["whole", "shared", "either"]
+ContactRoute = Literal["platform", "phone", "wechat", "qq", "feishu", "email", "original_post", "user_authorized", "unknown"]
 
 UNKNOWN = "unknown"
 MVP_SOURCE_IDS = {"beike_lianjia", "wellcee", "fang", "official_verifier"}
@@ -80,6 +81,50 @@ class RentProfile:
 
 
 @dataclass
+class SearchRequest:
+    city: str | None = None
+    office_anchor: str | None = None
+    budget_min: int | None = None
+    budget_max: int | None = None
+    days: int = 7
+    limit: int = 10
+    sources: list[str] = field(default_factory=list)
+    fixture: bool = False
+
+    def to_dict(self) -> dict[str, Any]:
+        return to_plain(self)
+
+
+@dataclass
+class SearchPlan:
+    request: SearchRequest
+    commute_areas: list[str] = field(default_factory=list)
+    source_queries: dict[str, list[dict[str, Any]]] = field(default_factory=dict)
+    contact_requirements: list[str] = field(default_factory=lambda: ["platform", "phone", "wechat", "qq", "feishu", "email", "original_post", "user_authorized"])
+    risk_filters: list[str] = field(default_factory=lambda: ["p1_p2_source_not_allowed", "private_source_not_allowed", "websearch_not_allowed"])
+    open_questions: list[str] = field(default_factory=list)
+
+    def to_dict(self) -> dict[str, Any]:
+        return to_plain(self)
+
+
+@dataclass
+class SourceFetchResult:
+    source_id: str
+    url: str
+    status: str
+    fetched_at: str = field(default_factory=now_iso)
+    elapsed_ms: int | None = None
+    http_status: int | None = None
+    warning: str | None = None
+    raw_path: str | None = None
+    candidate_count: int = 0
+
+    def to_dict(self) -> dict[str, Any]:
+        return to_plain(self)
+
+
+@dataclass
 class SourceCandidate:
     candidate_id: str
     source_id: str
@@ -94,6 +139,24 @@ class SourceCandidate:
 
 
 @dataclass
+class ContactMethod:
+    contact_type: ContactRoute
+    value: str | None = None
+    entry_url: str | None = None
+    source_field: str | None = None
+    public_visible: bool = True
+    collected_at: str = field(default_factory=now_iso)
+    notes: str | None = None
+
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]) -> "ContactMethod":
+        return cls(**data)
+
+    def to_dict(self) -> dict[str, Any]:
+        return to_plain(self)
+
+
+@dataclass
 class ListingItem:
     item_id: str
     source_id: str
@@ -103,6 +166,7 @@ class ListingItem:
     source_url: str | None = None
     platform_id: str | None = None
     published_at: str | None = None
+    maintained_at: str | None = None
     collected_at: str = field(default_factory=now_iso)
     city: str | None = None
     district: str | None = None
@@ -110,13 +174,17 @@ class ListingItem:
     address_hint: str | None = None
     price_monthly: int | None = None
     deposit: str | None = None
+    payment_cycle: str | None = None
+    service_fee: str | None = None
+    agency_fee: str | None = None
     layout: str | None = None
     area_sqm: float | None = None
     floor: str | None = None
     orientation: str | None = None
     available_from: str | None = None
-    contact_route: str | None = None
-    raw_contact_redacted: bool = True
+    contact_route: ContactRoute = "unknown"
+    contact_methods: list[ContactMethod] = field(default_factory=list)
+    raw_contact_redacted: bool = False
     image_hashes: list[str] = field(default_factory=list)
     provenance: dict[str, Any] = field(default_factory=dict)
     confidence: dict[str, float] = field(default_factory=dict)
@@ -125,7 +193,12 @@ class ListingItem:
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> "ListingItem":
-        return cls(**data)
+        normalized = dict(data)
+        normalized["contact_methods"] = [
+            method if isinstance(method, ContactMethod) else ContactMethod.from_dict(method)
+            for method in normalized.get("contact_methods", [])
+        ]
+        return cls(**normalized)
 
     def to_dict(self) -> dict[str, Any]:
         return to_plain(self)

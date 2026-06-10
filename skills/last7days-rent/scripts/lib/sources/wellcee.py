@@ -5,7 +5,7 @@ import json
 import re
 from typing import Any
 
-from ..privacy import redact_text, sanitize_listing
+from ..contact import attach_contact_methods, extract_contact_methods, platform_contact
 from ..schema import ListingItem, now_iso
 
 
@@ -28,7 +28,7 @@ def parse_wellcee_jsonld(html: str, fallback_url: str | None = None) -> list[Lis
                 continue
             item = _node_to_listing(node, fallback_url)
             if item:
-                items.append(sanitize_listing(item))
+                items.append(item)
     return items
 
 
@@ -46,13 +46,13 @@ def _node_to_listing(node: dict[str, Any], fallback_url: str | None) -> ListingI
     except (TypeError, ValueError):
         price_int = None
     body = node.get("description") or ""
-    return ListingItem(
+    item = ListingItem(
         item_id=item_id,
         source_id="wellcee",
         source_tier="P0",
         source_url=url,
-        title=redact_text(str(title)),
-        body=redact_text(str(body)),
+        title=str(title),
+        body=str(body),
         published_at=node.get("datePosted"),
         city=address.get("addressLocality"),
         district=address.get("addressRegion"),
@@ -69,6 +69,8 @@ def _node_to_listing(node: dict[str, Any], fallback_url: str | None) -> ListingI
         confidence={"jsonld": 0.85, "date_posted_needs_verification": 1.0},
         collected_at=now_iso(),
     )
+    attach_contact_methods(item, [platform_contact(url, "wellcee.jsonld.url"), *extract_contact_methods(str(body), entry_url=url, source_field="wellcee.jsonld.description")])
+    return item
 
 
 def _extract_area(text: str) -> float | None:

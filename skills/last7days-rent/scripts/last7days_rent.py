@@ -16,6 +16,8 @@ from lib.pipeline import run_search
 from lib.profile_store import init_profile, load_profile, profile_to_markdown, refine_profile
 from lib.privacy import redact_profile
 from lib.schema import FeedbackEvent, now_iso
+from lib.sources.registry import source_registry
+from lib.sources.router import smoke_source
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -45,10 +47,29 @@ def build_parser() -> argparse.ArgumentParser:
     profile_refine.add_argument("--decision", choices=["commute", "trust", "brand", "speed", "quiet"])
     profile_refine.add_argument("--weight", type=float)
 
-    search = subparsers.add_parser("search", help="生成近 7 天候选短名单和 evidence package")
+    search = subparsers.add_parser(
+        "search",
+        help="默认执行 live P0 source search，生成近 7 天候选短名单和 evidence package",
+        description="默认执行 live P0 source search；只有显式传入 --fixture 时才使用离线测试样本。",
+    )
     search.add_argument("--fixture", action="store_true", help="使用离线 fixture，不请求网络")
     search.add_argument("--limit", type=int, default=5)
     search.add_argument("--output-dir")
+    search.add_argument("--office-anchor")
+    search.add_argument("--city")
+    search.add_argument("--budget-min", type=int)
+    search.add_argument("--budget-max", type=int)
+    search.add_argument("--days", type=int, default=7)
+    search.add_argument("--sources", help="逗号分隔的 source_id，默认 beike_lianjia,fang")
+
+    sources = subparsers.add_parser("sources", help="查看或 smoke 测试 P0 来源")
+    sources_sub = sources.add_subparsers(dest="sources_command")
+    sources_sub.add_parser("list", help="列出 source registry")
+    smoke = sources_sub.add_parser("smoke", help="对单个 source 运行 live smoke，不绕验证码、不使用 cookie")
+    smoke.add_argument("--source", required=True)
+    smoke.add_argument("--city", default="上海")
+    smoke.add_argument("--area", default="五角场")
+    smoke.add_argument("--limit", type=int, default=5)
 
     feedback = subparsers.add_parser("feedback", help="记录用户反馈并影响下一轮排序")
     feedback.add_argument("--listing-id", required=True)
@@ -64,6 +85,8 @@ def build_parser() -> argparse.ArgumentParser:
             "reject_agent",
             "untrusted_source",
             "real_viewable",
+            "contact_failed",
+            "wrong_contact",
             "track",
         ],
     )
@@ -107,11 +130,44 @@ def cmd_profile(args: argparse.Namespace) -> int:
 
 
 def cmd_search(args: argparse.Namespace) -> int:
-    result = run_search(fixture=args.fixture, limit=args.limit, output_dir=args.output_dir)
+    selected_sources = [part.strip() for part in args.sources.split(",") if part.strip()] if args.sources else None
+    result = run_search(
+        fixture=args.fixture,
+        limit=args.limit,
+        output_dir=args.output_dir,
+        office_anchor=args.office_anchor,
+        city=args.city,
+        budget_min=args.budget_min,
+        budget_max=args.budget_max,
+        days=args.days,
+        sources=selected_sources,
+    )
     print(result.chat_summary)
+    if result.source_fetches:
+        print("Source coverage:")
+        for fetch in result.source_fetches:
+            print(
+                f"- {fetch.source_id}: status={fetch.status}, HTTP={fetch.http_status or 'unknown'}, "
+                f"candidates={fetch.candidate_count}, warning={fetch.warning or 'none'}"
+            )
+    if result.evidence.get("warnings"):
+        print("Warnings:")
+        for warning in result.evidence["warnings"]:
+            print(f"- {warning}")
     print(f"Markdown report: {result.markdown_path}")
     print(f"JSON evidence: {result.evidence_path}")
     return 0
+
+
+def cmd_sources(args: argparse.Namespace) -> int:
+    if args.sources_command == "list":
+        print(json.dumps(source_registry(), ensure_ascii=False, indent=2, sort_keys=True))
+        return 0
+    if args.sources_command == "smoke":
+        print(json.dumps(smoke_source(args.source, city=args.city, area=args.area, limit=args.limit), ensure_ascii=False, indent=2, sort_keys=True))
+        return 0
+    print("缺少 sources 子命令。", file=sys.stderr)
+    return 2
 
 
 def cmd_feedback(args: argparse.Namespace) -> int:
@@ -130,7 +186,7 @@ def cmd_feedback(args: argparse.Namespace) -> int:
 def cmd_report(args: argparse.Namespace) -> int:
     reports = sorted(get_paths().reports_dir.glob("*.md"))
     if not reports:
-        print("尚未生成报告。请先运行 search --fixture。", file=sys.stderr)
+        print("尚未生成报告。请先运行 search 或 search --fixture。", file=sys.stderr)
         return 1
     print(reports[-1])
     return 0
@@ -143,6 +199,8 @@ def main(argv: list[str] | None = None) -> int:
         return cmd_profile(args)
     if args.command == "search":
         return cmd_search(args)
+    if args.command == "sources":
+        return cmd_sources(args)
     if args.command == "feedback":
         return cmd_feedback(args)
     if args.command == "report":

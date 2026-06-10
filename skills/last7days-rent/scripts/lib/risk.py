@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from .contact import has_actionable_contact
 from .schema import ListingItem, MVP_SOURCE_IDS, RentProfile
 
 
@@ -30,6 +31,8 @@ def is_mvp_listing_source(source_id: str) -> bool:
 
 
 def source_scope_risk(source_id: str) -> list[str]:
+    if source_id == "user_authorized":
+        return []
     if source_id == "websearch":
         return ["websearch_not_allowed"]
     if source_id in PRIVATE_SOURCE_IDS:
@@ -44,7 +47,9 @@ def source_scope_risk(source_id: str) -> list[str]:
 
 
 def should_reject_listing(item: ListingItem) -> bool:
-    return bool(source_scope_risk(item.source_id))
+    if source_scope_risk(item.source_id):
+        return True
+    return not has_actionable_contact(item)
 
 
 def risk_flags_for_listing(item: ListingItem, profile: RentProfile | None = None) -> list[str]:
@@ -58,10 +63,13 @@ def risk_flags_for_listing(item: ListingItem, profile: RentProfile | None = None
         flags.append("low_price_anomaly")
     if item.price_monthly is not None and budget_max and item.price_monthly > float(budget_max) * 1.2:
         flags.append("over_budget")
+        flags.append("hard_filter_over_budget")
     if not item.deposit:
         flags.append("fee_terms_missing")
     if not item.community_name and not item.address_hint:
         flags.append("vague_location")
+    if not has_actionable_contact(item):
+        flags.append("no_actionable_contact")
     contact = (item.contact_route or "").lower()
     if any(token in contact for token in ["wechat", "phone", "wx", "vx"]):
         flags.append("contact_only_phone_or_wechat")
@@ -85,6 +93,8 @@ def risk_score(flags: list[str]) -> float:
         "refuses_viewing": 0.5,
         "deposit_pressure": 0.55,
         "over_budget": 0.2,
+        "hard_filter_over_budget": 0.6,
         "official_verifier_not_recall_source": 0.4,
+        "no_actionable_contact": 0.8,
     }
     return min(1.0, sum(weights.get(flag, 0.1) for flag in set(flags)))

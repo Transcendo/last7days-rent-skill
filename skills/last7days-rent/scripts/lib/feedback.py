@@ -8,7 +8,17 @@ from .store import append_jsonl, read_jsonl
 
 
 POSITIVE_EVENTS = {"real_viewable", "track"}
-NEGATIVE_EVENTS = {"rented", "expired", "too_far", "too_expensive", "lead_gen_suspected", "reject_agent", "untrusted_source"}
+NEGATIVE_EVENTS = {
+    "rented",
+    "expired",
+    "too_far",
+    "too_expensive",
+    "lead_gen_suspected",
+    "reject_agent",
+    "untrusted_source",
+    "contact_failed",
+    "wrong_contact",
+}
 
 
 def append_feedback(event: FeedbackEvent) -> Path:

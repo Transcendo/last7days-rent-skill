@@ -9,3 +9,6 @@ dependencies = []
 testpaths = ["tests"]
 pythonpath = ["skills/last7days-rent/scripts"]
 addopts = "-q"
+markers = [
+  "live: exercises public live source smoke and may report source blocking",
+]
