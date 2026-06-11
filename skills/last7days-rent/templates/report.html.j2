@@ -1,0 +1,702 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>last7days-rent 候选短名单</title>
+  <link rel="icon" href="data:,">
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f5ef;
+      --paper: #fffdf8;
+      --ink: #17211c;
+      --muted: #66736c;
+      --line: #d8ded2;
+      --accent: #0f766e;
+      --accent-strong: #0b4f4a;
+      --warning: #a64b00;
+      --danger: #9f1239;
+      --soft: #e7f2ef;
+      --soft-warning: #fff4df;
+      --shadow: 0 18px 50px rgba(23, 33, 28, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      letter-spacing: 0;
+    }
+
+    body {
+      min-width: 320px;
+    }
+
+    a {
+      color: var(--accent-strong);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+      overflow-wrap: anywhere;
+    }
+
+    .shell {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 56px;
+    }
+
+    .hero {
+      padding: 28px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      color: var(--accent-strong);
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    h1, h2, h3, p {
+      margin-top: 0;
+    }
+
+    h1 {
+      max-width: 820px;
+      margin-bottom: 14px;
+      font-size: 34px;
+      line-height: 1.18;
+      font-weight: 760;
+    }
+
+    h2 {
+      margin: 34px 0 14px;
+      font-size: 22px;
+      line-height: 1.3;
+    }
+
+    h3 {
+      margin-bottom: 10px;
+      font-size: 18px;
+      line-height: 1.35;
+    }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .metric {
+      min-height: 82px;
+      padding: 12px;
+      background: #f8fbf8;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+
+    .metric .label {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    .metric .value {
+      display: block;
+      margin-top: 5px;
+      font-size: 20px;
+      font-weight: 760;
+      line-height: 1.25;
+      overflow-wrap: anywhere;
+    }
+
+    .section {
+      margin-top: 18px;
+    }
+
+    .action-grid, .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .summary > *, .action-grid > *, .card-grid > *, .timeline > * {
+      min-width: 0;
+    }
+
+    .card {
+      min-width: 0;
+      padding: 16px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: 0 10px 28px rgba(23, 33, 28, 0.06);
+      overflow-wrap: anywhere;
+    }
+
+    .card.action {
+      border-color: #b6d8d2;
+      background: #fbfffd;
+    }
+
+    .card-title {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
+
+    .rank {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 30px;
+      height: 30px;
+      padding: 0 8px;
+      background: var(--accent);
+      color: white;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .title {
+      margin: 0;
+      font-size: 17px;
+      font-weight: 760;
+      line-height: 1.35;
+      overflow-wrap: anywhere;
+    }
+
+    .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 12px 0;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 26px;
+      padding: 3px 8px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #f8fbf8;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    .pill.trust {
+      border-color: #a9cfc7;
+      background: var(--soft);
+      color: var(--accent-strong);
+    }
+
+    .pill.risk {
+      border-color: #f1c16f;
+      background: var(--soft-warning);
+      color: var(--warning);
+    }
+
+    .kv {
+      display: grid;
+      grid-template-columns: 82px minmax(0, 1fr);
+      gap: 5px 10px;
+      margin: 10px 0;
+      font-size: 14px;
+    }
+
+    .kv dt {
+      color: var(--muted);
+      font-weight: 650;
+    }
+
+    .kv dd {
+      margin: 0;
+      overflow-wrap: anywhere;
+    }
+
+    .contact-box {
+      margin-top: 12px;
+      padding: 12px;
+      border: 1px solid #a9cfc7;
+      border-radius: 8px;
+      background: var(--soft);
+      overflow-wrap: anywhere;
+    }
+
+    .contact-label {
+      margin-bottom: 4px;
+      color: var(--accent-strong);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .list {
+      margin: 8px 0 0;
+      padding-left: 20px;
+    }
+
+    .list li {
+      margin: 4px 0;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 820px;
+      font-size: 14px;
+    }
+
+    th, td {
+      padding: 11px 12px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      color: var(--muted);
+      background: #f8fbf8;
+      font-size: 12px;
+      font-weight: 760;
+      text-transform: uppercase;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    details {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfaf6;
+    }
+
+    summary {
+      cursor: pointer;
+      color: var(--accent-strong);
+      font-weight: 720;
+    }
+
+    pre {
+      margin: 10px 0 0;
+      padding: 12px;
+      overflow-x: auto;
+      border-radius: 6px;
+      background: #17211c;
+      color: #f7f5ef;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 12px;
+      line-height: 1.55;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    .warning-block {
+      padding: 14px 16px;
+      border: 1px solid #f1c16f;
+      border-radius: 8px;
+      background: var(--soft-warning);
+      color: #5f3500;
+    }
+
+    .empty {
+      padding: 16px;
+      border: 1px dashed var(--line);
+      border-radius: 8px;
+      color: var(--muted);
+      background: rgba(255, 253, 248, 0.65);
+    }
+
+    .timeline {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .day {
+      min-height: 150px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+    }
+
+    .day strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--accent-strong);
+    }
+
+    .note {
+      margin-top: 26px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+      color: var(--muted);
+    }
+
+    @media (max-width: 960px) {
+      .summary {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+      .action-grid, .card-grid, .timeline {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 620px) {
+      .shell {
+        width: min(100% - 20px, 1180px);
+        padding-top: 10px;
+      }
+      .hero {
+        padding: 18px;
+      }
+      h1 {
+        font-size: 26px;
+      }
+      .summary, .action-grid, .card-grid, .timeline {
+        grid-template-columns: 1fr;
+      }
+      .metric {
+        min-height: 72px;
+      }
+      .kv {
+        grid-template-columns: 72px minmax(0, 1fr);
+      }
+    }
+
+    @media print {
+      body { background: white; }
+      .shell { width: 100%; padding: 0; }
+      .hero, .card, .table-wrap, .day, .note { box-shadow: none; }
+      a[href]::after { content: " (" attr(href) ")"; font-size: 0.86em; color: var(--muted); }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <section class="hero">
+      <p class="eyebrow">last7days = 帮助用户 7 天完成租房</p>
+      <h1>{{ title }}</h1>
+      <p>{{ summary.mode_label }} · {{ summary.city }} / {{ summary.office }} · 预算 {{ summary.budget_label }} · 生成于 {{ summary.generated_at }}</p>
+      <div class="summary" aria-label="报告摘要">
+        <div class="metric"><span class="label">候选短名单</span><span class="value">{{ summary.total_clusters }}</span></div>
+        <div class="metric"><span class="label">Contact Coverage</span><span class="value">{{ summary.contact_ready }}/{{ summary.total_clusters }}</span></div>
+        <div class="metric"><span class="label">Source Coverage</span><span class="value">{{ summary.source_count }}</span></div>
+        <div class="metric"><span class="label">Warnings</span><span class="value">{{ summary.warning_count }}</span></div>
+        <div class="metric"><span class="label">Blocked Sources</span><span class="value">{{ summary.blocked_count }}</span></div>
+        <div class="metric"><span class="label">通勤上限</span><span class="value">{{ summary.commute_label }}</span></div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="today-action">
+      <h2 id="today-action">今日优先联系</h2>
+      {% if action_items %}
+        <div class="action-grid">
+          {% for cluster in action_items %}
+            {% set item = cluster.canonical_listing %}
+            <article class="card action">
+              <div class="card-title">
+                <h3 class="title">{{ item.title }}</h3>
+                <span class="rank">#{{ loop.index }}</span>
+              </div>
+              <div class="meta-row">
+                <span class="pill trust">{{ cluster.trust_level }}</span>
+                <span class="pill">{{ item.price_label }}</span>
+                <span class="pill">{{ item.source_id }}</span>
+              </div>
+              <div class="contact-box">
+                <div class="contact-label">联系路径</div>
+                <div>{{ item.contact_text }}</div>
+              </div>
+              <dl class="kv">
+                <dt>下一步</dt><dd>{{ cluster.primary_question }}</dd>
+                <dt>风险</dt><dd>{{ cluster.risk_label }}</dd>
+              </dl>
+            </article>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="empty">未找到可进入 MVP 短名单的 P0 候选。</div>
+      {% endif %}
+    </section>
+
+    <section class="section" aria-labelledby="shortlist">
+      <h2 id="shortlist">候选房源短名单</h2>
+      {% if clusters %}
+        <div class="card-grid">
+          {% for cluster in clusters %}
+            {% set item = cluster.canonical_listing %}
+            <article class="card">
+              <div class="card-title">
+                <h3 class="title">{{ item.title }}</h3>
+                <span class="rank">#{{ loop.index }}</span>
+              </div>
+              <div class="meta-row">
+                <span class="pill trust">{{ cluster.trust_level }}</span>
+                <span class="pill">{{ item.price_label }}</span>
+                <span class="pill">{{ item.location_label }}</span>
+                {% if cluster.risk_flags %}
+                  <span class="pill risk">{{ cluster.risk_flags | length }} risk</span>
+                {% endif %}
+              </div>
+              <dl class="kv">
+                <dt>面积户型</dt><dd>{{ item.layout_area_label }}</dd>
+                <dt>来源</dt><dd>{{ item.source_id }}</dd>
+                <dt>抓取时间</dt><dd>{{ item.collected_at }}</dd>
+                <dt>URL</dt><dd>{% if item.source_url %}<a href="{{ item.source_url }}">{{ item.source_url }}</a>{% else %}unknown{% endif %}</dd>
+                <dt>匹配理由</dt><dd>{{ cluster.match_label }}</dd>
+                <dt>风险标签</dt><dd>{{ cluster.risk_label }}</dd>
+              </dl>
+              <div class="contact-box">
+                <div class="contact-label">联系路径</div>
+                <div>{{ item.contact_text }}</div>
+              </div>
+              {% if cluster.next_questions %}
+                <ul class="list">
+                  {% for question in cluster.next_questions %}
+                    <li>{{ question }}</li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+              <details>
+                <summary>Evidence / Provenance</summary>
+                <dl class="kv">
+                  <dt>合并原因</dt><dd>{{ cluster.merge_label }}</dd>
+                  <dt>Final Score</dt><dd>{{ cluster.final_score }}</dd>
+                  <dt>字段来源</dt><dd><pre>{{ cluster.field_provenance_json }}</pre></dd>
+                </dl>
+              </details>
+            </article>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="empty">没有可展示的候选房源。请查看 Source Coverage 和 Warnings。</div>
+      {% endif %}
+    </section>
+
+    <section class="section" aria-labelledby="compare">
+      <h2 id="compare">候选对比表</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>房源</th>
+              <th>月租</th>
+              <th>来源</th>
+              <th>Trust</th>
+              <th>Final Score</th>
+              <th>风险</th>
+              <th>可行动联系</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for cluster in clusters %}
+              {% set item = cluster.canonical_listing %}
+              <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ item.title }}</td>
+                <td>{{ item.price_label }}</td>
+                <td>{{ item.source_id }}</td>
+                <td>{{ cluster.trust_level }}</td>
+                <td>{{ cluster.final_score }}</td>
+                <td>{{ cluster.risk_label }}</td>
+                <td>{{ "yes" if item.has_contact else "no" }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="sources">
+      <h2 id="sources">Source Coverage</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Source</th>
+              <th>Status</th>
+              <th>HTTP</th>
+              <th>Candidates</th>
+              <th>URL</th>
+              <th>Warning</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for fetch in source_fetches %}
+              <tr>
+                <td>{{ fetch.source_id }}</td>
+                <td>{{ fetch.status }}</td>
+                <td>{{ fetch.http_status or "unknown" }}</td>
+                <td>{{ fetch.candidate_count }}</td>
+                <td>{% if fetch.url %}<a href="{{ fetch.url }}">{{ fetch.url }}</a>{% else %}unknown{% endif %}</td>
+                <td>{{ fetch.warning or "none" }}</td>
+              </tr>
+            {% endfor %}
+            {% if not source_fetches %}
+              {% for source_id, meta in source_coverage.items() %}
+                <tr>
+                  <td>{{ source_id }}</td>
+                  <td>{{ meta.status }}</td>
+                  <td>unknown</td>
+                  <td>unknown</td>
+                  <td>registry</td>
+                  <td>{{ meta.allowed_output_type }}</td>
+                </tr>
+              {% endfor %}
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="providers">
+      <h2 id="providers">Search Provider Coverage</h2>
+      {% if search_provider_results %}
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Provider</th>
+                <th>Status</th>
+                <th>HTTP</th>
+                <th>Leads</th>
+                <th>Query</th>
+                <th>Warning</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for result in search_provider_results %}
+                <tr>
+                  <td>{{ result.provider }}</td>
+                  <td>{{ result.status }}</td>
+                  <td>{{ result.http_status or "unknown" }}</td>
+                  <td>{{ result.lead_count }}</td>
+                  <td>{{ result.query }}</td>
+                  <td>{{ result.warning or "none" }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% else %}
+        <div class="empty">未运行 search provider discovery。</div>
+      {% endif %}
+    </section>
+
+    {% if search_leads %}
+      <section class="section" aria-labelledby="leads">
+        <h2 id="leads">搜索发现线索</h2>
+        <p class="warning-block">SearchLead 只是搜索发现层，不能直接证明价格、发布时间、联系方式或仍在租。</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Provider</th>
+                <th>Rank</th>
+                <th>标题</th>
+                <th>Domain</th>
+                <th>Status</th>
+                <th>URL</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for lead in search_leads %}
+                <tr>
+                  <td>{{ lead.provider }}</td>
+                  <td>{{ lead.rank }}</td>
+                  <td>{{ lead.title }}</td>
+                  <td>{{ lead.domain }}</td>
+                  <td>{{ lead.status_label }}</td>
+                  <td><a href="{{ lead.url }}">{{ lead.url }}</a></td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    {% endif %}
+
+    {% if warnings %}
+      <section class="section" aria-labelledby="warnings">
+        <h2 id="warnings">Warnings</h2>
+        <div class="warning-block">
+          <ul class="list">
+            {% for warning in warnings %}
+              <li>{{ warning }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </section>
+    {% endif %}
+
+    <section class="section" aria-labelledby="evidence">
+      <h2 id="evidence">官方核验证据</h2>
+      {% if verification_evidence %}
+        <div class="card-grid">
+          {% for evidence in verification_evidence %}
+            <article class="card">
+              <h3>{{ evidence.evidence_type }}</h3>
+              <dl class="kv">
+                <dt>来源</dt><dd>{{ evidence.source_id }}</dd>
+                <dt>值</dt><dd>{{ evidence.value or "unknown" }}</dd>
+                <dt>URL</dt><dd>{% if evidence.url %}<a href="{{ evidence.url }}">{{ evidence.url }}</a>{% else %}unknown{% endif %}</dd>
+                <dt>说明</dt><dd>{{ evidence.notes or "none" }}</dd>
+              </dl>
+            </article>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="empty">unknown</div>
+      {% endif %}
+    </section>
+
+    <section class="section" aria-labelledby="plan">
+      <h2 id="plan">7 天租房行动计划</h2>
+      <div class="timeline">
+        {% for step in seven_day_plan %}
+          <div class="day">
+            <strong>{{ step.day }}</strong>
+            <span>{{ step.action }}</span>
+          </div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="note" aria-label="隐私和可信等级说明">
+      <h2>隐私与可信等级说明</h2>
+      <p>公开报告保留公开页面或用户授权导入里的联系方式和平台联系入口，便于行动；登录凭证、接口密钥和会话凭据不会进入报告或缓存。缺失字段保持 unknown/None，不由 LLM 或代码补全。L1 不是已验真，L3 只来自用户联系确认或明确反馈。</p>
+    </section>
+  </main>
+</body>
+</html>

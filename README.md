@@ -2,11 +2,11 @@
 
 ![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white)
 ![Local](https://img.shields.io/badge/local--first-contact%20ready-0f766e)
-![Status](https://img.shields.io/badge/status-live%20P0%20search-0f766e)
+![Status](https://img.shields.io/badge/status-web%20search%20provider%20discovery-0f766e)
 
-`last7days-rent-skill` 是一个面向 Codex、Claude Code 等 Agent runtime 的租房 Agent Skill。目标是根据用户的办公点、预算、通勤和偏好，从允许的公开来源获取近 7 天候选房源，结构化房源字段和可行动联系方式，去重、风险初筛、匹配排序，并输出可溯源短名单、联系路径和下一步核验动作。
+`last7days-rent-skill` 是一个面向 Codex、Claude Code 等 Agent runtime 的租房 Agent Skill。目标是根据用户的办公点、预算、通勤和偏好，优先使用宿主 Agent 自带 web search 能力发现近 7 天房源线索，再把标准 JSON 导入 CLI；CLI 只把命中 P0 房源域名且通过 promotion gate 的线索降级转成 L1 候选，去重、风险初筛、匹配排序，并输出可溯源短名单、联系路径和下一步核验动作。
 
-默认搜索会尝试 live P0 source search。公开来源如果返回 403、429、验证码或登录墙，报告会保留 source、URL、HTTP 状态和 fallback warning，不会伪造房源。
+默认 live 搜索先走 runtime web search JSON import；Brave / Tavily / Exa provider fanout 只是 fallback。SearchLead/snippet 不能直接证明价格、发布时间、联系方式或仍在租；没有 promotion 的搜索结果只进入“搜索发现线索”，不会进入核心短名单。旧 HTML parser 仅作为 fixture/parser lab 保留。
 
 ## 快速开始
 
@@ -14,6 +14,15 @@
 
 ```bash
 npx skills add /path/to/last7days-rent-skill -g
+```
+
+安装本地 CLI 依赖：
+
+```bash
+cd /path/to/last7days-rent-skill
+python3 -m venv .venv
+. .venv/bin/activate
+python -m pip install -e .
 ```
 
 未来 GitHub 安装：
@@ -38,7 +47,7 @@ python skills/last7days-rent/scripts/last7days_rent.py profile init \
   --commute-minutes 35
 ```
 
-按办公点和预算搜索候选房源：
+按办公点和预算搜索候选房源。推荐先让 Codex / Claude Code 用自身 web search 找 P0 域名线索，再导入 JSON：
 
 ```bash
 python skills/last7days-rent/scripts/last7days_rent.py search \
@@ -46,8 +55,55 @@ python skills/last7days-rent/scripts/last7days_rent.py search \
   --city 上海 \
   --budget-max 5200 \
   --days 7 \
+  --runtime-websearch-json /tmp/last7days-websearch.json \
   --limit 10
 ```
+
+runtime web search JSON 推荐格式：
+
+```json
+{
+  "provider": "codex_web_search",
+  "query": "site:wellcee.com/rent-apartment 上海 五角场 租房 5200以内 近7天",
+  "results": {
+    "success": true,
+    "data": {
+      "web": [
+        {
+          "title": "房源标题",
+          "url": "https://www.wellcee.com/rent-apartment/...",
+          "description": "搜索摘要",
+          "position": 1
+        }
+      ]
+    }
+  }
+}
+```
+
+如果 runtime 搜索没有产生 promoted listing，CLI 会自动回退到 Brave / Tavily / Exa。需要可复现调试时加 `--no-provider-fallback`。
+
+只使用 API provider fallback：
+
+```bash
+python skills/last7days-rent/scripts/last7days_rent.py search \
+  --office-anchor "上海五角场" \
+  --city 上海 \
+  --budget-max 5200 \
+  --days 7 \
+  --providers auto \
+  --limit 10
+```
+
+可用 API key：
+
+```bash
+export BRAVE_SEARCH_API_KEY=...
+export TAVILY_API_KEY=...
+export EXA_API_KEY=...
+```
+
+Brave 兼容 `BRAVE_API_KEY`。默认 `--providers auto` 会按 `brave,tavily,exa` 顺序只运行有 API key 的 provider；无 key 时报告会写入 `no_search_provider_available`，不会伪造空结果。
 
 查看最近一次报告：
 
@@ -77,7 +133,7 @@ python skills/last7days-rent/scripts/last7days_rent.py search --fixture
 每次搜索会输出：
 
 - 聊天短名单。
-- Markdown report。
+- HTML report。
 - JSON evidence package。
 - source coverage 和 source warnings。
 - 每套候选房源的来源 URL、抓取时间、字段 provenance。
@@ -93,16 +149,25 @@ python skills/last7days-rent/scripts/last7days_rent.py search --fixture
 ~/.last7days-rent/feedback.jsonl
 ~/.last7days-rent/cache/
 ~/.last7days-rent/reports/
+~/.last7days-rent/reports/last7days-rent-live.html
+~/.last7days-rent/reports/last7days-rent-fixture.html
 ```
 
-## 当前支持来源
+## 当前支持 Search Provider 和 Listing Source
 
-| 来源 | 当前能力 | 联系路径 |
-| --- | --- | --- |
-| 贝壳 / 链家 / Ke | 生成公开列表 URL，解析公开卡片；遇到验证码或登录墙时输出 warning | 平台详情页入口 |
-| 房天下 | 生成上海五角场等公开列表 URL，解析卡片、价格、面积、户型、位置和详情页 | 平台详情页入口，页面公开电话时保留 |
-| Wellcee | 支持解析用户提供的详情页 HTML / JSON-LD | 平台入口、原帖说明、公开电话、微信、邮箱 |
-| 官方核验入口 | 只记录核验证据 | 不作为高召回房源来源 |
+| Search provider | 当前能力 |
+| --- | --- |
+| Runtime web search JSON import | 导入 Codex / Claude Code / Hermes 等宿主 Agent 的 web search 结果，默认优先使用，不需要 API key |
+| Brave Search API | 发现网页级 SearchLead，使用 `freshness=pw`、`count<=20`、`result_filter=web` |
+| Tavily API | 发现网页级 SearchLead，默认 `search_depth=basic`、`include_answer=false`、`include_raw_content=false` |
+| Exa API | 发现网页级 SearchLead，使用 `includeDomains` 和发布时间窗口；不使用 summary 填事实字段 |
+
+| Listing source | 当前处理 |
+| --- | --- |
+| 贝壳 / 链家 / Ke | 仅当 search URL 域名命中 `ke.com/lianjia.com` 且有租房语义时 promotion 为 L1 |
+| 房天下 | 仅当 search URL 域名命中 `fang.com` 且有租房语义时 promotion 为 L1 |
+| Wellcee | 仅当 search URL 域名命中 `wellcee.com` 且有租房语义时 promotion 为 L1 |
+| 官方核验入口 | 只记录核验证据，不作为高召回房源来源 |
 
 可查看 registry：
 
@@ -120,8 +185,10 @@ python skills/last7days-rent/scripts/last7days_rent.py sources list
 - 不要求 cookie、token 或平台账号。
 - 不绕验证码、登录墙或反机器人机制。
 - 不自动抓取微信群、朋友圈、公司群、校友群等私域内容。
+- 不默认启用 Tavily extract、Exa full text 或任何 crawl。
 - 不保存 cookie、token、secret 或登录态凭证。
 - 不用模型补全未知价格、地址、押金、入住时间或联系方式。
+- 不把 Search API freshness 当成房源发布时间。
 - 不承诺每套房仍在租，不替代线下看房、付款、签约和合同审查。
 
 ## 可信等级

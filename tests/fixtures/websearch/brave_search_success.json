@@ -1,0 +1,18 @@
+{
+  "web": {
+    "results": [
+      {
+        "title": "上海五角场 政立路附近整租一室户转租",
+        "url": "https://www.wellcee.com/rent-apartment/fixture-001",
+        "description": "五角场租房，政立路附近整租一室户，平台内联系，价格和仍在租状态需打开详情页核验。",
+        "age": "2026-06-08T08:00:00Z",
+        "extra_snippets": ["整租一室户", "平台联系入口"]
+      },
+      {
+        "title": "五角场生活指南",
+        "url": "https://example.com/wujiaochang-guide",
+        "description": "五角场周边生活信息，不是 P0 房源域名。"
+      }
+    ]
+  }
+}

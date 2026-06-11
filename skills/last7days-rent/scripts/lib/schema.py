@@ -9,6 +9,7 @@ TrustLevel = Literal["L0", "L1", "L2", "L3"]
 SourceTier = Literal["P0", "P1", "P2", "private", "websearch", "non_mvp"]
 RentalMode = Literal["whole", "shared", "either"]
 ContactRoute = Literal["platform", "phone", "wechat", "qq", "feishu", "email", "original_post", "user_authorized", "unknown"]
+SearchProvider = Literal["runtime_web_search", "brave", "tavily", "exa"]
 
 UNKNOWN = "unknown"
 MVP_SOURCE_IDS = {"beike_lianjia", "wellcee", "fang", "official_verifier"}
@@ -89,7 +90,23 @@ class SearchRequest:
     days: int = 7
     limit: int = 10
     sources: list[str] = field(default_factory=list)
+    providers: list[str] = field(default_factory=list)
     fixture: bool = False
+
+    def to_dict(self) -> dict[str, Any]:
+        return to_plain(self)
+
+
+@dataclass
+class SearchProviderQuery:
+    provider: str
+    query: str
+    limit: int = 10
+    days: int = 7
+    include_domains: list[str] = field(default_factory=list)
+    exclude_domains: list[str] = field(default_factory=list)
+    freshness: str | None = "pw"
+    params: dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         return to_plain(self)
@@ -99,6 +116,7 @@ class SearchRequest:
 class SearchPlan:
     request: SearchRequest
     commute_areas: list[str] = field(default_factory=list)
+    provider_queries: list[SearchProviderQuery] = field(default_factory=list)
     source_queries: dict[str, list[dict[str, Any]]] = field(default_factory=dict)
     contact_requirements: list[str] = field(default_factory=lambda: ["platform", "phone", "wechat", "qq", "feishu", "email", "original_post", "user_authorized"])
     risk_filters: list[str] = field(default_factory=lambda: ["p1_p2_source_not_allowed", "private_source_not_allowed", "websearch_not_allowed"])
@@ -119,6 +137,46 @@ class SourceFetchResult:
     warning: str | None = None
     raw_path: str | None = None
     candidate_count: int = 0
+
+    def to_dict(self) -> dict[str, Any]:
+        return to_plain(self)
+
+
+@dataclass
+class SearchProviderResult:
+    provider: str
+    status: str
+    query: str
+    fetched_at: str = field(default_factory=now_iso)
+    elapsed_ms: int | None = None
+    http_status: int | None = None
+    warning: str | None = None
+    lead_count: int = 0
+    request_id: str | None = None
+    usage: dict[str, Any] = field(default_factory=dict)
+
+    def to_dict(self) -> dict[str, Any]:
+        return to_plain(self)
+
+
+@dataclass
+class SearchLead:
+    lead_id: str
+    provider: str
+    query: str
+    rank: int
+    title: str
+    url: str
+    domain: str
+    snippet: str | None = None
+    published_at: str | None = None
+    score: float | None = None
+    highlights: list[str] = field(default_factory=list)
+    text_excerpt: str | None = None
+    raw: dict[str, Any] = field(default_factory=dict)
+    can_promote: bool = False
+    source_id: str | None = None
+    rejection_reason: str | None = None
 
     def to_dict(self) -> dict[str, Any]:
         return to_plain(self)

@@ -5,26 +5,43 @@ from pathlib import Path
 
 from .commute_plan import profile_to_search_plan
 from .commute_plan import derive_commute_areas
+from .contact import platform_contact
 from .dedupe import dedupe_listings
 from .env import ensure_local_dirs
 from .normalize import normalize_listings
 from .profile_store import load_profile
-from .render import render_chat_shortlist, render_evidence_package, render_markdown_report, write_outputs
-from .schema import ListingItem, RentProfile, SearchRequest, SourceFetchResult, VerificationEvidence, now_iso
+from .render import render_chat_shortlist, render_evidence_package, render_html_report, write_outputs
+from .schema import ListingItem, RentProfile, SearchLead, SearchPlan, SearchProviderResult, SearchRequest, SourceFetchResult, VerificationEvidence, now_iso
 from .scoring import score_clusters
 from .rerank import rerank_clusters
+from .search_providers.fixtures import load_fixture_search_leads
+from .search_providers.promote import promote_search_leads
+from .search_providers.router import fetch_search_leads
+from .search_providers.runtime_web_search import RuntimeWebSearchError, load_runtime_web_search
 from .sources.query import build_search_plan, request_from_profile
-from .sources.router import fetch_live_sources, load_fixture_sources
+from .sources.router import load_fixture_sources
 
 
 @dataclass
 class SearchResult:
     chat_summary: str
-    markdown_path: Path
+    html_path: Path
     evidence_path: Path
-    markdown: str
+    html: str
     evidence: dict
     source_fetches: list[SourceFetchResult]
+    search_provider_results: list[SearchProviderResult]
+    search_leads: list[SearchLead]
+    promoted_leads: list[SearchLead]
+    rejected_leads: list[SearchLead]
+
+    @property
+    def markdown_path(self) -> Path:
+        return self.html_path
+
+    @property
+    def markdown(self) -> str:
+        return self.html
 
 
 def default_fixture_profile() -> RentProfile:
@@ -65,6 +82,7 @@ def built_in_fixture_sources() -> tuple[list[ListingItem], list[VerificationEvid
             area_sqm=42.0,
             published_at=now,
             contact_route="platform",
+            contact_methods=[platform_contact("https://sh.zu.ke.com/zufang/SH2143668995679584256.html", "built_in_fixture.beike.url")],
             provenance={"title": "fixture.beike.title", "price_monthly": "fixture.beike.price"},
         ),
         ListingItem(
@@ -84,6 +102,7 @@ def built_in_fixture_sources() -> tuple[list[ListingItem], list[VerificationEvid
             area_sqm=42.0,
             published_at=now,
             contact_route="platform",
+            contact_methods=[platform_contact("https://www.wellcee.com/rent-apartment/fixture-001", "built_in_fixture.wellcee.url")],
             provenance={"title": "fixture.wellcee.jsonld.name", "price_monthly": "fixture.wellcee.offers.price"},
         ),
         ListingItem(
@@ -103,6 +122,7 @@ def built_in_fixture_sources() -> tuple[list[ListingItem], list[VerificationEvid
             area_sqm=68.0,
             published_at=now,
             contact_route="platform",
+            contact_methods=[platform_contact("https://zu.fang.com/chuzu/1_61403538_1.htm", "built_in_fixture.fang.url")],
             provenance={"title": "fixture.fang.title", "price_monthly": "fixture.fang.title"},
         ),
         ListingItem(
@@ -133,6 +153,10 @@ def _fixture_dir() -> Path:
     return Path(__file__).resolve().parents[4] / "tests" / "fixtures" / "sources"
 
 
+def _provider_fixture_dir() -> Path:
+    return Path(__file__).resolve().parents[4] / "tests" / "fixtures" / "websearch"
+
+
 def load_fixture_profile() -> RentProfile:
     profile_path = Path(__file__).resolve().parents[4] / "tests" / "fixtures" / "profile" / "profile.json"
     if profile_path.exists():
@@ -151,6 +175,39 @@ def collect_fixture_inputs() -> tuple[RentProfile, list[ListingItem], list[Verif
             return profile, listings, evidences, warnings
     listings, evidences, warnings = built_in_fixture_sources()
     return profile, listings, evidences, warnings
+
+
+def collect_fixture_search_inputs(
+    *,
+    limit: int,
+    days: int,
+    sources: list[str] | None = None,
+    providers: list[str] | None = None,
+) -> tuple[
+    RentProfile,
+    list[ListingItem],
+    list[VerificationEvidence],
+    list[str],
+    list[SearchProviderResult],
+    list[SearchLead],
+    list[SearchLead],
+    list[SearchLead],
+]:
+    profile = load_fixture_profile()
+    request = request_from_profile(profile, limit=limit, days=days, sources=sources, providers=providers)
+    plan = build_search_plan(request, profile)
+    leads, provider_results, warnings = load_fixture_search_leads(_provider_fixture_dir(), plan.provider_queries)
+    listings, promoted_leads, rejected_leads = promote_search_leads(leads)
+    legacy_evidences: list[VerificationEvidence] = []
+    fixture_dir = _fixture_dir()
+    if fixture_dir.exists():
+        _, legacy_evidences, legacy_warnings = load_fixture_sources(fixture_dir)
+        warnings.extend(legacy_warnings)
+    if listings:
+        return profile, listings, legacy_evidences, warnings, provider_results, leads, promoted_leads, rejected_leads
+    legacy_profile, legacy_listings, legacy_evidences, legacy_warnings = collect_fixture_inputs()
+    warnings.extend(legacy_warnings)
+    return legacy_profile, legacy_listings, legacy_evidences, warnings, provider_results, leads, promoted_leads, rejected_leads
 
 
 def profile_from_request(request: SearchRequest) -> RentProfile:
@@ -173,6 +230,66 @@ def profile_from_request(request: SearchRequest) -> RentProfile:
     )
 
 
+def collect_live_search_inputs(
+    *,
+    plan: SearchPlan,
+    runtime_websearch_json: str | None = None,
+    runtime_query: str | None = None,
+    provider_fallback: bool = True,
+) -> tuple[
+    list[ListingItem],
+    list[VerificationEvidence],
+    list[str],
+    list[SourceFetchResult],
+    list[SearchProviderResult],
+    list[SearchLead],
+    list[SearchLead],
+    list[SearchLead],
+]:
+    evidences: list[VerificationEvidence] = []
+    source_fetches: list[SourceFetchResult] = []
+    search_provider_results: list[SearchProviderResult] = []
+    search_leads: list[SearchLead] = []
+    warnings: list[str] = []
+
+    should_fetch_provider_fallback = True
+    if runtime_websearch_json:
+        try:
+            runtime_leads, runtime_results, runtime_warnings = load_runtime_web_search(
+                runtime_websearch_json,
+                runtime_query=runtime_query,
+            )
+        except RuntimeWebSearchError as exc:
+            raise SystemExit(str(exc)) from exc
+        search_leads.extend(runtime_leads)
+        search_provider_results.extend(runtime_results)
+        warnings.extend(runtime_warnings)
+        _, runtime_promoted, _ = promote_search_leads(runtime_leads)
+        should_fetch_provider_fallback = provider_fallback and not runtime_promoted
+        if runtime_leads and not runtime_promoted:
+            warnings.append("runtime_web_search_leads_found_but_none_promoted")
+
+    if not runtime_websearch_json or should_fetch_provider_fallback:
+        provider_leads, provider_results, provider_warnings = fetch_search_leads(plan)
+        search_leads.extend(provider_leads)
+        search_provider_results.extend(provider_results)
+        warnings.extend(provider_warnings)
+
+    raw_listings, promoted_leads, rejected_leads = promote_search_leads(search_leads)
+    if search_leads and not promoted_leads:
+        warnings.append("search_leads_found_but_none_promoted")
+    return (
+        raw_listings,
+        evidences,
+        warnings,
+        source_fetches,
+        search_provider_results,
+        search_leads,
+        promoted_leads,
+        rejected_leads,
+    )
+
+
 def run_search(
     fixture: bool = False,
     limit: int = 5,
@@ -183,11 +300,28 @@ def run_search(
     budget_max: int | None = None,
     days: int = 7,
     sources: list[str] | None = None,
+    providers: list[str] | None = None,
+    runtime_websearch_json: str | None = None,
+    runtime_query: str | None = None,
+    provider_fallback: bool = True,
 ) -> SearchResult:
     paths = ensure_local_dirs()
     source_fetches: list[SourceFetchResult] = []
+    search_provider_results: list[SearchProviderResult] = []
+    search_leads: list[SearchLead] = []
+    promoted_leads: list[SearchLead] = []
+    rejected_leads: list[SearchLead] = []
     if fixture:
-        profile, raw_listings, evidences, warnings = collect_fixture_inputs()
+        (
+            profile,
+            raw_listings,
+            evidences,
+            warnings,
+            search_provider_results,
+            search_leads,
+            promoted_leads,
+            rejected_leads,
+        ) = collect_fixture_search_inputs(limit=limit, days=days, sources=sources, providers=providers)
     else:
         request = SearchRequest(
             city=city,
@@ -196,17 +330,32 @@ def run_search(
             budget_max=budget_max,
             days=days,
             limit=limit,
-            sources=sources or ["beike_lianjia", "fang"],
+            sources=sources or ["beike_lianjia", "fang", "wellcee"],
+            providers=providers or ["auto"],
         )
         profile = load_profile()
         if profile and not any([office_anchor, city, budget_min, budget_max]):
-            request = request_from_profile(profile, limit=limit, days=days, sources=sources)
+            request = request_from_profile(profile, limit=limit, days=days, sources=sources, providers=providers)
         else:
             if not request.office_anchor or not request.city:
                 raise SystemExit("live search 需要 --office-anchor 和 --city，或先运行 profile init。")
             profile = profile_from_request(request)
         plan = build_search_plan(request, profile)
-        raw_listings, evidences, warnings, source_fetches = fetch_live_sources(plan)
+        (
+            raw_listings,
+            evidences,
+            warnings,
+            source_fetches,
+            search_provider_results,
+            search_leads,
+            promoted_leads,
+            rejected_leads,
+        ) = collect_live_search_inputs(
+            plan=plan,
+            runtime_websearch_json=runtime_websearch_json,
+            runtime_query=runtime_query,
+            provider_fallback=provider_fallback,
+        )
         if not raw_listings:
             warnings.append("live search did not produce shortlist candidates; see source coverage and blocking warnings.")
     profile_to_search_plan(profile)
@@ -217,8 +366,41 @@ def run_search(
     ranked = rerank_clusters(scored, limit=limit)
     reports_dir = Path(output_dir).expanduser() if output_dir else paths.reports_dir
     basename = "last7days-rent-fixture" if fixture else "last7days-rent-live"
-    markdown = render_markdown_report(profile, ranked, evidences, warnings, live=not fixture, source_fetches=source_fetches)
-    evidence = render_evidence_package(profile, ranked, evidences, warnings, live=not fixture, source_fetches=source_fetches)
-    markdown_path, evidence_path = write_outputs(reports_dir, basename, markdown, evidence)
+    html = render_html_report(
+        profile,
+        ranked,
+        evidences,
+        warnings,
+        live=not fixture,
+        source_fetches=source_fetches,
+        search_provider_results=search_provider_results,
+        search_leads=search_leads,
+        promoted_leads=promoted_leads,
+        rejected_leads=rejected_leads,
+    )
+    evidence = render_evidence_package(
+        profile,
+        ranked,
+        evidences,
+        warnings,
+        live=not fixture,
+        source_fetches=source_fetches,
+        search_provider_results=search_provider_results,
+        search_leads=search_leads,
+        promoted_leads=promoted_leads,
+        rejected_leads=rejected_leads,
+    )
+    html_path, evidence_path = write_outputs(reports_dir, basename, html, evidence)
     chat_summary = render_chat_shortlist(profile, ranked)
-    return SearchResult(chat_summary, markdown_path, evidence_path, markdown, evidence, source_fetches)
+    return SearchResult(
+        chat_summary,
+        html_path,
+        evidence_path,
+        html,
+        evidence,
+        source_fetches,
+        search_provider_results,
+        search_leads,
+        promoted_leads,
+        rejected_leads,
+    )

@@ -16,6 +16,7 @@ from lib.pipeline import run_search
 from lib.profile_store import init_profile, load_profile, profile_to_markdown, refine_profile
 from lib.privacy import redact_profile
 from lib.schema import FeedbackEvent, now_iso
+from lib.search_providers.registry import search_provider_registry
 from lib.sources.registry import source_registry
 from lib.sources.router import smoke_source
 
@@ -49,8 +50,8 @@ def build_parser() -> argparse.ArgumentParser:
 
     search = subparsers.add_parser(
         "search",
-        help="默认执行 live P0 source search，生成近 7 天候选短名单和 evidence package",
-        description="默认执行 live P0 source search；只有显式传入 --fixture 时才使用离线测试样本。",
+        help="默认执行 live web search provider discovery，生成近 7 天候选短名单和 evidence package",
+        description="默认执行 live web search provider discovery；只有显式传入 --fixture 时才使用离线测试样本。",
     )
     search.add_argument("--fixture", action="store_true", help="使用离线 fixture，不请求网络")
     search.add_argument("--limit", type=int, default=5)
@@ -60,12 +61,16 @@ def build_parser() -> argparse.ArgumentParser:
     search.add_argument("--budget-min", type=int)
     search.add_argument("--budget-max", type=int)
     search.add_argument("--days", type=int, default=7)
-    search.add_argument("--sources", help="逗号分隔的 source_id，默认 beike_lianjia,fang")
+    search.add_argument("--providers", help="逗号分隔的 search provider：brave,tavily,exa 或 auto；默认 auto")
+    search.add_argument("--sources", help="目标房源平台/域名过滤，例如 beike_lianjia,fang,wellcee")
+    search.add_argument("--runtime-websearch-json", help="宿主 Agent web_search 结果 JSON；优先导入为 SearchLead")
+    search.add_argument("--runtime-query", help="当 runtime web_search JSON 未内含 query 时，用此值作为 SearchLead.query")
+    search.add_argument("--no-provider-fallback", action="store_true", help="runtime web_search 没有 promotion 时也不回退到 Brave/Tavily/Exa")
 
-    sources = subparsers.add_parser("sources", help="查看或 smoke 测试 P0 来源")
+    sources = subparsers.add_parser("sources", help="查看 search providers / listing sources，或 smoke 测试")
     sources_sub = sources.add_subparsers(dest="sources_command")
     sources_sub.add_parser("list", help="列出 source registry")
-    smoke = sources_sub.add_parser("smoke", help="对单个 source 运行 live smoke，不绕验证码、不使用 cookie")
+    smoke = sources_sub.add_parser("smoke", help="对单个 provider/source 运行 live smoke，不绕验证码、不使用 cookie")
     smoke.add_argument("--source", required=True)
     smoke.add_argument("--city", default="上海")
     smoke.add_argument("--area", default="五角场")
@@ -131,6 +136,7 @@ def cmd_profile(args: argparse.Namespace) -> int:
 
 def cmd_search(args: argparse.Namespace) -> int:
     selected_sources = [part.strip() for part in args.sources.split(",") if part.strip()] if args.sources else None
+    selected_providers = [part.strip() for part in args.providers.split(",") if part.strip()] if args.providers else None
     result = run_search(
         fixture=args.fixture,
         limit=args.limit,
@@ -141,8 +147,19 @@ def cmd_search(args: argparse.Namespace) -> int:
         budget_max=args.budget_max,
         days=args.days,
         sources=selected_sources,
+        providers=selected_providers,
+        runtime_websearch_json=args.runtime_websearch_json,
+        runtime_query=args.runtime_query,
+        provider_fallback=not args.no_provider_fallback,
     )
     print(result.chat_summary)
+    if result.search_provider_results:
+        print("Search provider coverage:")
+        for provider_result in result.search_provider_results:
+            print(
+                f"- {provider_result.provider}: status={provider_result.status}, HTTP={provider_result.http_status or 'unknown'}, "
+                f"leads={provider_result.lead_count}, warning={provider_result.warning or 'none'}"
+            )
     if result.source_fetches:
         print("Source coverage:")
         for fetch in result.source_fetches:
@@ -154,14 +171,24 @@ def cmd_search(args: argparse.Namespace) -> int:
         print("Warnings:")
         for warning in result.evidence["warnings"]:
             print(f"- {warning}")
-    print(f"Markdown report: {result.markdown_path}")
+    print(f"HTML report: {result.html_path}")
     print(f"JSON evidence: {result.evidence_path}")
     return 0
 
 
 def cmd_sources(args: argparse.Namespace) -> int:
     if args.sources_command == "list":
-        print(json.dumps(source_registry(), ensure_ascii=False, indent=2, sort_keys=True))
+        print(
+            json.dumps(
+                {
+                    "search_providers": search_provider_registry(),
+                    "listing_sources": source_registry(),
+                },
+                ensure_ascii=False,
+                indent=2,
+                sort_keys=True,
+            )
+        )
         return 0
     if args.sources_command == "smoke":
         print(json.dumps(smoke_source(args.source, city=args.city, area=args.area, limit=args.limit), ensure_ascii=False, indent=2, sort_keys=True))
@@ -184,7 +211,7 @@ def cmd_feedback(args: argparse.Namespace) -> int:
 
 
 def cmd_report(args: argparse.Namespace) -> int:
-    reports = sorted(get_paths().reports_dir.glob("*.md"))
+    reports = sorted(get_paths().reports_dir.glob("*.html"))
     if not reports:
         print("尚未生成报告。请先运行 search 或 search --fixture。", file=sys.stderr)
         return 1

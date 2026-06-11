@@ -1,0 +1,20 @@
+{
+  "results": [
+    {
+      "title": "五角场链家整租房源",
+      "url": "https://sh.zu.ke.com/zufang/SH2143668995679584256.html",
+      "publishedDate": null,
+      "highlights": ["五角场租房", "整租房源，平台预约看房"],
+      "highlightScores": [0.8, 0.7],
+      "score": 0.79,
+      "summary": "不要用 summary 填事实字段"
+    },
+    {
+      "title": "上海五角场办公指南",
+      "url": "https://example.com/office-guide",
+      "publishedDate": "2026-06-09T10:00:00Z",
+      "highlights": ["五角场办公与通勤信息"],
+      "score": 0.2
+    }
+  ]
+}
