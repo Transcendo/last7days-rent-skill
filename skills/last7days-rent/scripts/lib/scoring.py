@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime, timezone
+import re
 
 from .feedback import feedback_boost_for_listing, load_feedback
 from .risk import risk_score
@@ -61,6 +62,19 @@ def trust_score(cluster: ListingCluster) -> tuple[float, str]:
     return 0.25, "原始线索"
 
 
+def preference_score(cluster: ListingCluster, profile: RentProfile) -> tuple[float, str]:
+    min_bedrooms = profile.housing_constraints.get("min_bedrooms")
+    if not min_bedrooms:
+        return 0.65, "未设置额外户型偏好"
+    listing = cluster.canonical_listing
+    bedrooms = _bedroom_count(" ".join([listing.layout or "", listing.title or "", listing.body or ""]))
+    if bedrooms is None:
+        return 0.55, "户型信息缺失，需核验是否满足最少卧室数"
+    if bedrooms >= int(min_bedrooms):
+        return 0.9, f"户型满足至少 {min_bedrooms} 间卧室"
+    return 0.25, f"户型低于至少 {min_bedrooms} 间卧室偏好"
+
+
 def score_cluster(cluster: ListingCluster, profile: RentProfile) -> ListingCluster:
     listing = cluster.canonical_listing
     if _has_real_viewable_feedback(cluster):
@@ -73,8 +87,8 @@ def score_cluster(cluster: ListingCluster, profile: RentProfile) -> ListingClust
     commute, commute_reason = commute_score(cluster, profile)
     fresh, fresh_reason = freshness_score(listing.published_at)
     trust, trust_reason = trust_score(cluster)
+    preference, preference_reason = preference_score(cluster, profile)
     weights = profile.scoring_weights
-    preference = 0.65
     feedback_boost = feedback_boost_for_listing(listing.item_id, listing.source_id)
     final = (
         weights.get("commute", 0.3) * commute
@@ -87,10 +101,29 @@ def score_cluster(cluster: ListingCluster, profile: RentProfile) -> ListingClust
     )
     cluster.match_score = _clamp((budget + commute + fresh + trust + preference) / 5)
     cluster.final_score = _clamp(final)
-    cluster.match_reasons = [commute_reason, budget_reason, trust_reason, fresh_reason]
+    cluster.match_reasons = [commute_reason, budget_reason, trust_reason, fresh_reason, preference_reason]
     cluster.next_questions = next_questions_for_cluster(cluster)
     cluster.field_provenance = collect_field_provenance(cluster)
     return cluster
+
+
+def _bedroom_count(text: str) -> int | None:
+    if not text:
+        return None
+    digit = re.search(r"(\d+)\s*(?:室|居室|居)", text)
+    if digit:
+        return int(digit.group(1))
+    if "一居" in text:
+        return 1
+    if "两居" in text or "二居" in text:
+        return 2
+    if "三居" in text:
+        return 3
+    if "四居" in text:
+        return 4
+    if "开间" in text:
+        return 0
+    return None
 
 
 def _has_real_viewable_feedback(cluster: ListingCluster) -> bool:

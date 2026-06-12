@@ -5,6 +5,7 @@ from pathlib import Path
 
 from .acquisition import AcquisitionResult
 from .contact import contact_display_text
+from .leads import summarize_candidate
 from .privacy import assert_public_safe, redact_profile, sanitize_cluster
 from .schema import ListingCluster, RentProfile, SourceFetchResult, VerificationEvidence, to_plain
 from .seven_day_plan import build_seven_day_plan
@@ -17,17 +18,32 @@ def render_chat_shortlist(profile: RentProfile, clusters: list[ListingCluster], 
     office = profile.office_anchor.get("office_name") or profile.office_anchor.get("address_hint") or "unknown"
     budget = profile.housing_constraints.get("budget_max") or "unknown"
     lines = [f"近 7 天候选房源：{city} / {office} / 预算 {budget}", ""]
-    if acquisition and acquisition.source_candidates:
-        lines.extend(["Provider acquisition:", ""])
-        for candidate in acquisition.source_candidates[:8]:
-            status = "P0可解析" if candidate.can_promote else candidate.reject_reason or "candidate_only"
-            lines.append(
-                f"- {candidate.source_id}: {candidate.title} | {candidate.source_url or 'unknown'} | "
-                f"{_candidate_summary(candidate)} | {candidate.provider or 'unknown'} | {status}"
+    candidate_leads = acquisition.actionable_leads if acquisition else []
+    if candidate_leads:
+        lines.extend(["待核验房源线索:", ""])
+        for idx, lead in enumerate(candidate_leads[:5], start=1):
+            lines.extend(
+                [
+                    f"{idx}. [L0] {lead.title}",
+                    (
+                        f"   价格：{lead.price_text or '待核验'}；面积：{lead.area_text or '待核验'}；"
+                        f"户型：{lead.layout_text or '待核验'}；区域命中：{', '.join(lead.commute_matches) or '待核验'}；"
+                        f"更新时间：{lead.freshness_text or '待核验'}"
+                    ),
+                    f"   URL：{lead.url}",
+                    f"   下一步：{lead.next_action}",
+                    "",
+                ]
             )
+    if acquisition and acquisition.source_candidates and not candidate_leads:
+        lines.append("已发现搜索候选，但暂未通过预算、户型或通勤圈筛选；详情见 Markdown/JSON 报告附录。")
         lines.append("")
-    if not clusters:
-        lines.append("未找到可进入 MVP 短名单的 P0 候选。")
+    if not clusters and candidate_leads:
+        lines.append("已找到 L0 待核验线索；详情增强暂未执行或未成功，未打开平台页前不能视为已验真。")
+    elif not clusters:
+        lines.append("未找到符合当前预算、户型和通勤圈的 L0 线索。")
+    elif candidate_leads:
+        lines.extend(["", "已结构化短名单:", ""])
     for idx, cluster in enumerate(clusters, start=1):
         item = cluster.canonical_listing
         price = f"{item.price_monthly} 元/月" if item.price_monthly is not None else "unknown"
@@ -59,7 +75,7 @@ def render_markdown_report(
     safe_clusters = [sanitize_cluster(cluster) for cluster in clusters]
     data = redact_profile(profile.to_dict())
     lines = [
-        "# last7days-rent 候选短名单",
+        "# last7days-rent 房源线索报告",
         "",
         "last7days = 帮助用户 7 天完成租房",
         "",
@@ -71,6 +87,7 @@ def render_markdown_report(
         f"- 城市: {data['office_anchor'].get('city') or 'unknown'}",
         f"- 通勤上限: {data['commute'].get('max_minutes', 'unknown')} 分钟",
         f"- 预算: {data['housing_constraints'].get('budget_min') or 'unknown'} - {data['housing_constraints'].get('budget_max') or 'unknown'}",
+        f"- 最少卧室: {data['housing_constraints'].get('min_bedrooms') or 'unknown'}",
         "",
         "## P0 Source Coverage",
         "",
@@ -82,7 +99,20 @@ def render_markdown_report(
             f"- {source_id}: {meta['status']} / {meta['allowed_output_type']} / contact={', '.join(meta['contact_capability'])}"
         )
     if acquisition:
-        lines.extend(["", "## Provider Diagnostics", ""])
+        lines.extend(["", "## L0 待核验房源线索", ""])
+        if acquisition.actionable_leads:
+            lines.append("| 标题 | URL | 价格 | 面积 | 户型 | 区域命中 | 更新时间 | 状态 |")
+            lines.append("| --- | --- | --- | --- | --- | --- | --- | --- |")
+            for lead in acquisition.actionable_leads[:10]:
+                lines.append(
+                    f"| {_escape_table(lead.title)} | {lead.url} | {lead.price_text or '待核验'} | "
+                    f"{lead.area_text or '待核验'} | {lead.layout_text or '待核验'} | "
+                    f"{_escape_table(', '.join(lead.commute_matches) or '待核验')} | "
+                    f"{lead.freshness_text or '待核验'} | L0 待打开平台页核验 |"
+                )
+        else:
+            lines.append("- none")
+        lines.extend(["", "## Diagnostics Appendix", "", "### Provider Diagnostics", ""])
         if acquisition.provider_diagnostics:
             for diag in acquisition.provider_diagnostics:
                 lines.append(
@@ -91,7 +121,7 @@ def render_markdown_report(
                 )
         else:
             lines.append("- none")
-        lines.extend(["", "## Acquisition Candidates", ""])
+        lines.extend(["", "### Acquisition Candidates", ""])
         if acquisition.source_candidates:
             lines.append("| 来源 | URL | 搜索摘要里能看到的信息 | provider | 状态 |")
             lines.append("| --- | --- | --- | --- | --- |")
@@ -104,11 +134,18 @@ def render_markdown_report(
         else:
             lines.append("- none")
         if acquisition.extracted_documents:
-            lines.extend(["", "## Extracted Documents", ""])
+            lines.extend(["", "### Extracted Documents", ""])
             for doc in acquisition.extracted_documents:
                 lines.append(
                     f"- {doc.provider}: status={doc.status}, url={doc.final_url or doc.requested_url}, "
                     f"title={doc.title or 'unknown'}, error={doc.error or 'none'}"
+                )
+        if acquisition.blocked_sources:
+            lines.extend(["", "### Blocked Sources", ""])
+            for blocked in acquisition.blocked_sources:
+                lines.append(
+                    f"- {blocked.get('provider', 'unknown')}: status={blocked.get('status', 'unknown')}, "
+                    f"url={blocked.get('url', 'unknown')}, error={blocked.get('error', 'none')}"
                 )
     if source_fetches:
         lines.extend(["", "## Live Fetch Results", ""])
@@ -194,9 +231,18 @@ def render_evidence_package(
         "profile_redacted_summary": redact_profile(profile.to_dict()),
         "source_coverage": source_registry(),
         "source_fetches": [fetch.to_dict() for fetch in (source_fetches or [])],
+        "actionable_leads": [lead.to_dict() for lead in (acquisition.actionable_leads if acquisition else [])],
+        "verified_shortlist": [cluster.to_dict() for cluster in safe_clusters],
+        "blocked_sources": [dict(item) for item in (acquisition.blocked_sources if acquisition else [])],
+        "diagnostics": {
+            "provider_diagnostics": [diag.to_dict() for diag in (acquisition.provider_diagnostics if acquisition else [])],
+            "search_queries": [query.to_dict() for query in (acquisition.search_queries if acquisition else [])],
+            "warnings": warnings,
+        },
         "provider_diagnostics": [diag.to_dict() for diag in (acquisition.provider_diagnostics if acquisition else [])],
         "search_queries": [query.to_dict() for query in (acquisition.search_queries if acquisition else [])],
         "source_candidates": [candidate.to_dict() for candidate in (acquisition.source_candidates if acquisition else [])],
+        "actionable_candidate_leads": [lead.to_dict() for lead in (acquisition.actionable_leads if acquisition else [])],
         "extracted_documents": [doc.to_dict() for doc in (acquisition.extracted_documents if acquisition else [])],
         "structured_listings": [listing.to_dict() for listing in (acquisition.structured_listings if acquisition else [])],
         "clusters": [cluster.to_dict() for cluster in safe_clusters],
@@ -215,10 +261,7 @@ def render_evidence_package(
 
 
 def _candidate_summary(candidate) -> str:
-    parts = [value for value in candidate.visible_fields.values() if value]
-    if parts:
-        return "，".join(parts)
-    return (candidate.snippet or "").replace("\n", " ")[:160] or "unknown"
+    return summarize_candidate(candidate)
 
 
 def _escape_table(value: str) -> str:

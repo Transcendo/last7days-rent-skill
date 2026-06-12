@@ -4,9 +4,9 @@
 ![Local](https://img.shields.io/badge/local--first-contact%20ready-0f766e)
 ![Status](https://img.shields.io/badge/status-live%20P0%20search-0f766e)
 
-`last7days-rent-skill` 是一个面向 Codex、Claude Code 等 Agent runtime 的租房 Agent Skill。目标是根据用户的办公点、预算、通勤和偏好，通过自有 search/extract provider 链路获取渠道房源信息，结构化房源字段和可行动联系方式，去重、风险初筛、匹配排序，并输出可溯源短名单、联系路径和下一步核验动作。
+`last7days-rent-skill` 是一个面向 Codex、Claude Code 等 Agent runtime 的租房 Agent Skill。当前 V1 目标是根据用户的办公点、预算、通勤和偏好，默认先稳定产出可打开、可筛选、可行动的 L0 待核验房源线索；有 Exa/Tavily extract key 或用户授权内容时，再增强为 L1+ 结构化短名单、联系路径和下一步核验动作。
 
-默认搜索会先根据 profile 生成渠道查询，再按 provider 可用性选择 Brave / Exa / Tavily / DDGS。公开来源如果返回 403、429、验证码或登录墙，报告会保留 source、URL、HTTP 状态和 fallback warning，不会伪造房源。
+默认搜索会先根据 profile 生成渠道查询，再按 provider 可用性选择 Brave / Exa / Tavily / DDGS。没有详情增强 key 时，系统不会默认抓详情页，而是直接返回排序后的 `actionable_leads`。公开来源如果返回 403、429、验证码或登录墙，报告会保留 source、URL、HTTP 状态和 warning，不会伪造房源。
 
 ## 快速开始
 
@@ -40,7 +40,7 @@ python skills/last7days-rent/scripts/last7days_rent.py profile init \
   --commute-minutes 35
 ```
 
-按办公点和预算搜索候选房源：
+按办公点和预算搜索 L0 待核验房源线索：
 
 ```bash
 python skills/last7days-rent/scripts/last7days_rent.py search \
@@ -51,7 +51,7 @@ python skills/last7days-rent/scripts/last7days_rent.py search \
   --limit 10
 ```
 
-可显式指定 provider；如果指定 provider 缺 key，会记录 warning 并自动 fallback：
+可显式指定 provider；如果指定 search provider 缺 key，会记录 warning 并自动 fallback。只有配置了 Exa/Tavily extract key，或显式指定 `--provider-extract basic_http` 做公开页面 smoke 时，才会尝试详情增强：
 
 ```bash
 python skills/last7days-rent/scripts/last7days_rent.py search \
@@ -89,10 +89,12 @@ python skills/last7days-rent/scripts/last7days_rent.py search --fixture
 
 每次搜索会输出：
 
-- provider diagnostics、search queries 和 acquisition candidates。
-- 聊天短名单。
+- 聊天主结果：最多 5 条 `actionable_leads`，包含价格、面积、户型、区域命中、更新时间、URL 和下一步核验动作。
 - Markdown report。
 - JSON evidence package。
+- `verified_shortlist`：详情增强或用户授权内容成功结构化后的 L1+ 短名单。
+- `blocked_sources`：验证码、登录墙、302、超时等详情增强失败证据。
+- `diagnostics`：provider diagnostics、search queries 和 acquisition candidates，默认放在报告或 JSON 附录。
 - source coverage 和 source warnings。
 - 每套候选房源的来源 URL、抓取时间、字段 provenance。
 - 每套核心短名单房源的联系方式或平台联系入口。
@@ -131,7 +133,7 @@ V1 extract provider：
 
 - `exa`：需要 `EXA_API_KEY`。
 - `tavily`：需要 `TAVILY_API_KEY`。
-- `basic_http`：无 key fallback，只请求公开 HTML。
+- `basic_http`：只用于显式 public source smoke 或明确指定的公开页面抓取，不作为默认详情增强路径。
 
 配置可来自环境变量，或本地私有文件 `~/.last7days-rent/config.json`：
 
@@ -154,7 +156,7 @@ V1 extract provider：
 自动选择顺序：
 
 - search：`brave -> exa -> tavily -> ddgs`
-- extract：`exa -> tavily -> basic_http`
+- extract：`exa -> tavily`；无 key 时默认跳过详情增强并保留 L0 leads。
 
 ## 渠道 Roadmap
 
@@ -173,7 +175,7 @@ python skills/last7days-rent/scripts/last7days_rent.py sources list
 这个 skill 默认 local-first，目标是帮用户真正联系房源：
 
 - 公开房源页面或用户授权导入里的电话、微信、邮箱、平台入口、原帖联系说明属于核心房源信息，应保留并展示。
-- 没有联系方式且没有可打开联系入口的房源，默认不进入核心短名单。
+- 没有联系方式且没有可打开联系入口的房源，默认不进入 L1+ 核心短名单；L0 线索必须至少提供可打开平台 URL。
 - 不上传用户画像、报告或反馈。
 - 不要求 cookie、token 或平台账号。
 - 不绕验证码、登录墙或反机器人机制。

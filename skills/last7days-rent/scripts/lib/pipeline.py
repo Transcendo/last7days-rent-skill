@@ -15,7 +15,7 @@ from .schema import ListingItem, RentProfile, SearchRequest, SourceFetchResult, 
 from .scoring import score_clusters
 from .rerank import rerank_clusters
 from .sources.query import build_search_plan, request_from_profile
-from .sources.router import fetch_live_sources, load_fixture_sources
+from .sources.router import load_fixture_sources
 
 
 @dataclass
@@ -145,7 +145,7 @@ def load_fixture_profile() -> RentProfile:
 
 
 def collect_fixture_inputs() -> tuple[RentProfile, list[ListingItem], list[VerificationEvidence], list[str]]:
-    profile = load_fixture_profile()
+    profile = load_profile() or load_fixture_profile()
     fixture_dir = _fixture_dir()
     if fixture_dir.exists():
         listings, evidences, warnings = load_fixture_sources(fixture_dir)
@@ -168,6 +168,7 @@ def profile_from_request(request: SearchRequest) -> RentProfile:
             "housing_constraints": {
                 "budget_min": request.budget_min,
                 "budget_max": request.budget_max,
+                "min_bedrooms": request.min_bedrooms,
                 "rental_mode": "either",
             },
             "open_questions": [] if request.office_anchor and request.city else ["请确认办公点、城市和通勤上限。"],
@@ -183,6 +184,7 @@ def run_search(
     city: str | None = None,
     budget_min: int | None = None,
     budget_max: int | None = None,
+    min_bedrooms: int | None = None,
     days: int = 7,
     sources: list[str] | None = None,
     provider_search: str = "auto",
@@ -199,12 +201,13 @@ def run_search(
             office_anchor=office_anchor,
             budget_min=budget_min,
             budget_max=budget_max,
+            min_bedrooms=min_bedrooms,
             days=days,
             limit=limit,
             sources=sources or ["beike_lianjia", "fang"],
         )
         profile = load_profile()
-        if profile and not any([office_anchor, city, budget_min, budget_max]):
+        if profile and not any([office_anchor, city, budget_min, budget_max, min_bedrooms]):
             request = request_from_profile(profile, limit=limit, days=days, sources=sources)
         else:
             if not request.office_anchor or not request.city:
@@ -218,11 +221,13 @@ def run_search(
             extract_provider=provider_extract,
             limit=limit,
         )
-        live_listings, evidences, warnings, source_fetches = fetch_live_sources(plan)
-        raw_listings = [*acquisition.structured_listings, *live_listings]
-        warnings = [*acquisition.warnings, *warnings]
-        if not raw_listings:
-            warnings.append("live search did not produce shortlist candidates; see source coverage and blocking warnings.")
+        evidences = []
+        warnings = list(acquisition.warnings)
+        raw_listings = list(acquisition.structured_listings)
+        if not raw_listings and acquisition.actionable_leads:
+            warnings.append("structured shortlist not generated; returning L0 actionable leads pending platform verification.")
+        elif not raw_listings:
+            warnings.append("provider search did not produce actionable leads; see diagnostics for source coverage and blocking warnings.")
     profile_to_search_plan(profile)
     accepted, rejected = normalize_listings(raw_listings, profile)
     warnings.extend(f"rejected {item.source_id}:{item.item_id} due to {', '.join(item.risk_flags)}" for item in rejected)

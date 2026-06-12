@@ -5,7 +5,8 @@ import gzip
 import zlib
 import time
 from urllib.error import HTTPError, URLError
-from urllib.request import Request, urlopen
+from urllib.parse import quote, urlsplit, urlunsplit
+from urllib.request import HTTPRedirectHandler, Request, build_opener
 
 from ..env import ensure_local_dirs, http_timeout_seconds, should_cache_raw
 from ..schema import SourceFetchResult, now_iso
@@ -19,17 +20,17 @@ USER_AGENT = "last7days-rent-skill/0.1 public-source-smoke; no-cookie; no-login"
 def fetch_public_url(source_id: str, url: str) -> tuple[str, SourceFetchResult]:
     started = time.monotonic()
     result = SourceFetchResult(source_id=source_id, url=url, status="failed", fetched_at=now_iso())
-    request = Request(
-        url,
-        headers={
-            "User-Agent": USER_AGENT,
-            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-            "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.5",
-        },
-        method="GET",
-    )
     try:
-        with urlopen(request, timeout=http_timeout_seconds()) as response:
+        request = Request(
+            _request_safe_url(url),
+            headers={
+                "User-Agent": USER_AGENT,
+                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+                "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.5",
+            },
+            method="GET",
+        )
+        with _urlopen_no_redirect(request, timeout=http_timeout_seconds()) as response:
             raw = response.read(2_000_000)
             raw = _decode_content(raw, response.headers.get("Content-Encoding"))
             text = raw.decode(_charset(response.headers.get_content_charset()), errors="replace")
@@ -51,6 +52,10 @@ def fetch_public_url(source_id: str, url: str) -> tuple[str, SourceFetchResult]:
         text = ""
         result.warning = "timeout"
         result.status = "failed"
+    except (UnicodeError, ValueError) as exc:
+        text = ""
+        result.warning = f"invalid_url: {exc}"
+        result.status = "failed"
     result.elapsed_ms = int((time.monotonic() - started) * 1000)
     if result.warning and any(token in result.warning for token in ["captcha", "login", "http_403", "http_429"]):
         result.status = "blocked"
@@ -61,6 +66,25 @@ def fetch_public_url(source_id: str, url: str) -> tuple[str, SourceFetchResult]:
         write_text(raw_path, sanitize_text(text))
         result.raw_path = str(raw_path)
     return text, result
+
+
+def _request_safe_url(url: str) -> str:
+    parts = urlsplit(url)
+    netloc = parts.netloc.encode("idna").decode("ascii") if parts.netloc else ""
+    path = quote(parts.path, safe="/%:@")
+    query = quote(parts.query, safe="=&%/:+?,")
+    fragment = quote(parts.fragment, safe="%/:+?,")
+    return urlunsplit((parts.scheme, netloc, path, query, fragment))
+
+
+class _NoRedirectHandler(HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):  # noqa: D401, ANN001
+        return None
+
+
+def _urlopen_no_redirect(request: Request, timeout: float):
+    opener = build_opener(_NoRedirectHandler)
+    return opener.open(request, timeout=timeout)
 
 
 def _charset(charset: str | None) -> str:

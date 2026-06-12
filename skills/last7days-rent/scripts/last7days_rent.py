@@ -39,6 +39,7 @@ def build_parser() -> argparse.ArgumentParser:
     profile_init.add_argument("--budget-max", type=int)
     profile_init.add_argument("--commute-minutes", type=int, default=35)
     profile_init.add_argument("--rental-mode", choices=["whole", "shared", "either"], default="either")
+    profile_init.add_argument("--min-bedrooms", type=int, help="最少卧室数；一居室以上传 1，两居室以上传 2")
 
     profile_show = profile_sub.add_parser("show", help="显示本地 profile")
     profile_show.add_argument("--redacted", action="store_true", help="只显示脱敏摘要")
@@ -59,10 +60,11 @@ def build_parser() -> argparse.ArgumentParser:
     search.add_argument("--city")
     search.add_argument("--budget-min", type=int)
     search.add_argument("--budget-max", type=int)
+    search.add_argument("--min-bedrooms", type=int, help="最少卧室数；一居室以上传 1，两居室以上传 2")
     search.add_argument("--days", type=int, default=7)
     search.add_argument("--sources", help="逗号分隔的 source_id，默认 beike_lianjia,fang")
     search.add_argument("--provider-search", default="auto", choices=["auto", "brave", "exa", "tavily", "ddgs"], help="search provider，默认 auto，缺 key 时自动 fallback")
-    search.add_argument("--provider-extract", default="auto", choices=["auto", "exa", "tavily", "basic_http"], help="extract provider，默认 auto，缺 key 时自动 fallback")
+    search.add_argument("--provider-extract", default="auto", choices=["auto", "exa", "tavily", "basic_http"], help="extract provider，默认 auto，无 key 时跳过详情增强并保留 L0 线索")
 
     sources = subparsers.add_parser("sources", help="查看或 smoke 测试 P0 来源")
     sources_sub = sources.add_subparsers(dest="sources_command")
@@ -112,6 +114,7 @@ def cmd_profile(args: argparse.Namespace) -> int:
             budget_max=args.budget_max,
             commute_minutes=args.commute_minutes,
             rental_mode=args.rental_mode,
+            min_bedrooms=args.min_bedrooms,
         )
         print(profile_to_markdown(profile, redacted=True))
         return 0
@@ -141,20 +144,22 @@ def cmd_search(args: argparse.Namespace) -> int:
         city=args.city,
         budget_min=args.budget_min,
         budget_max=args.budget_max,
+        min_bedrooms=args.min_bedrooms,
         days=args.days,
         sources=selected_sources,
         provider_search=args.provider_search,
         provider_extract=args.provider_extract,
     )
     print(result.chat_summary)
-    if result.source_fetches:
+    has_actionable_result = bool(result.acquisition.actionable_leads or result.evidence.get("clusters"))
+    if result.source_fetches and not has_actionable_result:
         print("Source coverage:")
         for fetch in result.source_fetches:
             print(
                 f"- {fetch.source_id}: status={fetch.status}, HTTP={fetch.http_status or 'unknown'}, "
                 f"candidates={fetch.candidate_count}, warning={fetch.warning or 'none'}"
             )
-    if result.evidence.get("warnings"):
+    if result.evidence.get("warnings") and not has_actionable_result:
         print("Warnings:")
         for warning in result.evidence["warnings"]:
             print(f"- {warning}")

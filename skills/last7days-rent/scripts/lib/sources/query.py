@@ -28,6 +28,7 @@ def request_from_profile(profile: RentProfile, *, limit: int = 10, days: int = 7
         office_anchor=office,
         budget_min=profile.housing_constraints.get("budget_min"),
         budget_max=profile.housing_constraints.get("budget_max"),
+        min_bedrooms=profile.housing_constraints.get("min_bedrooms"),
         days=days,
         limit=limit,
         sources=sources or profile.source_preferences.get("p0_order", ["beike_lianjia", "fang"]),

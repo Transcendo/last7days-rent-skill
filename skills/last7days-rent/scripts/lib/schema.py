@@ -50,7 +50,13 @@ class RentProfile:
             user_goal={"slogan": "last7days = 帮助用户 7 天完成租房", "target_days": 7},
             office_anchor={"company": None, "office_name": None, "address_hint": None, "city": None, "confidence": 0.0},
             commute={"max_minutes": 35, "preferred_transit": ["metro", "walk"], "derived_areas": []},
-            housing_constraints={"budget_min": None, "budget_max": None, "rental_mode": "either", "move_in_by": None},
+            housing_constraints={
+                "budget_min": None,
+                "budget_max": None,
+                "rental_mode": "either",
+                "move_in_by": None,
+                "min_bedrooms": None,
+            },
             decision_preferences={},
             scoring_weights={
                 "commute": 0.3,
@@ -86,6 +92,7 @@ class SearchRequest:
     office_anchor: str | None = None
     budget_min: int | None = None
     budget_max: int | None = None
+    min_bedrooms: int | None = None
     days: int = 7
     limit: int = 10
     sources: list[str] = field(default_factory=list)
@@ -191,6 +198,30 @@ class SourceCandidate:
     reject_reason: str | None = None
     raw: dict[str, Any] = field(default_factory=dict)
     warnings: list[str] = field(default_factory=list)
+
+    def to_dict(self) -> dict[str, Any]:
+        return to_plain(self)
+
+
+@dataclass
+class CandidateLead:
+    lead_id: str
+    source_id: str
+    url: str
+    title: str
+    summary: str
+    price_text: str | None = None
+    area_text: str | None = None
+    layout_text: str | None = None
+    freshness_text: str | None = None
+    commute_matches: list[str] = field(default_factory=list)
+    budget_match: bool | None = None
+    bedroom_match: bool | None = None
+    provider: str | None = None
+    trust_level: TrustLevel = "L0"
+    status: str = "candidate_only_pending_platform_verification"
+    next_action: str = "打开平台页确认是否仍在租、费用条款和联系入口；未打开详情前不能视为已验真。"
+    score: float = 0.0
 
     def to_dict(self) -> dict[str, Any]:
         return to_plain(self)

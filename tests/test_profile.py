@@ -27,6 +27,25 @@ def test_profile_init_uses_local_home(tmp_path, monkeypatch):
     assert "五角场" in plan["commute_areas"]
 
 
+def test_profile_init_supports_yizhuang_area_and_min_bedrooms(tmp_path, monkeypatch):
+    monkeypatch.setenv("LAST7DAYS_RENT_HOME", str(tmp_path))
+    profile = init_profile(
+        company="示例公司",
+        office_anchor="北京亦庄",
+        address_hint="亦庄核心区",
+        city="北京",
+        budget_max=5200,
+        commute_minutes=30,
+        rental_mode="whole",
+        min_bedrooms=1,
+    )
+
+    assert profile.office_anchor["city"] == "北京"
+    assert "经海路" in profile.commute["derived_areas"]
+    assert profile.housing_constraints["min_bedrooms"] == 1
+    assert "最少卧室: 1" in (tmp_path / "profile.md").read_text(encoding="utf-8")
+
+
 def test_default_state_dir_is_last7days_named(monkeypatch):
     monkeypatch.delenv("LAST7DAYS_RENT_HOME", raising=False)
 

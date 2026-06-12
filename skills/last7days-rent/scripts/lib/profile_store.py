@@ -33,6 +33,7 @@ def init_profile(
     budget_max: int | None = None,
     commute_minutes: int = 35,
     rental_mode: str = "either",
+    min_bedrooms: int | None = None,
 ) -> RentProfile:
     profile = RentProfile.default()
     office, questions = build_office_anchor(company, office_anchor, address_hint, city)
@@ -44,6 +45,7 @@ def init_profile(
             "budget_min": budget_min,
             "budget_max": budget_max,
             "rental_mode": rental_mode,
+            "min_bedrooms": min_bedrooms,
         }
     )
     profile.open_questions = questions
@@ -72,6 +74,7 @@ def profile_to_markdown(profile: RentProfile, redacted: bool = True) -> str:
         f"- 通勤上限: {data['commute'].get('max_minutes', 'unknown')} 分钟",
         f"- 预算: {data['housing_constraints'].get('budget_min') or 'unknown'} - {data['housing_constraints'].get('budget_max') or 'unknown'}",
         f"- 租住方式: {data['housing_constraints'].get('rental_mode') or 'unknown'}",
+        f"- 最少卧室: {data['housing_constraints'].get('min_bedrooms') or 'unknown'}",
         "",
         "## Search Plan",
         "",
