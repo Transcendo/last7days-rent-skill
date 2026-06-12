@@ -2,10 +2,36 @@
 name = "last7days-rent-skill"
 version = "0.1.0"
 description = "Agent Skill and local CLI engine for helping users complete rental decisions in 7 days."
+readme = "README.md"
 requires-python = ">=3.11"
+license = { file = "LICENSE" }
+authors = [
+  { name = "YOUR_NAME_OR_ORG" },
+]
+keywords = [
+  "agent-skill",
+  "rent",
+  "rental-search",
+  "provider",
+  "local-first",
+]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: End Users/Desktop",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Topic :: Utilities",
+]
 dependencies = [
   "ddgs>=9.14,<10",
 ]
+
+[project.urls]
+Homepage = "https://github.com/YOUR_GITHUB_USERNAME/last7days-rent-skill"
+Repository = "https://github.com/YOUR_GITHUB_USERNAME/last7days-rent-skill"
+Issues = "https://github.com/YOUR_GITHUB_USERNAME/last7days-rent-skill/issues"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
