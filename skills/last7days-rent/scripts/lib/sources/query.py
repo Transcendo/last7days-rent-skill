@@ -3,8 +3,7 @@ from __future__ import annotations
 from urllib.parse import quote
 
 from ..commute_plan import derive_commute_areas
-from ..env import normalize_search_providers
-from ..schema import RentProfile, SearchPlan, SearchProviderQuery, SearchRequest
+from ..schema import RentProfile, SearchPlan, SearchRequest
 from .registry import get_source_meta
 
 
@@ -15,14 +14,6 @@ CITY_DOMAINS = {
     "深圳": {"beike_lianjia": "sz.zu.ke.com", "fang": "sz.zu.fang.com", "wellcee_city": "shenzhen"},
 }
 
-DEFAULT_LISTING_SOURCES = ["beike_lianjia", "fang", "wellcee"]
-
-SOURCE_SEARCH_DOMAINS = {
-    "beike_lianjia": ["ke.com", "lianjia.com"],
-    "fang": ["fang.com"],
-    "wellcee": ["wellcee.com"],
-}
-
 AREA_SLUGS = {
     ("上海", "五角场"): {"beike_lianjia": "wujiaochang", "fang": "house-a026-b01647"},
     ("上海", "江湾体育场"): {"beike_lianjia": "jiangwantiyuchang", "fang": "house-a026-b01648"},
@@ -30,14 +21,7 @@ AREA_SLUGS = {
 }
 
 
-def request_from_profile(
-    profile: RentProfile,
-    *,
-    limit: int = 10,
-    days: int = 7,
-    sources: list[str] | None = None,
-    providers: list[str] | None = None,
-) -> SearchRequest:
+def request_from_profile(profile: RentProfile, *, limit: int = 10, days: int = 7, sources: list[str] | None = None) -> SearchRequest:
     office = profile.office_anchor.get("office_name") or profile.office_anchor.get("address_hint")
     return SearchRequest(
         city=profile.office_anchor.get("city"),
@@ -46,8 +30,7 @@ def request_from_profile(
         budget_max=profile.housing_constraints.get("budget_max"),
         days=days,
         limit=limit,
-        sources=sources or _profile_listing_sources(profile),
-        providers=providers or ["auto"],
+        sources=sources or profile.source_preferences.get("p0_order", ["beike_lianjia", "fang"]),
     )
 
 
@@ -56,7 +39,7 @@ def build_search_plan(request: SearchRequest, profile: RentProfile | None = None
     if profile:
         areas = profile.commute.get("derived_areas") or []
     areas = areas or derive_commute_areas(request.office_anchor)
-    selected_sources = request.sources or DEFAULT_LISTING_SOURCES
+    selected_sources = request.sources or ["beike_lianjia", "fang"]
     queries: dict[str, list[dict]] = {}
     for source_id in selected_sources:
         meta = get_source_meta(source_id)
@@ -68,64 +51,9 @@ def build_search_plan(request: SearchRequest, profile: RentProfile | None = None
     return SearchPlan(
         request=request,
         commute_areas=areas,
-        provider_queries=_provider_queries_for_request(request, selected_sources, areas),
         source_queries=queries,
         open_questions=list(profile.open_questions if profile else []),
     )
-
-
-def _profile_listing_sources(profile: RentProfile) -> list[str]:
-    raw = profile.source_preferences.get("p0_order", DEFAULT_LISTING_SOURCES)
-    return [source for source in raw if source in SOURCE_SEARCH_DOMAINS] or DEFAULT_LISTING_SOURCES
-
-
-def _provider_queries_for_request(request: SearchRequest, selected_sources: list[str], areas: list[str]) -> list[SearchProviderQuery]:
-    providers = normalize_search_providers(request.providers or ["auto"])
-    include_domains = _domains_for_sources(selected_sources)
-    area = next((item for item in areas if item), request.office_anchor or "")
-    base_query = _base_query(request, area)
-    queries: list[SearchProviderQuery] = []
-    for provider in providers:
-        queries.append(
-            SearchProviderQuery(
-                provider=provider,
-                query=base_query,
-                limit=request.limit,
-                days=request.days,
-                include_domains=include_domains,
-                freshness=_freshness_for_days(request.days),
-                params={"listing_sources": selected_sources, "city": request.city or "上海", "area": area},
-            )
-        )
-    return queries
-
-
-def _domains_for_sources(selected_sources: list[str]) -> list[str]:
-    domains: list[str] = []
-    for source_id in selected_sources:
-        for domain in SOURCE_SEARCH_DOMAINS.get(source_id, []):
-            if domain not in domains:
-                domains.append(domain)
-    return domains
-
-
-def _base_query(request: SearchRequest, area: str) -> str:
-    parts = [request.city or "上海", area or request.office_anchor or "", "租房"]
-    if request.budget_max:
-        parts.append(f"{request.budget_max}以内")
-    if request.days:
-        parts.append(f"近{request.days}天")
-    return " ".join(part for part in parts if part)
-
-
-def _freshness_for_days(days: int) -> str:
-    if days <= 1:
-        return "pd"
-    if days <= 7:
-        return "pw"
-    if days <= 31:
-        return "pm"
-    return "py"
 
 
 def _queries_for_source(source_id: str, request: SearchRequest, areas: list[str]) -> list[dict]:

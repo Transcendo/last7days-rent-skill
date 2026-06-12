@@ -6,7 +6,6 @@ from pathlib import Path
 
 
 DEFAULT_STATE_DIR = Path.home() / ".last7days-rent"
-SEARCH_PROVIDER_ORDER = ["brave", "tavily", "exa"]
 
 
 @dataclass(frozen=True)
@@ -55,32 +54,3 @@ def http_timeout_seconds() -> float:
     except ValueError:
         return 15.0
     return max(1.0, min(value, 60.0))
-
-
-def provider_api_key(provider: str) -> str | None:
-    if provider == "brave":
-        return os.environ.get("BRAVE_SEARCH_API_KEY") or os.environ.get("BRAVE_API_KEY")
-    if provider == "tavily":
-        return os.environ.get("TAVILY_API_KEY")
-    if provider == "exa":
-        return os.environ.get("EXA_API_KEY")
-    return None
-
-
-def normalize_search_providers(providers: list[str] | None = None) -> list[str]:
-    raw = providers or ["auto"]
-    if len(raw) == 1 and raw[0] == "auto":
-        return list(SEARCH_PROVIDER_ORDER)
-    normalized: list[str] = []
-    for provider in raw:
-        value = provider.strip().lower()
-        if not value or value == "auto":
-            for item in SEARCH_PROVIDER_ORDER:
-                if item not in normalized:
-                    normalized.append(item)
-            continue
-        if value not in SEARCH_PROVIDER_ORDER:
-            raise ValueError(f"unknown search provider: {provider}")
-        if value not in normalized:
-            normalized.append(value)
-    return normalized or list(SEARCH_PROVIDER_ORDER)

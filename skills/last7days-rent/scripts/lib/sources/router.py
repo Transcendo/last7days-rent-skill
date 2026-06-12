@@ -2,9 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from ..schema import ListingItem, SearchLead, SearchPlan, SearchRequest, SearchProviderResult, SourceFetchResult, VerificationEvidence
-from ..search_providers.promote import promote_search_leads
-from ..search_providers.router import fetch_search_leads
+from ..schema import ListingItem, SearchPlan, SearchRequest, SourceFetchResult, VerificationEvidence
 from .beike_lianjia import parse_beike_lianjia_html
 from .fang import parse_fang_html
 from .http import fetch_public_url
@@ -53,28 +51,7 @@ def load_fixture_sources(fixture_dir: Path) -> tuple[list[ListingItem], list[Ver
     return listings, evidences, warnings
 
 
-def fetch_live_sources(
-    plan: SearchPlan,
-) -> tuple[
-    list[ListingItem],
-    list[VerificationEvidence],
-    list[str],
-    list[SourceFetchResult],
-    list[SearchProviderResult],
-    list[SearchLead],
-    list[SearchLead],
-    list[SearchLead],
-]:
-    evidences: list[VerificationEvidence] = []
-    source_fetches: list[SourceFetchResult] = []
-    leads, provider_results, warnings = fetch_search_leads(plan)
-    listings, promoted_leads, rejected_leads = promote_search_leads(leads)
-    if leads and not promoted_leads:
-        warnings.append("search_leads_found_but_none_promoted")
-    return listings, evidences, warnings, source_fetches, provider_results, leads, promoted_leads, rejected_leads
-
-
-def fetch_legacy_source_urls(plan: SearchPlan) -> tuple[list[ListingItem], list[VerificationEvidence], list[str], list[SourceFetchResult]]:
+def fetch_live_sources(plan: SearchPlan) -> tuple[list[ListingItem], list[VerificationEvidence], list[str], list[SourceFetchResult]]:
     listings: list[ListingItem] = []
     evidences: list[VerificationEvidence] = []
     warnings: list[str] = []
@@ -107,18 +84,12 @@ def fetch_legacy_source_urls(plan: SearchPlan) -> tuple[list[ListingItem], list[
 
 
 def smoke_source(source_id: str, city: str | None = None, area: str | None = None, limit: int = 5) -> dict:
-    providers = [source_id] if source_id in {"brave", "tavily", "exa"} else ["auto"]
-    sources = None if source_id in {"brave", "tavily", "exa"} else [source_id]
-    request = SearchRequest(city=city or "上海", office_anchor=area or "五角场", limit=limit, sources=sources or [], providers=providers)
+    request = SearchRequest(city=city or "上海", office_anchor=area or "五角场", limit=limit, sources=[source_id])
     plan = build_search_plan(request)
-    listings, evidences, warnings, fetches, provider_results, leads, promoted_leads, rejected_leads = fetch_live_sources(plan)
+    listings, evidences, warnings, fetches = fetch_live_sources(plan)
     return {
         "source_id": source_id,
         "request": request.to_dict(),
-        "provider_results": [result.to_dict() for result in provider_results],
-        "lead_count": len(leads),
-        "promoted_lead_count": len(promoted_leads),
-        "rejected_lead_count": len(rejected_leads),
         "fetches": [fetch.to_dict() for fetch in fetches],
         "candidate_count": len(listings),
         "evidence_count": len(evidences),
