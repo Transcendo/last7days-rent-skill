@@ -13,9 +13,12 @@ FIXTURES = Path("tests/fixtures/sources")
 
 def test_registry_disables_non_mvp_sources():
     registry = source_registry()
-    for source_id in ["58", "anjuke", "douban", "xiaohongshu", "weibo", "wechat_official", "wechat_group", "websearch", "user_import"]:
+    for source_id in ["xiaohongshu", "weibo", "wechat_group", "websearch", "user_import"]:
         assert registry[source_id]["enabled"] is False
         assert registry[source_id]["status"] == "non_mvp"
+    for source_id in ["58", "anjuke", "douban", "wechat_official"]:
+        assert registry[source_id]["enabled"] is False
+        assert registry[source_id]["status"] == "roadmap_p1"
     assert is_enabled_p0_source("wellcee")
     assert get_source_meta("official_verifier").can_promote_to_listing is False
 

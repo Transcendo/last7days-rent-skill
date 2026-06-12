@@ -9,7 +9,6 @@ TrustLevel = Literal["L0", "L1", "L2", "L3"]
 SourceTier = Literal["P0", "P1", "P2", "private", "websearch", "non_mvp"]
 RentalMode = Literal["whole", "shared", "either"]
 ContactRoute = Literal["platform", "phone", "wechat", "qq", "feishu", "email", "original_post", "user_authorized", "unknown"]
-SearchProvider = Literal["runtime_web_search", "brave", "tavily", "exa"]
 
 UNKNOWN = "unknown"
 MVP_SOURCE_IDS = {"beike_lianjia", "wellcee", "fang", "official_verifier"}
@@ -90,23 +89,9 @@ class SearchRequest:
     days: int = 7
     limit: int = 10
     sources: list[str] = field(default_factory=list)
-    providers: list[str] = field(default_factory=list)
     fixture: bool = False
-
-    def to_dict(self) -> dict[str, Any]:
-        return to_plain(self)
-
-
-@dataclass
-class SearchProviderQuery:
-    provider: str
-    query: str
-    limit: int = 10
-    days: int = 7
-    include_domains: list[str] = field(default_factory=list)
-    exclude_domains: list[str] = field(default_factory=list)
-    freshness: str | None = "pw"
-    params: dict[str, Any] = field(default_factory=dict)
+    provider_search: str = "auto"
+    provider_extract: str = "auto"
 
     def to_dict(self) -> dict[str, Any]:
         return to_plain(self)
@@ -116,7 +101,6 @@ class SearchProviderQuery:
 class SearchPlan:
     request: SearchRequest
     commute_areas: list[str] = field(default_factory=list)
-    provider_queries: list[SearchProviderQuery] = field(default_factory=list)
     source_queries: dict[str, list[dict[str, Any]]] = field(default_factory=dict)
     contact_requirements: list[str] = field(default_factory=lambda: ["platform", "phone", "wechat", "qq", "feishu", "email", "original_post", "user_authorized"])
     risk_filters: list[str] = field(default_factory=lambda: ["p1_p2_source_not_allowed", "private_source_not_allowed", "websearch_not_allowed"])
@@ -143,40 +127,45 @@ class SourceFetchResult:
 
 
 @dataclass
-class SearchProviderResult:
+class ProviderDiagnostic:
+    capability: Literal["search", "extract"]
+    requested_provider: str
+    active_provider: str | None
     provider: str
-    status: str
-    query: str
-    fetched_at: str = field(default_factory=now_iso)
-    elapsed_ms: int | None = None
-    http_status: int | None = None
-    warning: str | None = None
-    lead_count: int = 0
-    request_id: str | None = None
-    usage: dict[str, Any] = field(default_factory=dict)
+    status: Literal["available", "unavailable", "selected", "fallback", "warning"]
+    message: str | None = None
 
     def to_dict(self) -> dict[str, Any]:
         return to_plain(self)
 
 
 @dataclass
-class SearchLead:
-    lead_id: str
+class SearchHit:
     provider: str
     query: str
-    rank: int
     title: str
     url: str
-    domain: str
-    snippet: str | None = None
-    published_at: str | None = None
-    score: float | None = None
-    highlights: list[str] = field(default_factory=list)
-    text_excerpt: str | None = None
+    description: str = ""
+    position: int = 0
     raw: dict[str, Any] = field(default_factory=dict)
-    can_promote: bool = False
-    source_id: str | None = None
-    rejection_reason: str | None = None
+    collected_at: str = field(default_factory=now_iso)
+
+    def to_dict(self) -> dict[str, Any]:
+        return to_plain(self)
+
+
+@dataclass
+class ExtractedDocument:
+    provider: str
+    requested_url: str
+    final_url: str | None = None
+    title: str = ""
+    content: str = ""
+    raw_content: str = ""
+    metadata: dict[str, Any] = field(default_factory=dict)
+    status: Literal["ok", "failed", "blocked"] = "ok"
+    error: str | None = None
+    collected_at: str = field(default_factory=now_iso)
 
     def to_dict(self) -> dict[str, Any]:
         return to_plain(self)
@@ -192,8 +181,19 @@ class SourceCandidate:
     snippet: str | None = None
     collected_at: str = field(default_factory=now_iso)
     can_promote: bool = True
+    provider: str | None = None
+    query: str | None = None
+    position: int | None = None
+    ddgs_description: str | None = None
+    visible_fields: dict[str, Any] = field(default_factory=dict)
+    fetch_status: str | None = None
+    parse_status: str | None = None
+    reject_reason: str | None = None
     raw: dict[str, Any] = field(default_factory=dict)
     warnings: list[str] = field(default_factory=list)
+
+    def to_dict(self) -> dict[str, Any]:
+        return to_plain(self)
 
 
 @dataclass

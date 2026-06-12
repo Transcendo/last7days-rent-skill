@@ -6,35 +6,32 @@
 
 | 层级 | 说明 | 默认处理 |
 | --- | --- | --- |
-| P0 | 可公开访问、字段相对稳定、适合结构化的来源 | 只有通过 promotion gate 后可进入 listing pipeline |
-| P1 | 有价值但访问、授权或稳定性存在限制的来源 | 默认不自动进入正式 listing |
-| P2 | 高噪声、高风险或强登录/私域依赖来源 | 只做风险情报或显式授权输入 |
+| P0 | 可公开访问、字段相对稳定、适合结构化的来源 | 可进入 live listing pipeline |
+| P1 | 有价值但访问、授权或稳定性存在限制的来源 | 有条件采集，需要更强 provider 或用户确认 |
+| P2 | 高噪声、高风险或强登录/私域依赖来源 | 默认只支持用户授权导入或人工辅助 |
 
-## 当前 Search Provider
+## 当前优先来源
 
-- Runtime web search JSON import：用于导入 Codex / Claude Code / Hermes 等宿主 Agent 的 web search 结果；默认优先使用，不需要 API key，不在 CLI 内触网。
-- Brave Search API：用于发现网页级 SearchLead；默认 `freshness=pw`、`count<=20`、`result_filter=web`。
-- Tavily API：用于发现网页级 SearchLead；默认 `search_depth=basic`、`include_answer=false`、`include_raw_content=false`。`extract` 只能作为用户显式开启的少量 URL 核验，不进入默认 live search。
-- Exa API：用于发现网页级 SearchLead；使用 `includeDomains` 和发布时间窗口；`summary` 不用于填价格、地址、联系方式等事实字段。
-
-Search provider 是发现层，不是验真层。runtime web search 导入结果、Brave/Tavily/Exa API 响应和 snippet 都不能直接写事实字段。无 API key、限流、鉴权失败、请求非法或 provider 5xx 都应进入 provider warning，不得伪造结果。
-
-## 当前 P0 Listing Source
-
-- 贝壳 / 链家 / Ke：SearchLead URL 域名命中 `ke.com/lianjia.com` 且 title/snippet 有租房语义时，可 promotion 为 L1。
-- Wellcee：SearchLead URL 域名命中 `wellcee.com` 且 title/snippet 有租房语义时，可 promotion 为 L1。
-- 房天下：SearchLead URL 域名命中 `fang.com` 且 title/snippet 有租房语义时，可 promotion 为 L1。
+- 贝壳 / 链家 / Ke：主流公开列表，适合抽取 URL、平台 ID、标题、价格、面积、户型、位置、维护时间和平台联系入口。
+- Wellcee：详情页如包含 `RealEstateListing` JSON-LD，可解析为单源候选；页面公开展示的联系方式或原帖联系说明应保留。
+- 房天下：可作为补充公开来源，但字段结构需独立适配。
 - 官方核验入口：只作为 `VerificationEvidence`，不作为高召回来源。
 
-## 默认不自动采集的来源
+## Roadmap 来源
+
+P1：
 
 - 自如、我爱我家。
-- 58 / 安居客。
-- 豆瓣、小红书、微博、公众号。
+- 安居客、58。
+- 豆瓣公开小组、公众号公开文章。
+
+P2：
+
+- 小红书、微博。
 - 微信群、朋友圈、公司群、校友群。
 - 其他需要登录、验证码、cookie、token 或批量反机器人绕过的来源。
 
-这些来源后续可以通过合作接口、用户显式授权导入或人工核验方式重新评估，但不能在默认 live search 中自动采集。默认 live search 不启用 crawl，不启用登录态，不启用 Tavily extract 或 Exa full text。宿主 Agent web search 也只能作为公开网页发现能力使用，不能绕过验证码、登录墙或私域访问限制。
+这些来源后续可以通过 provider 能力、合作接口、用户显式授权导入或人工核验方式逐步评估。小红书和私域内容不自动登录、不绕验证码、不保存 cookie/token。
 
 ## 联系方式政策
 
@@ -57,13 +54,9 @@ Search provider 是发现层，不是验真层。runtime web search 导入结果
 
 不允许自动读取用户聊天记录、私域群、朋友圈、公司群或校友群。不得保存 cookie、token、secret 或登录态凭证。
 
-## Runtime web search 和 Web Search API discovery
+## WebSearch discovery
 
-Codex / Claude Code / Hermes 等宿主 Agent 的 web search 结果默认优先导入为 `runtime_web_search` SearchLead。Brave/Tavily/Exa API 是 runtime 搜索没有 promoted listing 时的 fallback。
-
-Web Search discovery 可以用于发现入口和来源分类，但搜索结果 snippet 不能直接转成正式房源。SearchLead 默认 `can_promote=false`；只有 URL 域名匹配 P0 allowlist，并且 title/snippet 至少能识别租房语义和可打开 URL，才可 promotion 为低置信 L1 ListingItem。
-
-SearchLead/snippet 不能直接证明价格、发布时间、联系方式或仍在租。Search API 的 freshness 只能证明搜索索引或页面日期信号，不能等同于房源发布时间。
+WebSearch 可以用于发现入口和来源分类，但搜索结果 snippet 不能直接转成正式房源。snippet 中的价格、发布时间、地址和联系方式只能作为弱线索，必须由详情页、平台页面或用户授权输入复核。
 
 ## 验证边界
 

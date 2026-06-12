@@ -4,11 +4,8 @@ version = "0.1.0"
 description = "Agent Skill and local CLI engine for helping users complete rental decisions in 7 days."
 requires-python = ">=3.11"
 dependencies = [
-  "jinja2>=3.1,<4",
+  "ddgs>=9.14,<10",
 ]
-
-[tool.setuptools]
-py-modules = []
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
