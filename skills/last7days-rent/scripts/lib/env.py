@@ -13,6 +13,8 @@ class LocalPaths:
     state_dir: Path
     profile_json: Path
     profile_md: Path
+    profiles_dir: Path
+    pools_dir: Path
     feedback_jsonl: Path
     cache_dir: Path
     reports_dir: Path
@@ -29,6 +31,8 @@ def get_paths() -> LocalPaths:
         state_dir=state_dir,
         profile_json=state_dir / "profile.json",
         profile_md=state_dir / "profile.md",
+        profiles_dir=state_dir / "profiles",
+        pools_dir=state_dir / "pools",
         feedback_jsonl=state_dir / "feedback.jsonl",
         cache_dir=state_dir / "cache",
         reports_dir=state_dir / "reports",
@@ -38,6 +42,8 @@ def get_paths() -> LocalPaths:
 def ensure_local_dirs(paths: LocalPaths | None = None) -> LocalPaths:
     paths = paths or get_paths()
     paths.state_dir.mkdir(parents=True, exist_ok=True)
+    paths.profiles_dir.mkdir(parents=True, exist_ok=True)
+    paths.pools_dir.mkdir(parents=True, exist_ok=True)
     paths.cache_dir.mkdir(parents=True, exist_ok=True)
     paths.reports_dir.mkdir(parents=True, exist_ok=True)
     return paths

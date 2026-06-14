@@ -1,93 +1,133 @@
 ---
 name: last7days-rent
-description: "帮助用户 7 天完成租房。默认基于本地 private profile 或一次性参数，用 search provider 获取近 7 天 L0 待核验房源线索；有 extract key 或用户授权内容时再增强为 L1+ 短名单。"
+description: "帮助用户 7 天完成租房。基于本地 private profile，通过 Agent runtime 自带 web search/browser 发现公开房源线索，并将 evidence 整理为本地可更新 HTML 房源列表。"
 ---
 
 # last7days-rent
 
-last7days = 帮助用户 7 天完成租房
+last7days = 帮助用户 7 天完成租房。
 
-这是一个 Agent Skill + 本地 CLI engine，不是普通爬虫。默认根据用户本地 private profile 或一次性参数，通过 search provider 获取可打开、可筛选、可行动的 L0 待核验房源线索，并输出聊天摘要、Markdown report 和 JSON evidence package。有 Exa/Tavily extract key 或用户授权内容时，才尝试详情增强、结构化联系方式、去重、风险初筛和 L1+ 短名单。
+这是一个 Agent Skill + 本地 CLI engine，不是平台爬虫。默认使用 Agent runtime 原生能力完成三件事：问答式 profile 收集、公开渠道房源发现、evidence 交接；本工具只负责本地 profile 状态、search brief、evidence ingest、可信等级、去重排序和 HTML 房源列表。
 
 ## 触发条件
 
 当用户表达以下需求时使用本技能：
 
 - 想 7 天完成租房。
-- 想找近 7 天房源。
-- 想基于公司、办公点、园区、预算、通勤圈找房。
-- 提供房源 URL 或文本，要求结构化、提取联系方式、核验。
-- 想获得可溯源房源线索、联系方式、风险标签、下一步核验问题和 7 天行动计划。
+- 想基于公司、办公点、园区、预算、户型、通勤圈找房。
+- 想在 Codex、Claude Code、OpenClaw、Hermes Agent 等 runtime 中完成租房规划。
+- 提供房源 URL、截图、复制文本或搜索结果，要求整理成可筛选房源列表。
+- 想获得可溯源房源线索、联系路径、风险标签、下一步核验问题和 7 天行动计划。
 
-## 使用原则
+## 默认工作流
 
-1. 首次 profile 建档必须先问公司、办公点或园区，而不是先问城市。
-2. profile 默认只保存在 `~/.last7days-rent/`，不要写入 repo。
-3. 缺失价格、地址、押金、入住时间和联系方式时保持 `unknown` 或 `None`，不得补全。
-4. L0 是待打开平台页核验的搜索线索，必须明确“待核验”，不能写成已验真或已确认仍在租。
-5. L1 是单源结构化，不能写成“已验真”。
-6. L3 只能来自用户联系确认或明确反馈。
-7. 公开房源页面或用户授权导入里的电话、微信、邮箱、平台入口、原帖联系说明必须保留为 `contact_methods`；cookie、token、secret、session、authorization 等凭证不能进入报告或 cache。
-8. 不绕验证码、不要求 cookie、不自动抓私域、不保存登录态凭证。
-9. 每套 L1+ 核心短名单房源必须有可行动联系路径；L0 线索至少要有可打开平台 URL 和下一步核验动作。
-
-## 渠道边界
-
-V1 默认自动采集 P0：
-
-- 贝壳 / 链家 / Ke 列表。
-- Wellcee JSON-LD。
-- 房天下。
-- 官方核验入口。
-
-P1 有条件采集，需要更强 provider 或用户确认：
-
-- 自如、我爱我家。
-- 安居客、58。
-- 豆瓣公开小组、公众号公开文章。
-
-P2 默认只支持用户授权导入或人工辅助：
-
-- 小红书、微博。
-- 微信群、朋友圈、公司群、校友群、私域内容。
-- WebSearch discovery 可以进入 L0 待核验线索，但不能直接升级为 L1+ 正式房源。
-
-不要绕验证码，不要登录，不要要求 cookie，不要暴露私人联系方式。
-
-## CLI
+默认不要让用户填写长表单，也不要要求用户手写 JSON。
 
 ```bash
-python skills/last7days-rent/scripts/last7days_rent.py --help
-python skills/last7days-rent/scripts/last7days_rent.py profile init --office-anchor "上海五角场" --city 上海 --budget-max 5200
-python skills/last7days-rent/scripts/last7days_rent.py profile show --redacted
-python skills/last7days-rent/scripts/last7days_rent.py search --office-anchor "上海五角场" --city 上海 --budget-max 5200 --days 7 --limit 10
-python skills/last7days-rent/scripts/last7days_rent.py sources list
-python skills/last7days-rent/scripts/last7days_rent.py search --fixture
-python skills/last7days-rent/scripts/last7days_rent.py feedback --listing-id demo --event-type real_viewable
+python skills/last7days-rent/scripts/last7days_rent.py profile wizard start --goal-seed "北京京东总部，一居室，5000 RMB 以内"
+python skills/last7days-rent/scripts/last7days_rent.py profile wizard next
+python skills/last7days-rent/scripts/last7days_rent.py profile wizard answer --question-id <id> --value <A|B|C|D>
+python skills/last7days-rent/scripts/last7days_rent.py profile wizard commit
+python skills/last7days-rent/scripts/last7days_rent.py plan --explain
+python skills/last7days-rent/scripts/last7days_rent.py ingest --evidence <runtime-evidence.json> --validate
+python skills/last7days-rent/scripts/last7days_rent.py ingest --evidence <runtime-evidence.json>
+python skills/last7days-rent/scripts/last7days_rent.py render
+python skills/last7days-rent/scripts/last7days_rent.py report --latest
 ```
 
-可选参数只在用户明确表达对应约束时传入：
+`search` 如果存在，只能作为兼容提示，不应作为默认路径。
 
-- 用户要求一居室/两居室以上时，传 `--min-bedrooms N`。
-- 用户要求或已经配置 provider key 时，才显式传 `--provider-search` / `--provider-extract`。
-- 默认 search 不显式指定 provider，让 auto 根据可用 key 和 DDGS fallback 自动选择。
-- 无 Exa/Tavily extract key 时，不要强行抓详情页；先返回 `actionable_leads`。
+## Profile 问答规则
+
+1. 一次只问一个决策题。
+2. 推荐项排第一。
+3. 用户回答后只给简短确认和下一题，不默认展示 JSON。
+4. 用户明确说“查看当前 profile / 展示 JSON / 为什么这么搜”时，才调用 inspect 或 plan explain。
+5. 预算、户型、通勤、来源偏好、风险偏好都必须写入 profile，后续 search brief 必须从 profile 派生。
+6. 不要在 search brief 中硬编码用户已经改过的预算、户型或通勤策略。
+
+## Runtime 使用原则
+
+不要检测 runtime 品牌名。只根据能力工作：
+
+- 有原生选择 UI：用选择 UI 呈现 profile wizard。
+- 没有选择 UI：用 Markdown 单题选择。
+- 有 web search/browser：按 `plan` 执行公开渠道发现和页面核验。
+- 没有 web search/browser：请用户提供链接、截图或复制文本。
+- 有 structured output：产出 evidence JSON。
+- 没有 structured output：产出 fenced JSON，并让用户保存为本地文件后 ingest。
+
+## Evidence 规则
+
+Agent runtime 交给 `ingest` 的 JSON 必须包含 `items`。每个 item 至少包含：
+
+- `evidence_id`
+- `batch_id`
+- `query_id`
+- `query`
+- `collected_via`
+- `source_url`
+- `source_name`
+- `source_type`
+- `page_opened`
+- `title`
+- `snippet`
+- `raw_excerpt`
+- `observed_at`
+- `visible_fields`
+
+推荐包含：
+
+- `canonical_url`
+- `source_domain`
+- `normalized_fields`
+- `field_confidence`
+- `contact_path`
+- `listing_status_hint`
+
+缺字段时先运行：
+
+```bash
+python skills/last7days-rent/scripts/last7days_rent.py ingest --evidence <file> --validate
+```
+
+## 可信等级
+
+| 等级 | 规则 |
+| --- | --- |
+| L0 | 搜索结果、片段、复制文本或未打开页面 |
+| L1 | 已打开公开页面，且至少 3 个关键字段可见 |
+| L2 | 至少两个独立来源交叉确认同一房源，且关键字段一致 |
+| L3 | 用户已联系、约看、实看或明确反馈仍在租 |
+
+同一中介跨平台重复分发不算独立来源。L3 只能来自用户反馈，不能由搜索或模型推断产生。
+
+## 边界
+
+- 不要求 cookie、token、secret 或登录态。
+- 不绕验证码、不登录、不做反自动化对抗。
+- 不保存平台内部接口响应。
+- 不自动抓微信群、朋友圈、公司群、校友群等私域内容。
+- 不保存或公开原发帖人的真实身份。
+- 不用模型补全未知价格、地址、押金、入住时间或联系方式。
+- 不承诺每套房仍在租，不替代线下看房、付款、签约和合同审查。
 
 ## 输出
 
-每次 search 应输出：
+默认人类交付物是 HTML 房源列表；JSON 只作为机器证据包和可更新状态。
 
-- profile 脱敏摘要。
-- 聊天主结果优先展示最多 5 条 `actionable_leads`：价格、面积、户型、区域命中、更新时间、URL、下一步核验动作。
-- `verified_shortlist`：只有详情增强或用户授权内容成功结构化后才出现。
-- `blocked_sources`：验证码、登录墙、302、超时等详情增强失败证据。
-- `diagnostics`：provider diagnostics、search queries 和 acquisition candidates，放入报告或 JSON 附录，不干扰聊天主结果。
-- P0 source coverage。
-- L0-L3 可信等级。
-- 匹配理由。
-- 风险标签。
-- 字段 provenance。
-- 下一步核验问题。
-- 7 天租房行动计划。
-- Markdown report path。
-- JSON evidence package path。
+HTML 应包含：
+
+- profile 摘要。
+- 可筛选房源卡片。
+- 来源链接。
+- 可信等级和风险标签。
+- 下一步核验动作。
+- 本地更新时间。
+
+JSON 应包含：
+
+- profile。
+- search brief。
+- runtime evidence。
+- listing pool。

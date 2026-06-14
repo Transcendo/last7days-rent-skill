@@ -1,281 +1,168 @@
 from __future__ import annotations
 
 import json
+import html
 from pathlib import Path
+from typing import Any
 
-from .acquisition import AcquisitionResult
-from .contact import contact_display_text
-from .leads import summarize_candidate
-from .privacy import assert_public_safe, redact_profile, sanitize_cluster
-from .schema import ListingCluster, RentProfile, SourceFetchResult, VerificationEvidence, to_plain
-from .seven_day_plan import build_seven_day_plan
-from .sources.registry import source_registry
-from .store import write_json, write_text
+from .privacy import assert_public_safe
+from .store import write_text
 
 
-def render_chat_shortlist(profile: RentProfile, clusters: list[ListingCluster], *, acquisition: AcquisitionResult | None = None) -> str:
-    city = profile.office_anchor.get("city") or "unknown"
-    office = profile.office_anchor.get("office_name") or profile.office_anchor.get("address_hint") or "unknown"
-    budget = profile.housing_constraints.get("budget_max") or "unknown"
-    lines = [f"近 7 天候选房源：{city} / {office} / 预算 {budget}", ""]
-    candidate_leads = acquisition.actionable_leads if acquisition else []
-    if candidate_leads:
-        lines.extend(["待核验房源线索:", ""])
-        for idx, lead in enumerate(candidate_leads[:5], start=1):
-            lines.extend(
-                [
-                    f"{idx}. [L0] {lead.title}",
-                    (
-                        f"   价格：{lead.price_text or '待核验'}；面积：{lead.area_text or '待核验'}；"
-                        f"户型：{lead.layout_text or '待核验'}；区域命中：{', '.join(lead.commute_matches) or '待核验'}；"
-                        f"更新时间：{lead.freshness_text or '待核验'}"
-                    ),
-                    f"   URL：{lead.url}",
-                    f"   下一步：{lead.next_action}",
-                    "",
-                ]
-            )
-    if acquisition and acquisition.source_candidates and not candidate_leads:
-        lines.append("已发现搜索候选，但暂未通过预算、户型或通勤圈筛选；详情见 Markdown/JSON 报告附录。")
-        lines.append("")
-    if not clusters and candidate_leads:
-        lines.append("已找到 L0 待核验线索；详情增强暂未执行或未成功，未打开平台页前不能视为已验真。")
-    elif not clusters:
-        lines.append("未找到符合当前预算、户型和通勤圈的 L0 线索。")
-    elif candidate_leads:
-        lines.extend(["", "已结构化短名单:", ""])
-    for idx, cluster in enumerate(clusters, start=1):
-        item = cluster.canonical_listing
-        price = f"{item.price_monthly} 元/月" if item.price_monthly is not None else "unknown"
-        lines.extend(
-            [
-                f"{idx}. [{cluster.trust_level}] {item.title}，{price}",
-                f"   匹配：{'；'.join(cluster.match_reasons)}",
-                f"   联系：{contact_display_text(item.contact_methods)}",
-                f"   风险：{', '.join(cluster.risk_flags) if cluster.risk_flags else '未发现高风险标签'}",
-                f"   下一步：{cluster.next_questions[0] if cluster.next_questions else '联系前核验是否仍在租'}",
-                "",
-            ]
-        )
-    output = "\n".join(lines).rstrip() + "\n"
-    assert_public_safe(output)
-    return output
+def render_listing_pool_html(pool: dict[str, Any]) -> str:
+    meta = pool.get("pool_meta", {})
+    profile = pool.get("profile_summary", {})
+    listings = pool.get("listings", [])
+    title = _report_title(profile)
+    payload = json.dumps(listings, ensure_ascii=False)
+    rows = "\n".join(_render_listing_card(item) for item in listings) or '<section class="empty">暂无候选房源</section>'
+    html_text = f"""<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{html.escape(title)}</title>
+  <style>
+    :root {{
+      color-scheme: light;
+      --bg: #f7f8fa;
+      --text: #1f2328;
+      --muted: #646b75;
+      --line: #d8dee4;
+      --panel: #ffffff;
+      --accent: #0f766e;
+      --warn: #b45309;
+      --risk: #b91c1c;
+    }}
+    * {{ box-sizing: border-box; }}
+    body {{ margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: var(--bg); color: var(--text); }}
+    header {{ padding: 24px 28px 16px; border-bottom: 1px solid var(--line); background: var(--panel); }}
+    h1 {{ margin: 0 0 10px; font-size: 24px; line-height: 1.25; letter-spacing: 0; }}
+    .meta {{ display: flex; flex-wrap: wrap; gap: 8px 16px; color: var(--muted); font-size: 14px; }}
+    .toolbar {{ display: grid; grid-template-columns: minmax(180px, 1fr) repeat(4, minmax(120px, 160px)); gap: 10px; padding: 14px 28px; border-bottom: 1px solid var(--line); background: var(--panel); position: sticky; top: 0; z-index: 1; }}
+    input, select {{ width: 100%; min-height: 36px; border: 1px solid var(--line); border-radius: 6px; padding: 6px 10px; background: #fff; color: var(--text); font-size: 14px; }}
+    main {{ padding: 18px 28px 32px; }}
+    .summary {{ display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; color: var(--muted); }}
+    .summary span {{ border: 1px solid var(--line); border-radius: 6px; padding: 6px 9px; background: var(--panel); }}
+    .listing {{ display: grid; grid-template-columns: 1fr auto; gap: 14px; padding: 16px; margin-bottom: 12px; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; }}
+    .listing h2 {{ margin: 0 0 8px; font-size: 18px; line-height: 1.35; letter-spacing: 0; }}
+    .facts {{ display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0; }}
+    .chip {{ display: inline-flex; align-items: center; min-height: 26px; padding: 3px 8px; border-radius: 999px; background: #eef2f7; color: #2f3742; font-size: 13px; }}
+    .trust-L2, .trust-L3 {{ background: #dcfce7; color: #166534; }}
+    .trust-L1 {{ background: #e0f2fe; color: #075985; }}
+    .trust-L0 {{ background: #fef3c7; color: #92400e; }}
+    .risk {{ background: #fee2e2; color: var(--risk); }}
+    .actions {{ color: var(--muted); font-size: 14px; }}
+    .side {{ min-width: 160px; text-align: right; }}
+    .price {{ font-size: 22px; font-weight: 700; margin-bottom: 8px; }}
+    a {{ color: var(--accent); text-decoration: none; }}
+    a:hover {{ text-decoration: underline; }}
+    .hidden {{ display: none; }}
+    .empty {{ padding: 28px; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; color: var(--muted); }}
+    footer {{ padding: 18px 28px 32px; color: var(--muted); font-size: 13px; }}
+    @media (max-width: 760px) {{
+      .toolbar {{ grid-template-columns: 1fr 1fr; padding: 12px; }}
+      main, header, footer {{ padding-left: 14px; padding-right: 14px; }}
+      .listing {{ grid-template-columns: 1fr; }}
+      .side {{ text-align: left; }}
+    }}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>{html.escape(title)}</h1>
+    <div class="meta">
+      <span>预算：{html.escape(str(profile.get("budget_target", "待核验")))} - {html.escape(str(profile.get("budget_max", "待核验")))}</span>
+      <span>户型：{html.escape(_bedroom_meta(profile))}</span>
+      <span>更新时间：{html.escape(str(meta.get("updated_at", "待核验")))}</span>
+    </div>
+  </header>
+  <section class="toolbar">
+    <input id="q" placeholder="搜索小区、片区、标题">
+    <select id="trust"><option value="">全部可信等级</option><option>L0</option><option>L1</option><option>L2</option><option>L3</option></select>
+    <select id="status"><option value="">全部状态</option><option>new</option><option>shortlisted</option><option>contacted</option><option>rejected</option></select>
+    <select id="risk"><option value="">全部风险</option><option value="snippet_only">snippet_only</option><option value="missing_contact_path">missing_contact_path</option></select>
+    <select id="sort"><option value="priority">优先级</option><option value="price">价格从低到高</option><option value="trust">可信等级</option></select>
+  </section>
+  <main>
+    <div class="summary" id="summary"></div>
+    <div id="list">{rows}</div>
+  </main>
+  <footer>来源仅为公开页面或用户授权内容。未知字段显示为待核验；不保存 cookie、token、session 或登录态。</footer>
+  <script>
+    const listings = {payload};
+    const cards = [...document.querySelectorAll('.listing')];
+    function update() {{
+      const q = document.querySelector('#q').value.trim().toLowerCase();
+      const trust = document.querySelector('#trust').value;
+      const status = document.querySelector('#status').value;
+      const risk = document.querySelector('#risk').value;
+      let visible = 0;
+      cards.forEach(card => {{
+        const text = card.dataset.text.toLowerCase();
+        const ok = (!q || text.includes(q)) && (!trust || card.dataset.trust === trust) && (!status || card.dataset.status === status) && (!risk || card.dataset.risk.includes(risk));
+        card.classList.toggle('hidden', !ok);
+        if (ok) visible++;
+      }});
+      document.querySelector('#summary').innerHTML = `<span>当前显示：${{visible}}</span><span>总候选：${{listings.length}}</span><span>L2+：${{listings.filter(x => ['L2','L3'].includes(x.trust_level)).length}}</span>`;
+    }}
+    document.querySelectorAll('input,select').forEach(el => el.addEventListener('input', update));
+    update();
+  </script>
+</body>
+</html>
+"""
+    assert_public_safe(html_text)
+    return html_text
 
 
-def render_markdown_report(
-    profile: RentProfile,
-    clusters: list[ListingCluster],
-    evidences: list[VerificationEvidence],
-    warnings: list[str],
-    *,
-    live: bool = False,
-    source_fetches: list[SourceFetchResult] | None = None,
-    acquisition: AcquisitionResult | None = None,
-) -> str:
-    safe_clusters = [sanitize_cluster(cluster) for cluster in clusters]
-    data = redact_profile(profile.to_dict())
-    lines = [
-        "# last7days-rent 房源线索报告",
-        "",
-        "last7days = 帮助用户 7 天完成租房",
-        "",
-        f"- 搜索模式: {'live P0 source search' if live else 'fixture test mode'}",
-        "",
-        "## Profile 脱敏摘要",
-        "",
-        f"- 办公点: {data['office_anchor'].get('office_name') or 'unknown'}",
-        f"- 城市: {data['office_anchor'].get('city') or 'unknown'}",
-        f"- 通勤上限: {data['commute'].get('max_minutes', 'unknown')} 分钟",
-        f"- 预算: {data['housing_constraints'].get('budget_min') or 'unknown'} - {data['housing_constraints'].get('budget_max') or 'unknown'}",
-        f"- 最少卧室: {data['housing_constraints'].get('min_bedrooms') or 'unknown'}",
-        "",
-        "## P0 Source Coverage",
-        "",
+def write_html_report(reports_dir: Path, basename: str, pool: dict[str, Any]) -> Path:
+    path = reports_dir / f"{basename}.html"
+    write_text(path, render_listing_pool_html(pool))
+    return path
+
+
+def _report_title(profile: dict[str, Any]) -> str:
+    office = profile.get("office_anchor") or "北京京东总部"
+    bedrooms = profile.get("preferred_bedrooms")
+    bedroom = f"{bedrooms}居室" if bedrooms else str(profile.get("bedroom_label") or "租房")
+    budget = profile.get("budget_max") or "待核验"
+    return f"{office} {budget} 内{bedroom}候选池"
+
+
+def _bedroom_meta(profile: dict[str, Any]) -> str:
+    if profile.get("bedroom_label"):
+        return str(profile["bedroom_label"])
+    bedrooms = profile.get("preferred_bedrooms")
+    return f"{bedrooms}居" if bedrooms else "待核验"
+
+
+def _render_listing_card(item: dict[str, Any]) -> str:
+    text = " ".join(str(item.get(key, "")) for key in ["title", "community", "district_hint", "price_text", "layout_text"])
+    risks = item.get("risk_flags", [])
+    chips = [
+        f'<span class="chip trust-{html.escape(str(item.get("trust_level", "L0")))}">{html.escape(str(item.get("trust_level", "L0")))}</span>',
+        f'<span class="chip">{html.escape(str(item.get("status", "new")))}</span>',
+        f'<span class="chip">{html.escape(str(item.get("district_hint", "待核验")))}</span>',
     ]
-    registry = source_registry()
-    for source_id in ["beike_lianjia", "wellcee", "fang", "official_verifier"]:
-        meta = registry[source_id]
-        lines.append(
-            f"- {source_id}: {meta['status']} / {meta['allowed_output_type']} / contact={', '.join(meta['contact_capability'])}"
-        )
-    if acquisition:
-        lines.extend(["", "## L0 待核验房源线索", ""])
-        if acquisition.actionable_leads:
-            lines.append("| 标题 | URL | 价格 | 面积 | 户型 | 区域命中 | 更新时间 | 状态 |")
-            lines.append("| --- | --- | --- | --- | --- | --- | --- | --- |")
-            for lead in acquisition.actionable_leads[:10]:
-                lines.append(
-                    f"| {_escape_table(lead.title)} | {lead.url} | {lead.price_text or '待核验'} | "
-                    f"{lead.area_text or '待核验'} | {lead.layout_text or '待核验'} | "
-                    f"{_escape_table(', '.join(lead.commute_matches) or '待核验')} | "
-                    f"{lead.freshness_text or '待核验'} | L0 待打开平台页核验 |"
-                )
-        else:
-            lines.append("- none")
-        lines.extend(["", "## Diagnostics Appendix", "", "### Provider Diagnostics", ""])
-        if acquisition.provider_diagnostics:
-            for diag in acquisition.provider_diagnostics:
-                lines.append(
-                    f"- {diag.capability}: requested={diag.requested_provider}, provider={diag.provider}, "
-                    f"active={diag.active_provider or 'none'}, status={diag.status}, message={diag.message or 'none'}"
-                )
-        else:
-            lines.append("- none")
-        lines.extend(["", "### Acquisition Candidates", ""])
-        if acquisition.source_candidates:
-            lines.append("| 来源 | URL | 搜索摘要里能看到的信息 | provider | 状态 |")
-            lines.append("| --- | --- | --- | --- | --- |")
-            for candidate in acquisition.source_candidates[:30]:
-                status = "P0可解析" if candidate.can_promote else candidate.reject_reason or "candidate_only"
-                lines.append(
-                    f"| {candidate.source_id} | {candidate.source_url or 'unknown'} | "
-                    f"{_escape_table(_candidate_summary(candidate))} | {candidate.provider or 'unknown'} | {status} |"
-                )
-        else:
-            lines.append("- none")
-        if acquisition.extracted_documents:
-            lines.extend(["", "### Extracted Documents", ""])
-            for doc in acquisition.extracted_documents:
-                lines.append(
-                    f"- {doc.provider}: status={doc.status}, url={doc.final_url or doc.requested_url}, "
-                    f"title={doc.title or 'unknown'}, error={doc.error or 'none'}"
-                )
-        if acquisition.blocked_sources:
-            lines.extend(["", "### Blocked Sources", ""])
-            for blocked in acquisition.blocked_sources:
-                lines.append(
-                    f"- {blocked.get('provider', 'unknown')}: status={blocked.get('status', 'unknown')}, "
-                    f"url={blocked.get('url', 'unknown')}, error={blocked.get('error', 'none')}"
-                )
-    if source_fetches:
-        lines.extend(["", "## Live Fetch Results", ""])
-        for fetch in source_fetches:
-            lines.append(
-                f"- {fetch.source_id}: status={fetch.status}, HTTP={fetch.http_status or 'unknown'}, "
-                f"candidates={fetch.candidate_count}, url={fetch.url}, warning={fetch.warning or 'none'}"
-            )
-    if warnings:
-        lines.extend(["", "## Warnings", ""])
-        lines.extend(f"- {warning}" for warning in warnings)
-    lines.extend(["", "## 候选房源短名单", ""])
-    for idx, cluster in enumerate(safe_clusters, start=1):
-        item = cluster.canonical_listing
-        price = f"{item.price_monthly} 元/月" if item.price_monthly is not None else "unknown"
-        lines.extend(
-            [
-                f"### {idx}. [{cluster.trust_level}] {item.title}",
-                "",
-                f"- 月租: {price}",
-                f"- 来源: {item.source_id}",
-                f"- URL: {item.source_url or 'unknown'}",
-                f"- 抓取时间: {item.collected_at}",
-                f"- 联系路径: {contact_display_text(item.contact_methods)}",
-                f"- 匹配理由: {'；'.join(cluster.match_reasons)}",
-                f"- 风险标签: {', '.join(cluster.risk_flags) if cluster.risk_flags else 'none'}",
-                f"- 合并原因: {', '.join(cluster.merge_reasons) if cluster.merge_reasons else '单源结构化'}",
-                f"- 字段 provenance: `{json.dumps(cluster.field_provenance, ensure_ascii=False, sort_keys=True)}`",
-                "- 下一步核验问题:",
-            ]
-        )
-        lines.extend(f"  - {question}" for question in cluster.next_questions)
-        lines.append("")
-    total_clusters = len(safe_clusters)
-    contact_ready = sum(1 for cluster in safe_clusters if cluster.canonical_listing.contact_methods)
-    lines.extend(
-        [
-            "## Contact Coverage",
-            "",
-            f"- 核心短名单数量: {total_clusters}",
-            f"- 有可行动联系方式或平台入口: {contact_ready}",
-            f"- 覆盖率: {contact_ready}/{total_clusters}" if total_clusters else "- 覆盖率: 0/0",
-            "",
-        ]
-    )
-    lines.extend(["## 官方核验证据", ""])
-    if evidences:
-        for evidence in evidences:
-            lines.append(f"- {evidence.evidence_type}: {evidence.value or 'unknown'} ({evidence.url or 'unknown'})")
-    else:
-        lines.append("- unknown")
-    lines.extend(["", "## 7 天租房行动计划", ""])
-    for step in build_seven_day_plan():
-        lines.append(f"- {step['day']}: {step['action']}")
-    lines.extend(
-        [
-            "",
-            "## 隐私说明",
-            "",
-            "公开报告保留公开页面或用户授权导入里的联系方式和平台联系入口，便于行动；cookie、token、secret、session、authorization 等凭证不会进入报告或 cache。缺失字段保持 unknown/None，不由 LLM 或代码补全。L1 不是已验真，L3 只来自用户联系确认或明确反馈。",
-        ]
-    )
-    output = "\n".join(lines).rstrip() + "\n"
-    assert_public_safe(output)
-    return output
-
-
-def render_evidence_package(
-    profile: RentProfile,
-    clusters: list[ListingCluster],
-    evidences: list[VerificationEvidence],
-    warnings: list[str],
-    *,
-    live: bool = False,
-    source_fetches: list[SourceFetchResult] | None = None,
-    acquisition: AcquisitionResult | None = None,
-) -> dict:
-    safe_clusters = [sanitize_cluster(cluster) for cluster in clusters]
-    package = {
-        "schema_version": "0.1.0",
-        "slogan": "last7days = 帮助用户 7 天完成租房",
-        "mode": "live" if live else "fixture",
-        "profile_redacted_summary": redact_profile(profile.to_dict()),
-        "source_coverage": source_registry(),
-        "source_fetches": [fetch.to_dict() for fetch in (source_fetches or [])],
-        "actionable_leads": [lead.to_dict() for lead in (acquisition.actionable_leads if acquisition else [])],
-        "verified_shortlist": [cluster.to_dict() for cluster in safe_clusters],
-        "blocked_sources": [dict(item) for item in (acquisition.blocked_sources if acquisition else [])],
-        "diagnostics": {
-            "provider_diagnostics": [diag.to_dict() for diag in (acquisition.provider_diagnostics if acquisition else [])],
-            "search_queries": [query.to_dict() for query in (acquisition.search_queries if acquisition else [])],
-            "warnings": warnings,
-        },
-        "provider_diagnostics": [diag.to_dict() for diag in (acquisition.provider_diagnostics if acquisition else [])],
-        "search_queries": [query.to_dict() for query in (acquisition.search_queries if acquisition else [])],
-        "source_candidates": [candidate.to_dict() for candidate in (acquisition.source_candidates if acquisition else [])],
-        "actionable_candidate_leads": [lead.to_dict() for lead in (acquisition.actionable_leads if acquisition else [])],
-        "extracted_documents": [doc.to_dict() for doc in (acquisition.extracted_documents if acquisition else [])],
-        "structured_listings": [listing.to_dict() for listing in (acquisition.structured_listings if acquisition else [])],
-        "clusters": [cluster.to_dict() for cluster in safe_clusters],
-        "verification_evidence": [to_plain(evidence) for evidence in evidences],
-        "seven_day_plan": build_seven_day_plan(),
-        "warnings": warnings,
-        "privacy": {
-            "redacted_profile": True,
-            "contact_methods_preserved_for_action": True,
-            "secret_guard_enabled": True,
-            "unknown_fields_are_not_filled": True,
-        },
-    }
-    assert_public_safe(json.dumps(package, ensure_ascii=False, sort_keys=True))
-    return package
-
-
-def _candidate_summary(candidate) -> str:
-    return summarize_candidate(candidate)
-
-
-def _escape_table(value: str) -> str:
-    return value.replace("|", "\\|").replace("\n", " ")
-
-
-def write_outputs(
-    reports_dir: Path,
-    basename: str,
-    markdown: str,
-    evidence: dict,
-) -> tuple[Path, Path]:
-    markdown_path = reports_dir / f"{basename}.md"
-    evidence_path = reports_dir / f"{basename}.json"
-    write_text(markdown_path, markdown)
-    write_json(evidence_path, evidence)
-    return markdown_path, evidence_path
+    chips.extend(f'<span class="chip risk">{html.escape(str(risk))}</span>' for risk in risks)
+    sources = " ".join(f'<a href="{html.escape(url)}" target="_blank" rel="noreferrer">来源</a>' for url in item.get("source_urls", [])[:3])
+    return f"""
+    <article class="listing" data-text="{html.escape(text)}" data-trust="{html.escape(str(item.get("trust_level", "L0")))}" data-status="{html.escape(str(item.get("status", "new")))}" data-risk="{html.escape(" ".join(risks))}">
+      <div>
+        <h2>{html.escape(str(item.get("title", "待核验")))}</h2>
+        <div class="facts">{''.join(chips)}</div>
+        <div class="facts">
+          <span class="chip">{html.escape(str(item.get("community", "待核验")))}</span>
+          <span class="chip">{html.escape(str(item.get("area_text", "待核验")))}</span>
+          <span class="chip">{html.escape(str(item.get("layout_text", "待核验")))}</span>
+        </div>
+        <div class="actions">下一步：{html.escape("；".join(item.get("next_actions", [])) or "待核验")}</div>
+        <div class="actions">来源：{sources or "待核验"}</div>
+      </div>
+      <aside class="side">
+        <div class="price">{html.escape(str(item.get("price_text", "待核验")))}</div>
+        <div class="actions">首次发现：{html.escape(str(item.get("first_seen_at", "待核验")))}</div>
+      </aside>
+    </article>
+    """

@@ -62,6 +62,11 @@ def refine_profile(decision: str | None, weight: float | None = None) -> RentPro
 def profile_to_markdown(profile: RentProfile, redacted: bool = True) -> str:
     data = redact_profile(profile.to_dict()) if redacted else profile.to_dict()
     plan = profile_to_search_plan(profile)
+    office_name = data["office_anchor"].get("campus_name") or data["office_anchor"].get("office_name") or data["office_anchor"].get("address_hint") or "unknown"
+    commute = data.get("commute_preferences") or data.get("commute", {})
+    budget_target = data["housing_constraints"].get("budget_target") or data["housing_constraints"].get("budget_min") or "unknown"
+    budget_max = data["housing_constraints"].get("budget_max") or "unknown"
+    bedrooms = data["housing_constraints"].get("preferred_bedrooms") or data["housing_constraints"].get("min_bedrooms") or "unknown"
     lines = [
         "# last7days-rent Profile",
         "",
@@ -69,11 +74,12 @@ def profile_to_markdown(profile: RentProfile, redacted: bool = True) -> str:
         "",
         "## 脱敏摘要" if redacted else "## Profile",
         "",
-        f"- 办公点: {data['office_anchor'].get('office_name') or 'unknown'}",
+        f"- 办公点: {office_name}",
         f"- 城市: {data['office_anchor'].get('city') or 'unknown'}",
-        f"- 通勤上限: {data['commute'].get('max_minutes', 'unknown')} 分钟",
-        f"- 预算: {data['housing_constraints'].get('budget_min') or 'unknown'} - {data['housing_constraints'].get('budget_max') or 'unknown'}",
+        f"- 通勤上限: {commute.get('max_minutes', 'unknown')} 分钟",
+        f"- 预算: {budget_target} - {budget_max}",
         f"- 租住方式: {data['housing_constraints'].get('rental_mode') or 'unknown'}",
+        f"- 户型: {bedrooms}",
         f"- 最少卧室: {data['housing_constraints'].get('min_bedrooms') or 'unknown'}",
         "",
         "## Search Plan",

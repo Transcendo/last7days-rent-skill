@@ -25,7 +25,7 @@ def parse_source_fixture(source_id: str, text: str, base_url: str | None = None)
             return parse_fang_html(text, base_url=base_url or "https://zu.fang.com"), [], warnings
         if source_id == "official_verifier":
             return [], parse_official_verifier_text(text), warnings
-    except Exception as exc:  # adapter failures should not block pipeline
+    except Exception as exc:  # adapter failures should not block fixture parsing
         return [], [], [f"{source_id} parse failed: {exc}"]
     return [], [], [f"{source_id} has no parser"]
 

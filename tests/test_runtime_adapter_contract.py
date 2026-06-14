@@ -1,0 +1,22 @@
+from lib.agent_evidence import validate_evidence_file
+from lib.anchor_pack import build_search_brief, load_anchor_pack
+
+
+def test_runtime_adapter_contract_fixture_is_valid():
+    assert validate_evidence_file("tests/fixtures/evidence/jd_hq_runtime_evidence.json") == []
+
+
+def test_search_brief_contains_runtime_budget_and_collection_rules():
+    brief = build_search_brief(
+        {
+            "user_goal": {"scenario": "jd_hq_beijing_poc"},
+            "office_anchor": {"anchor_id": "beijing-jd-hq-yizhuang"},
+            "housing_constraints": {"preferred_bedrooms": 2, "budget_max": 5500},
+            "commute_preferences": {"strategy": "near_first"},
+            "risk_preferences": {"source_strategy": "public_all_channels"},
+        },
+        load_anchor_pack(),
+    )
+    assert brief["run_budget"]["max_detail_pages_total"] == 20
+    assert "batch_id" in brief["collection_rules"]["must_capture"]
+    assert "raw_excerpt" in brief["collection_rules"]["must_capture"]

@@ -2,7 +2,7 @@ from lib.risk import risk_flags_for_listing, should_reject_listing
 from lib.schema import ListingItem, RentProfile
 
 
-def test_p1_p2_sources_cannot_enter_mvp_pipeline():
+def test_p1_p2_sources_cannot_enter_mvp_core_flow():
     item = ListingItem(item_id="58-1", source_id="58", source_tier="P2", title="低价房", price_monthly=1800)
     assert should_reject_listing(item)
     assert "p1_p2_source_not_allowed" in risk_flags_for_listing(item)

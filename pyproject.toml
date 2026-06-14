@@ -4,34 +4,42 @@ version = "0.1.0"
 description = "Agent Skill and local CLI engine for helping users complete rental decisions in 7 days."
 readme = "README.md"
 requires-python = ">=3.11"
-license = { file = "LICENSE" }
+license = "MIT"
 authors = [
-  { name = "YOUR_NAME_OR_ORG" },
+  { name = "Transcendo" },
 ]
 keywords = [
   "agent-skill",
   "rent",
   "rental-search",
-  "provider",
+  "agent-runtime",
   "local-first",
 ]
 classifiers = [
   "Development Status :: 3 - Alpha",
   "Intended Audience :: End Users/Desktop",
-  "License :: OSI Approved :: MIT License",
   "Operating System :: OS Independent",
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3.11",
   "Topic :: Utilities",
 ]
-dependencies = [
-  "ddgs>=9.14,<10",
-]
+dependencies = []
+
+[project.scripts]
+last7days-rent = "last7days_rent:main"
 
 [project.urls]
-Homepage = "https://github.com/YOUR_GITHUB_USERNAME/last7days-rent-skill"
-Repository = "https://github.com/YOUR_GITHUB_USERNAME/last7days-rent-skill"
-Issues = "https://github.com/YOUR_GITHUB_USERNAME/last7days-rent-skill/issues"
+Homepage = "https://github.com/Transcendo/last7days-rent-skill"
+Repository = "https://github.com/Transcendo/last7days-rent-skill"
+Issues = "https://github.com/Transcendo/last7days-rent-skill/issues"
+
+[tool.setuptools]
+package-dir = { "" = "skills/last7days-rent/scripts" }
+py-modules = ["last7days_rent"]
+packages = ["lib", "lib.sources"]
+
+[tool.setuptools.data-files]
+"share/last7days-rent-skill/anchor_packs" = ["skills/last7days-rent/anchor_packs/*.json"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

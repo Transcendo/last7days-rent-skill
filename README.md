@@ -1,12 +1,16 @@
 # last7days-rent-skill
 
 ![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white)
-![Local](https://img.shields.io/badge/local--first-contact%20ready-0f766e)
-![Status](https://img.shields.io/badge/status-live%20P0%20search-0f766e)
+![Local](https://img.shields.io/badge/local--first-runtime%20native-0f766e)
+![Status](https://img.shields.io/badge/status-JD%20HQ%20POC-0f766e)
 
-`last7days-rent-skill` 是一个面向 Codex、Claude Code 等 Agent runtime 的租房 Agent Skill。当前 V1 目标是根据用户的办公点、预算、通勤和偏好，默认先稳定产出可打开、可筛选、可行动的 L0 待核验房源线索；有 Exa/Tavily extract key 或用户授权内容时，再增强为 L1+ 结构化短名单、联系路径和下一步核验动作。
+`last7days-rent-skill` 是一个面向 Codex、Claude Code、OpenClaw、Hermes Agent 等 Agent runtime 的租房 Skill。它不再自建搜索引擎或要求搜索 API key；默认路径是：
 
-默认搜索会先根据 profile 生成渠道查询，再按 provider 可用性选择 Brave / Exa / Tavily / DDGS。没有详情增强 key 时，系统不会默认抓详情页，而是直接返回排序后的 `actionable_leads`。公开来源如果返回 403、429、验证码或登录墙，报告会保留 source、URL、HTTP 状态和 warning，不会伪造房源。
+```text
+profile wizard -> plan -> Agent runtime web search/browser -> ingest evidence -> render HTML
+```
+
+当前 POC 聚焦“北京京东总部租房”：通过问答式 profile wizard 确认办公锚点、预算、户型、通勤和风险偏好；由 Agent runtime 使用自身 web search/browser 能力发现公开房源线索；工具负责把 evidence JSON 去重、分级、沉淀为本地可更新的 HTML 房源列表。
 
 ## 快速开始
 
@@ -16,191 +20,182 @@
 npx skills add /path/to/last7days-rent-skill -g
 ```
 
-未来 GitHub 安装：
-
-```bash
-npx skills add YOUR_GITHUB_USERNAME/last7days-rent-skill -g
-```
-
-`YOUR_GITHUB_USERNAME` 是发布占位符，公开发布前请替换为实际 GitHub user 或 org。
-
 查看命令：
 
 ```bash
 python skills/last7days-rent/scripts/last7days_rent.py --help
 ```
 
-创建本地租房画像：
+启动北京京东总部 profile wizard：
 
 ```bash
-python skills/last7days-rent/scripts/last7days_rent.py profile init \
-  --office-anchor "上海五角场" \
-  --city 上海 \
-  --budget-max 5200 \
-  --commute-minutes 35
+python skills/last7days-rent/scripts/last7days_rent.py profile wizard start \
+  --goal-seed "北京京东总部，一居室，5000 RMB 以内"
 ```
 
-按办公点和预算搜索 L0 待核验房源线索：
+逐题确认：
 
 ```bash
-python skills/last7days-rent/scripts/last7days_rent.py search \
-  --office-anchor "上海五角场" \
-  --city 上海 \
-  --budget-max 5200 \
-  --days 7 \
-  --limit 10
+python skills/last7days-rent/scripts/last7days_rent.py profile wizard next
+python skills/last7days-rent/scripts/last7days_rent.py profile wizard answer --question-id office_anchor --value A
+python skills/last7days-rent/scripts/last7days_rent.py profile wizard answer --question-id bedroom_scope --value B
+python skills/last7days-rent/scripts/last7days_rent.py profile wizard answer --question-id budget_strategy --value B
+python skills/last7days-rent/scripts/last7days_rent.py profile wizard answer --question-id commute_strategy --value B
+python skills/last7days-rent/scripts/last7days_rent.py profile wizard answer --question-id source_strategy --value B
+python skills/last7days-rent/scripts/last7days_rent.py profile wizard answer --question-id risk_filter --value B
 ```
 
-可显式指定 provider；如果指定 search provider 缺 key，会记录 warning 并自动 fallback。只有配置了 Exa/Tavily extract key，或显式指定 `--provider-extract basic_http` 做公开页面 smoke 时，才会尝试详情增强：
+默认 answer 只返回简短确认和下一题，不向用户暴露完整 JSON。用户需要时可以查看：
 
 ```bash
-python skills/last7days-rent/scripts/last7days_rent.py search \
-  --office-anchor "北京亦庄办公点" \
-  --city 北京 \
-  --budget-max 5200 \
-  --provider-search brave \
-  --provider-extract exa
+python skills/last7days-rent/scripts/last7days_rent.py profile wizard inspect
+python skills/last7days-rent/scripts/last7days_rent.py profile wizard inspect --format json
 ```
 
-查看最近一次报告：
+确认 profile 并生成搜索计划：
 
 ```bash
+python skills/last7days-rent/scripts/last7days_rent.py profile wizard commit
+python skills/last7days-rent/scripts/last7days_rent.py plan --explain
+```
+
+`plan` 会从 profile 和北京京东总部 anchor pack 派生 search brief，包括查询批次、候选来源、执行预算和停止条件。Agent runtime 应按 brief 执行公开 web search/browser，并把结果整理成 evidence JSON。
+
+校验并导入 runtime evidence：
+
+```bash
+python skills/last7days-rent/scripts/last7days_rent.py ingest \
+  --evidence tests/fixtures/evidence/jd_hq_runtime_evidence.json \
+  --validate
+
+python skills/last7days-rent/scripts/last7days_rent.py ingest \
+  --evidence tests/fixtures/evidence/jd_hq_runtime_evidence.json
+```
+
+生成 HTML 房源列表：
+
+```bash
+python skills/last7days-rent/scripts/last7days_rent.py render
 python skills/last7days-rent/scripts/last7days_rent.py report --latest
 ```
-
-记录反馈并影响下一轮排序：
-
-```bash
-python skills/last7days-rent/scripts/last7days_rent.py feedback \
-  --listing-id <listing-id> \
-  --event-type real_viewable \
-  --notes "已联系，确认可看房，费用待核验"
-```
-
-本地测试模式：
-
-```bash
-python skills/last7days-rent/scripts/last7days_rent.py search --fixture
-```
-
-`--fixture` 只用于验证安装、报告格式、联系方式展示和排序逻辑；它不是默认产品路径，也不代表真实房源获取能力已经完成。
-
-## 输出内容
-
-每次搜索会输出：
-
-- 聊天主结果：最多 5 条 `actionable_leads`，包含价格、面积、户型、区域命中、更新时间、URL 和下一步核验动作。
-- Markdown report。
-- JSON evidence package。
-- `verified_shortlist`：详情增强或用户授权内容成功结构化后的 L1+ 短名单。
-- `blocked_sources`：验证码、登录墙、302、超时等详情增强失败证据。
-- `diagnostics`：provider diagnostics、search queries 和 acquisition candidates，默认放在报告或 JSON 附录。
-- source coverage 和 source warnings。
-- 每套候选房源的来源 URL、抓取时间、字段 provenance。
-- 每套核心短名单房源的联系方式或平台联系入口。
-- 匹配理由、风险标签、不确定点和下一步核验问题。
-- 7 天租房行动计划。
 
 默认本地输出路径：
 
 ```text
 ~/.last7days-rent/profile.json
-~/.last7days-rent/profile.md
-~/.last7days-rent/feedback.jsonl
-~/.last7days-rent/cache/
+~/.last7days-rent/profiles/
+~/.last7days-rent/pools/
 ~/.last7days-rent/reports/
+~/.last7days-rent/feedback.jsonl
 ```
 
-## 当前支持来源
+## 输出内容
 
-| 来源 | 当前能力 | 联系路径 |
-| --- | --- | --- |
-| 贝壳 / 链家 / Ke | 生成公开列表 URL，解析公开卡片；遇到验证码或登录墙时输出 warning | 平台详情页入口 |
-| 房天下 | 生成上海五角场等公开列表 URL，解析卡片、价格、面积、户型、位置和详情页 | 平台详情页入口，页面公开电话时保留 |
-| Wellcee | 支持解析用户提供的详情页 HTML / JSON-LD | 平台入口、原帖说明、公开电话、微信、邮箱 |
-| 官方核验入口 | 只记录核验证据 | 不作为高召回房源来源 |
+默认人类产物是单文件 HTML：
 
-## Provider 配置
+- profile 摘要：办公锚点、预算、户型、通勤策略。
+- 房源卡片：标题、小区、价格、面积、户型、片区、来源链接。
+- 筛选控件：关键词、可信等级、状态、风险标签。
+- 可信等级：L0/L1/L2/L3。
+- 风险标签：片段线索、缺少联系路径、字段待核验等。
+- 下一步动作：打开来源、确认仍在租、核验费用和联系入口。
 
-V1 search provider：
+机器产物是 JSON：
 
-- `brave`：需要 `BRAVE_SEARCH_API_KEY`。
-- `exa`：需要 `EXA_API_KEY`。
-- `tavily`：需要 `TAVILY_API_KEY`。
-- `ddgs`：无 key fallback。
+- profile draft / committed profile。
+- search brief。
+- runtime evidence。
+- listing pool。
 
-V1 extract provider：
+## Runtime Evidence Contract
 
-- `exa`：需要 `EXA_API_KEY`。
-- `tavily`：需要 `TAVILY_API_KEY`。
-- `basic_http`：只用于显式 public source smoke 或明确指定的公开页面抓取，不作为默认详情增强路径。
+Agent runtime 不需要让工具判断“当前是 Codex 还是 Claude Code”。核心只看能力和协议：
 
-配置可来自环境变量，或本地私有文件 `~/.last7days-rent/config.json`：
+- `interactive_choice`：逐题确认 profile。
+- `web_search`：公开渠道发现。
+- `browser_open`：打开公开页面核验可见字段。
+- `local_file_write`：写入 evidence、pool、HTML。
+- `structured_output`：把搜索结果交给 `ingest`。
 
-```json
-{
-  "providers": {
-    "search": "auto",
-    "extract": "auto",
-    "api_keys": {
-      "brave": "...",
-      "exa": "...",
-      "tavily": "..."
-    }
-  }
-}
-```
+Evidence item 至少包含：
 
-不要把本地 `config.json`、API key、cookie、token 或登录态凭证提交到仓库。
+- `evidence_id`
+- `batch_id`
+- `query_id`
+- `query`
+- `collected_via`
+- `source_url`
+- `source_name`
+- `source_type`
+- `page_opened`
+- `title`
+- `snippet`
+- `raw_excerpt`
+- `observed_at`
+- `visible_fields`
 
-自动选择顺序：
+推荐额外字段：
 
-- search：`brave -> exa -> tavily -> ddgs`
-- extract：`exa -> tavily`；无 key 时默认跳过详情增强并保留 L0 leads。
+- `canonical_url`
+- `source_domain`
+- `normalized_fields`
+- `field_confidence`
+- `contact_path`
+- `listing_status_hint`
 
-## 渠道 Roadmap
-
-- P0：贝壳 / 链家 / Ke、Wellcee、房天下、官方核验入口。默认自动采集，可进入结构化链路。
-- P1：自如、我爱我家、豆瓣公开小组、公众号公开文章、安居客、58。有条件采集，需要更强 provider 或用户确认。
-- P2：小红书、微博、微信群、朋友圈、公司群、校友群。默认只支持用户授权导入或人工辅助。
-
-可查看 registry：
-
-```bash
-python skills/last7days-rent/scripts/last7days_rent.py sources list
-```
-
-## 联系方式与安全边界
-
-这个 skill 默认 local-first，目标是帮用户真正联系房源：
-
-- 公开房源页面或用户授权导入里的电话、微信、邮箱、平台入口、原帖联系说明属于核心房源信息，应保留并展示。
-- 没有联系方式且没有可打开联系入口的房源，默认不进入 L1+ 核心短名单；L0 线索必须至少提供可打开平台 URL。
-- 不上传用户画像、报告或反馈。
-- 不要求 cookie、token 或平台账号。
-- 不绕验证码、登录墙或反机器人机制。
-- 不自动抓取微信群、朋友圈、公司群、校友群等私域内容。
-- 不保存 cookie、token、secret 或登录态凭证。
-- 不用模型补全未知价格、地址、押金、入住时间或联系方式。
-- 不承诺每套房仍在租，不替代线下看房、付款、签约和合同审查。
+详见 [Runtime Adapter Contract](docs/runtime-adapter-contract.md)。
 
 ## 可信等级
 
 | 等级 | 含义 | 使用方式 |
 | --- | --- | --- |
-| L0 | 原始线索或发现候选 | 只作为候选或被拒绝为 out of scope |
-| L1 | 单源结构化，有真实 URL 或用户授权导入证据，并有联系路径 | 可低置信展示，不能写成已验真 |
-| L2 | 多源佐证或重复出现，关键字段和联系路径基本一致 | 可进入短名单 |
-| L3 | 用户联系确认或明确反馈仍在租、可看房 | 可重点推荐 |
+| L0 | 搜索结果、片段、复制文本或未打开页面 | 只能作为待核验候选 |
+| L1 | 已打开公开页面，且至少 3 个关键字段可见 | 可低置信展示 |
+| L2 | 至少两个独立来源交叉确认同一房源，且价格/小区/户型/面积/联系入口等关键字段一致 | 可进入短名单 |
+| L3 | 用户已联系、约看、实看或明确反馈仍在租 | 可重点推荐 |
 
-L3 只能来自用户确认或明确反馈。官方核验入口、平台编号或多源重复都不能单独把房源提升为 L3。
+同一中介在多个平台重复分发不算独立来源。L3 只能来自用户反馈，不能由搜索、模型推断或多源重复自动升级。
+
+## 渠道边界
+
+POC 允许：
+
+- Agent runtime 使用公开 web search 查找公开结果页、公开详情页和公开帖子。
+- Agent runtime 打开用户当前可见的公开页面，并摘录必要字段。
+- 用户主动提供链接、截图、复制文本或浏览器可见内容。
+- 工具保存房源摘要、来源链接、抓取时间、可信等级、风险标记和联系路径。
+
+POC 不做：
+
+- 面向具体平台的长期批量 crawler。
+- 验证码对抗、登录自动化、cookie 复用或登录态保存。
+- 要求用户交出账号、cookie、token 或平台内部接口响应。
+- 大规模复制、镜像、转载第三方平台内容。
+- 把搜索片段写成已验真房源。
+- 保存或公开原发帖人的真实身份。
+
+## Profile 交互原则
+
+- 一次只问一个决策题。
+- 推荐项排第一。
+- 用户只需要选择或纠偏，不需要手写结构化 JSON。
+- 默认隐藏 profile JSON、search brief 和 evidence schema。
+- 用户明确要求“查看 JSON / 查看当前 profile / 为什么这么搜”时再展示内部结构。
+
+## 开发验证
+
+```bash
+python3 -m pytest
+python skills/last7days-rent/scripts/last7days_rent.py --help
+python skills/last7days-rent/scripts/last7days_rent.py report --latest
+```
 
 ## 更多文档
 
-- [用户指南](docs/user-guide.md)
+- [北京京东总部 POC 方案](docs/poc-jd-hq-runtime-profile-html.md)
+- [Runtime Adapter Contract](docs/runtime-adapter-contract.md)
+- [Anchor Pack Scope](docs/poc-anchor-pack-scope.md)
 - [来源政策](docs/source-policy.md)
-- [Provider 架构说明](docs/provider-architecture.md)
-- [排障说明](docs/troubleshooting.md)
 
 ## License
 

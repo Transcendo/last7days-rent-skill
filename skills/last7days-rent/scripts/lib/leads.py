@@ -79,7 +79,6 @@ def _candidate_to_lead(profile: RentProfile, candidate: SourceCandidate) -> Cand
         commute_matches=commute_matches,
         budget_match=budget_match,
         bedroom_match=bedroom_match,
-        provider=candidate.provider,
         score=score,
     )
 

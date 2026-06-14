@@ -1,0 +1,139 @@
+{
+  "items": [
+    {
+      "batch_id": "structured_platforms",
+      "canonical_url": "https://example.com/listing/1",
+      "collected_via": "opened_page",
+      "contact_path": {
+        "entry_url": "https://example.com/listing/1",
+        "type": "platform_entry"
+      },
+      "evidence_id": "ev-001",
+      "field_confidence": {
+        "area_sqm": "high",
+        "bedrooms": "high",
+        "community": "high",
+        "price_monthly": "high"
+      },
+      "listing_status_hint": "unknown",
+      "normalized_fields": {
+        "area_sqm": 60,
+        "bedrooms": 2,
+        "price_monthly": 5300
+      },
+      "observed_at": "2026-06-13T10:00:00+08:00",
+      "page_opened": true,
+      "query": "北京 次渠锦园 二居室 5500 租房 京东总部",
+      "query_id": "structured_platforms-q03",
+      "raw_excerpt": "详情页可见：次渠锦园北区精装二居室，2室，60平，5300元/月。",
+      "snippet": "2室 60平 5300元/月 次渠南地铁站附近",
+      "source_domain": "example.com",
+      "source_name": "58",
+      "source_type": "platform_listing",
+      "source_url": "https://example.com/listing/1",
+      "title": "次渠锦园北区精装二居室",
+      "visible_fields": {
+        "area_text": "60平",
+        "community": "次渠锦园北区",
+        "district_hint": "次渠南",
+        "layout_text": "2室",
+        "price_text": "5300元/月"
+      }
+    },
+    {
+      "batch_id": "community_posts",
+      "canonical_url": "https://example.org/post/abc",
+      "collected_via": "opened_page",
+      "contact_path": {
+        "entry_url": "https://example.org/post/abc",
+        "type": "original_post"
+      },
+      "evidence_id": "ev-002",
+      "field_confidence": {
+        "area_sqm": "medium",
+        "bedrooms": "high",
+        "community": "high",
+        "price_monthly": "medium"
+      },
+      "listing_status_hint": "unknown",
+      "normalized_fields": {
+        "area_sqm": 60,
+        "bedrooms": 2,
+        "price_monthly": 5300
+      },
+      "observed_at": "2026-06-13T10:05:00+08:00",
+      "page_opened": true,
+      "query": "site:douban.com/group 次渠锦园 京东总部 二居室",
+      "query_id": "community_posts-q01",
+      "raw_excerpt": "公开帖子可见：次渠锦园北区二居转租，约60平，5300元/月，原帖联系。",
+      "snippet": "次渠锦园北区二居转租 5300元/月",
+      "source_domain": "example.org",
+      "source_name": "公开帖子",
+      "source_type": "community_post",
+      "source_url": "https://example.org/post/abc",
+      "title": "次渠锦园北区二居转租",
+      "visible_fields": {
+        "area_text": "60平",
+        "community": "次渠锦园北区",
+        "district_hint": "次渠南",
+        "layout_text": "2室",
+        "price_text": "5300元/月"
+      }
+    },
+    {
+      "batch_id": "structured_platforms",
+      "canonical_url": "https://example.net/listing/2",
+      "collected_via": "web_search_result",
+      "contact_path": {
+        "entry_url": "https://example.net/listing/2",
+        "type": "platform_entry"
+      },
+      "evidence_id": "ev-003",
+      "field_confidence": {
+        "bedrooms": "medium",
+        "community": "medium",
+        "price_monthly": "medium"
+      },
+      "listing_status_hint": "unknown",
+      "normalized_fields": {
+        "bedrooms": 2,
+        "price_monthly": 5450
+      },
+      "observed_at": "2026-06-13T10:10:00+08:00",
+      "page_opened": false,
+      "query": "北京 经海路 二居室 5500 租房",
+      "query_id": "structured_platforms-q01",
+      "raw_excerpt": "搜索结果摘要：经海路附近二居，5450元/月。",
+      "snippet": "经海路附近二居 5450元/月",
+      "source_domain": "example.net",
+      "source_name": "安居客",
+      "source_type": "platform_listing",
+      "source_url": "https://example.net/listing/2",
+      "title": "经海路附近二居",
+      "visible_fields": {
+        "community": "经海路小区",
+        "district_hint": "经海路",
+        "layout_text": "2室",
+        "price_text": "5450元/月"
+      }
+    }
+  ],
+  "query_context": {
+    "budget_max": 5500,
+    "budget_target": 5000,
+    "city": "北京",
+    "generated_at": "2026-06-13T10:00:00+08:00",
+    "office_anchor": "北京京东总部",
+    "preferred_bedrooms": 2,
+    "profile_hash": "fixture-profile"
+  },
+  "runtime_meta": {
+    "adapter_version": "0.1.0",
+    "capabilities": [
+      "web_search",
+      "browser_open",
+      "structured_output"
+    ],
+    "runtime_name": "fixture"
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "aliases": [
+    "北京京东总部",
+    "京东总部",
+    "京东亦庄总部"
+  ],
+  "anchor_id": "beijing-jd-hq-yizhuang",
+  "campus_name": "京东总部",
+  "city": "北京",
+  "commute_zones": [
+    {
+      "keywords": [
+        "经海路",
+        "锋创科技园",
+        "通泰国际公馆"
+      ],
+      "label": "近公司",
+      "priority": "A",
+      "risk_notes": [
+        "公寓/商住属性较多",
+        "需核验水电和居住登记"
+      ],
+      "zone_id": "near_office"
+    },
+    {
+      "keywords": [
+        "次渠南",
+        "次渠嘉园",
+        "次渠锦园",
+        "次渠南里"
+      ],
+      "label": "住宅性价比",
+      "priority": "A",
+      "risk_notes": [
+        "需确认到京东总部实际骑行/公交时间"
+      ],
+      "zone_id": "value_residential"
+    },
+    {
+      "keywords": [
+        "东惠家园",
+        "玉江佳园",
+        "次渠北里",
+        "泰禾1号街区",
+        "马驹桥",
+        "亦庄文化园",
+        "荣京东街"
+      ],
+      "label": "预算备选",
+      "priority": "B",
+      "risk_notes": [
+        "可能是开间/公寓/合租变体",
+        "需严格核验通勤时间"
+      ],
+      "zone_id": "budget_backup"
+    }
+  ],
+  "company": "京东",
+  "office_keywords": [
+    "科创十一街",
+    "经海路",
+    "亦庄"
+  ]
+}

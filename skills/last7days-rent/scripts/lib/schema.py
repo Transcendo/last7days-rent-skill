@@ -35,10 +35,13 @@ class RentProfile:
     user_goal: dict[str, Any] = field(default_factory=dict)
     office_anchor: dict[str, Any] = field(default_factory=dict)
     commute: dict[str, Any] = field(default_factory=dict)
+    commute_preferences: dict[str, Any] = field(default_factory=dict)
     housing_constraints: dict[str, Any] = field(default_factory=dict)
     decision_preferences: dict[str, Any] = field(default_factory=dict)
     scoring_weights: dict[str, float] = field(default_factory=dict)
     source_preferences: dict[str, Any] = field(default_factory=dict)
+    risk_preferences: dict[str, Any] = field(default_factory=dict)
+    wizard_state: dict[str, Any] = field(default_factory=dict)
     open_questions: list[str] = field(default_factory=list)
     provenance: dict[str, Any] = field(default_factory=dict)
 
@@ -50,12 +53,25 @@ class RentProfile:
             user_goal={"slogan": "last7days = 帮助用户 7 天完成租房", "target_days": 7},
             office_anchor={"company": None, "office_name": None, "address_hint": None, "city": None, "confidence": 0.0},
             commute={"max_minutes": 35, "preferred_transit": ["metro", "walk"], "derived_areas": []},
+            commute_preferences={
+                "strategy": "balanced",
+                "max_minutes": 35,
+                "preferred_modes": ["metro", "walk"],
+                "derived_zones_priority": [],
+                "expand_zones_if_sparse": [],
+            },
             housing_constraints={
                 "budget_min": None,
+                "budget_target": None,
                 "budget_max": None,
+                "budget_hard_max": None,
                 "rental_mode": "either",
                 "move_in_by": None,
+                "preferred_bedrooms": None,
                 "min_bedrooms": None,
+                "allow_studio": False,
+                "allow_shared": False,
+                "over_budget_policy": "strict",
             },
             decision_preferences={},
             scoring_weights={
@@ -67,6 +83,8 @@ class RentProfile:
                 "risk_penalty": 0.35,
             },
             source_preferences={"p0_order": ["beike_lianjia", "wellcee", "fang", "official_verifier"]},
+            risk_preferences={"source_strategy": "platforms_plus_personal", "risk_filter": "stable_filter", "require_contact_path": True},
+            wizard_state={"current_step": None, "answered_question_ids": [], "confirmed_fields": [], "open_questions": []},
             open_questions=["请先确认公司、办公点或园区，用它推导城市和通勤圈。"],
             provenance={"created_by": "last7days-rent local engine"},
         )
@@ -97,8 +115,6 @@ class SearchRequest:
     limit: int = 10
     sources: list[str] = field(default_factory=list)
     fixture: bool = False
-    provider_search: str = "auto"
-    provider_extract: str = "auto"
 
     def to_dict(self) -> dict[str, Any]:
         return to_plain(self)
@@ -134,51 +150,6 @@ class SourceFetchResult:
 
 
 @dataclass
-class ProviderDiagnostic:
-    capability: Literal["search", "extract"]
-    requested_provider: str
-    active_provider: str | None
-    provider: str
-    status: Literal["available", "unavailable", "selected", "fallback", "warning"]
-    message: str | None = None
-
-    def to_dict(self) -> dict[str, Any]:
-        return to_plain(self)
-
-
-@dataclass
-class SearchHit:
-    provider: str
-    query: str
-    title: str
-    url: str
-    description: str = ""
-    position: int = 0
-    raw: dict[str, Any] = field(default_factory=dict)
-    collected_at: str = field(default_factory=now_iso)
-
-    def to_dict(self) -> dict[str, Any]:
-        return to_plain(self)
-
-
-@dataclass
-class ExtractedDocument:
-    provider: str
-    requested_url: str
-    final_url: str | None = None
-    title: str = ""
-    content: str = ""
-    raw_content: str = ""
-    metadata: dict[str, Any] = field(default_factory=dict)
-    status: Literal["ok", "failed", "blocked"] = "ok"
-    error: str | None = None
-    collected_at: str = field(default_factory=now_iso)
-
-    def to_dict(self) -> dict[str, Any]:
-        return to_plain(self)
-
-
-@dataclass
 class SourceCandidate:
     candidate_id: str
     source_id: str
@@ -188,10 +159,8 @@ class SourceCandidate:
     snippet: str | None = None
     collected_at: str = field(default_factory=now_iso)
     can_promote: bool = True
-    provider: str | None = None
     query: str | None = None
     position: int | None = None
-    ddgs_description: str | None = None
     visible_fields: dict[str, Any] = field(default_factory=dict)
     fetch_status: str | None = None
     parse_status: str | None = None
@@ -217,7 +186,6 @@ class CandidateLead:
     commute_matches: list[str] = field(default_factory=list)
     budget_match: bool | None = None
     bedroom_match: bool | None = None
-    provider: str | None = None
     trust_level: TrustLevel = "L0"
     status: str = "candidate_only_pending_platform_verification"
     next_action: str = "打开平台页确认是否仍在租、费用条款和联系入口；未打开详情前不能视为已验真。"
