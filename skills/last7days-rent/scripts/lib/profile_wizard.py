@@ -92,7 +92,7 @@ QUESTIONS: list[WizardQuestion] = [
         writes_to=["risk_preferences.source_strategy", "risk_preferences.preferred_sources"],
         options=[
             {"value": "platforms_plus_personal", "label": "平台优先，个人转租补充", "description": "优先平台，个人转租只做补充。", "recommended": True},
-            {"value": "public_all_channels", "label": "全渠道都要", "description": "平台、个人转租、公开文章都纳入，统一标风险。"},
+            {"value": "public_all_channels", "label": "全渠道都要", "description": "平台、豆瓣转租、Wellcee 和品牌公寓都纳入，统一标风险。"},
             {"value": "platform_only", "label": "只看平台房源", "description": "更稳，但可能错过低价线索。"},
             {"value": "personal_first", "label": "优先个人直租/转租", "description": "可能更便宜，但核验成本更高。"},
         ],

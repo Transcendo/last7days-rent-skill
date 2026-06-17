@@ -17,7 +17,7 @@ def parse_source_fixture(source_id: str, text: str, base_url: str | None = None)
     if source_id != "official_verifier" and not is_enabled_p0_source(source_id):
         return [], [], [f"{source_id} is not an enabled P0 listing source"]
     try:
-        if source_id == "beike_lianjia":
+        if source_id in {"beike_lianjia", "lianjia_mobile_list"}:
             return parse_beike_lianjia_html(text, base_url=base_url or "https://sh.zu.ke.com"), [], warnings
         if source_id == "wellcee":
             return parse_wellcee_jsonld(text), [], warnings

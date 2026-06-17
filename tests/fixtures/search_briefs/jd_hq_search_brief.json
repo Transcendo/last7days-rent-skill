@@ -1,0 +1,1054 @@
+{
+  "anchor_id": "beijing-jd-hq-yizhuang",
+  "collection_rules": {
+    "capture_when_visible": [
+      "price_text",
+      "area_text",
+      "layout_text",
+      "community",
+      "district_hint",
+      "contact_path",
+      "published_at"
+    ],
+    "l0_policy": "lead_pool_only",
+    "l1_requires_page_opened": true,
+    "main_recommendation_min_trust": "L1",
+    "min_visible_core_fields_for_l1": 3,
+    "must_capture": [
+      "evidence_id",
+      "batch_id",
+      "query_id",
+      "query",
+      "source_url",
+      "source_name",
+      "source_type",
+      "page_opened",
+      "raw_excerpt",
+      "observed_at"
+    ],
+    "privacy": [
+      "不公开原发帖人身份",
+      "不保存 cookie/token/session",
+      "不自动读取微信群/公司群/校友群",
+      "公开联系方式优先展示平台入口或 contact_path"
+    ],
+    "required_fields_for_l1": [
+      "source_url",
+      "observed_at",
+      "raw_excerpt"
+    ]
+  },
+  "execution_contract": {
+    "blocked_policy": "Record login/captcha/app-wall pages in rejected or item.reject_reasons; do not bypass.",
+    "input": "Agent runtime reads this search brief and executes public web_search/browser_open only.",
+    "output": "Agent runtime writes evidence JSON, then CLI validates with ingest --validate."
+  },
+  "generated_at": "2026-06-17T15:27:37+00:00",
+  "guide_sources": [
+    {
+      "confidence": "medium",
+      "source_name": "NestHub 京东总部租房指南",
+      "source_updated_at": "2026-05-07",
+      "source_url": "https://nest-hub.eggcampus.com/docs/beijing/jd-headquarters-renting-guide",
+      "usage": "guide_only_not_realtime_listing"
+    },
+    {
+      "confidence": "medium_low",
+      "source_name": "NestHub llms-full prior seed",
+      "source_url": "https://nest-hub.eggcampus.com/llms-full.txt",
+      "usage": "public_prior_seed_not_realtime_listing"
+    }
+  ],
+  "profile_constraints": {
+    "address_keywords": [
+      "亦庄",
+      "经海路",
+      "科创十一街"
+    ],
+    "bedroom_label": "一居室",
+    "budget_max": 6000,
+    "budget_target": 5000,
+    "city": "北京",
+    "commute_minutes": 30,
+    "commute_strategy": "near_first",
+    "company": "京东",
+    "needs_confirmation": [
+      "具体楼栋入口",
+      "园区门",
+      "班车站点",
+      "每周到岗频率",
+      "晚归频率"
+    ],
+    "office_aliases": [
+      "北京京东总部",
+      "京东亦庄总部",
+      "京东总部"
+    ],
+    "office_anchor": "北京京东总部",
+    "preferred_bedrooms": 1,
+    "risk_filter": "collect_then_user_screen",
+    "source_strategy": "public_all_channels"
+  },
+  "profile_hash": "a58325ca6beb",
+  "profile_id": "local-current",
+  "profile_summary": {
+    "bedroom_label": "一居室",
+    "budget_max": 6000,
+    "budget_target": 5000,
+    "city": "北京",
+    "commute_strategy": "near_first",
+    "needs_confirmation": [
+      "具体楼栋入口",
+      "园区门",
+      "班车站点",
+      "每周到岗频率",
+      "晚归频率"
+    ],
+    "office_anchor": "北京京东总部",
+    "preferred_bedrooms": 1,
+    "source_strategy": "public_all_channels"
+  },
+  "run_budget": {
+    "expand_if_accepted_below": 5,
+    "expand_if_l1_below": 5,
+    "max_detail_pages_per_source": 8,
+    "max_detail_pages_total": 48,
+    "max_queries_per_batch": 10,
+    "max_results_per_query": 8,
+    "max_search_batches": 6,
+    "max_search_queries": 45,
+    "stop_after_consecutive_empty_batches": 2,
+    "target_accepted_listings": 5,
+    "target_candidates_total": 30,
+    "target_l1_or_better": 8,
+    "target_main_recommendations": 5
+  },
+  "scenario": "jd_hq_beijing_poc",
+  "schema_version": "0.3.0-poc",
+  "search_batches": [
+    {
+      "batch_id": "p0_price_anchor",
+      "detail_open_policy": "open_detail_or_list_items_first",
+      "expected_output": {
+        "candidate_policy": "L1 only after page_opened and enough visible fields; otherwise L0 lead pool.",
+        "url_classes": [
+          "platform_listing_detail",
+          "platform_list_page"
+        ]
+      },
+      "goal": "建立平台价格锚点并发现可打开详情页",
+      "intent": "price_anchor",
+      "intents": [
+        "price_anchor",
+        "specific_listing"
+      ],
+      "max_detail_pages": 8,
+      "max_results_per_query": 8,
+      "priority": 1,
+      "queries": [
+        {
+          "community": "经海路",
+          "expected_url_classes": [
+            "platform_listing_detail",
+            "platform_list_page"
+          ],
+          "intent": "price_anchor",
+          "query": "site:fang.com/zf/bj 经海路 一居室 6000以内 租房 京东总部",
+          "query_id": "p0_price_anchor-q01",
+          "sources": [
+            "fang"
+          ],
+          "zone_id": "near_office",
+          "zone_label": "0-2km 近场"
+        },
+        {
+          "community": "经海路",
+          "expected_url_classes": [
+            "platform_listing_detail",
+            "platform_list_page"
+          ],
+          "intent": "price_anchor",
+          "query": "经海路 京东总部 一居室 6000以内 租房 房天下",
+          "query_id": "p0_price_anchor-q02",
+          "sources": [
+            "fang"
+          ],
+          "zone_id": "near_office",
+          "zone_label": "0-2km 近场"
+        },
+        {
+          "community": "经海路",
+          "expected_url_classes": [
+            "platform_listing_detail",
+            "platform_list_page"
+          ],
+          "intent": "price_anchor",
+          "query": "site:m.ke.com/chuzu/bj 经海路 公寓 京东总部",
+          "query_id": "p0_price_anchor-q03",
+          "sources": [
+            "beike_lianjia"
+          ],
+          "zone_id": "near_office",
+          "zone_label": "0-2km 近场"
+        },
+        {
+          "community": "经海路",
+          "expected_url_classes": [
+            "platform_listing_detail",
+            "platform_list_page"
+          ],
+          "intent": "price_anchor",
+          "query": "site:lianjia.com 北京 经海路 一居室 6000以内 租房",
+          "query_id": "p0_price_anchor-q04",
+          "sources": [
+            "beike_lianjia"
+          ],
+          "zone_id": "near_office",
+          "zone_label": "0-2km 近场"
+        },
+        {
+          "community": "经海路",
+          "expected_url_classes": [
+            "platform_listing_detail",
+            "platform_list_page"
+          ],
+          "intent": "price_anchor",
+          "query": "site:m.lianjia.com/chuzu/bj/brand/200301001000 经海路 经海路 一居室 租房",
+          "query_id": "p0_price_anchor-q05",
+          "sources": [
+            "lianjia_mobile_list"
+          ],
+          "zone_id": "near_office",
+          "zone_label": "0-2km 近场"
+        },
+        {
+          "community": "经海路",
+          "expected_url_classes": [
+            "platform_listing_detail",
+            "platform_list_page"
+          ],
+          "intent": "price_anchor",
+          "query": "site:wellcee.com/rent-apartment 经海路 京东总部 经海路 租房",
+          "query_id": "p0_price_anchor-q06",
+          "sources": [
+            "wellcee"
+          ],
+          "zone_id": "near_office",
+          "zone_label": "0-2km 近场"
+        },
+        {
+          "community": "通泰国际",
+          "expected_url_classes": [
+            "platform_listing_detail",
+            "platform_list_page"
+          ],
+          "intent": "price_anchor",
+          "query": "site:fang.com/zf/bj 通泰国际 一居室 6000以内 租房 京东总部",
+          "query_id": "p0_price_anchor-q07",
+          "sources": [
+            "fang"
+          ],
+          "zone_id": "near_office",
+          "zone_label": "0-2km 近场"
+        },
+        {
+          "community": "通泰国际",
+          "expected_url_classes": [
+            "platform_listing_detail",
+            "platform_list_page"
+          ],
+          "intent": "price_anchor",
+          "query": "通泰国际 京东总部 一居室 6000以内 租房 房天下",
+          "query_id": "p0_price_anchor-q08",
+          "sources": [
+            "fang"
+          ],
+          "zone_id": "near_office",
+          "zone_label": "0-2km 近场"
+        },
+        {
+          "community": "通泰国际",
+          "expected_url_classes": [
+            "platform_listing_detail",
+            "platform_list_page"
+          ],
+          "intent": "price_anchor",
+          "query": "site:m.ke.com/chuzu/bj 通泰国际 公寓 京东总部",
+          "query_id": "p0_price_anchor-q09",
+          "sources": [
+            "beike_lianjia"
+          ],
+          "zone_id": "near_office",
+          "zone_label": "0-2km 近场"
+        },
+        {
+          "community": "通泰国际",
+          "expected_url_classes": [
+            "platform_listing_detail",
+            "platform_list_page"
+          ],
+          "intent": "price_anchor",
+          "query": "site:lianjia.com 北京 通泰国际 一居室 6000以内 租房",
+          "query_id": "p0_price_anchor-q10",
+          "sources": [
+            "beike_lianjia"
+          ],
+          "zone_id": "near_office",
+          "zone_label": "0-2km 近场"
+        }
+      ],
+      "source_name": "public_platform_price_anchor",
+      "source_tier": "P0",
+      "sources": [
+        "fang",
+        "beike_lianjia",
+        "lianjia_mobile_list",
+        "wellcee"
+      ],
+      "zone_ids": [
+        "near_office",
+        "main_residential"
+      ]
+    },
+    {
+      "batch_id": "near_office",
+      "detail_open_policy": "open_detail_or_list_items_first",
+      "expected_output": {
+        "candidate_policy": "L1 only after page_opened and enough visible fields; otherwise L0 lead pool.",
+        "url_classes": [
+          "platform_listing_detail",
+          "platform_list_page"
+        ]
+      },
+      "goal": "获取经海路/近场公开房源线索",
+      "intent": "specific_listing",
+      "intents": [
+        "specific_listing",
+        "community_supply"
+      ],
+      "max_detail_pages": 8,
+      "max_results_per_query": 8,
+      "priority": 2,
+      "queries": [
+        {
+          "community": "经海路",
+          "expected_url_classes": [
+            "platform_listing_detail",
+            "platform_list_page"
+          ],
+          "intent": "specific_listing",
+          "query": "北京 经海路 一居室 6000以内 租房 京东总部",
+          "query_id": "near_office-q01",
+          "sources": [
+            "fang",
+            "beike_lianjia",
+            "lianjia_mobile_list",
+            "wellcee",
+            "anjuke_58"
+          ],
+          "zone_id": "near_office",
+          "zone_label": "0-2km 近场"
+        },
+        {
+          "community": "经海路",
+          "expected_url_classes": [
+            "platform_listing_detail",
+            "platform_list_page"
+          ],
+          "intent": "specific_listing",
+          "query": "经海路 一居室 整租 经海路 京东总部",
+          "query_id": "near_office-q02",
+          "sources": [
+            "fang",
+            "beike_lianjia",
+            "lianjia_mobile_list",
+            "wellcee",
+            "anjuke_58"
+          ],
+          "zone_id": "near_office",
+          "zone_label": "0-2km 近场"
+        },
+        {
+          "community": "经海路",
+          "expected_url_classes": [
+            "platform_listing_detail",
+            "platform_list_page"
+          ],
+          "intent": "specific_listing",
+          "query": "site:m.lianjia.com/chuzu/bj/brand/200301001000/yizhuang1 经海路 一居室 经海路",
+          "query_id": "near_office-q03",
+          "sources": [
+            "lianjia_mobile_list"
+          ],
+          "zone_id": "near_office",
+          "zone_label": "0-2km 近场"
+        },
+        {
+          "community": "经海路",
+          "expected_url_classes": [
+            "platform_listing_detail",
+            "platform_list_page"
+          ],
+          "intent": "specific_listing",
+          "query": "site:wellcee.com/rent-apartment 经海路 京东总部 租房",
+          "query_id": "near_office-q04",
+          "sources": [
+            "wellcee"
+          ],
+          "zone_id": "near_office",
+          "zone_label": "0-2km 近场"
+        },
+        {
+          "community": "通泰国际",
+          "expected_url_classes": [
+            "platform_listing_detail",
+            "platform_list_page"
+          ],
+          "intent": "specific_listing",
+          "query": "北京 通泰国际 一居室 6000以内 租房 京东总部",
+          "query_id": "near_office-q05",
+          "sources": [
+            "fang",
+            "beike_lianjia",
+            "lianjia_mobile_list",
+            "wellcee",
+            "anjuke_58"
+          ],
+          "zone_id": "near_office",
+          "zone_label": "0-2km 近场"
+        },
+        {
+          "community": "通泰国际",
+          "expected_url_classes": [
+            "platform_listing_detail",
+            "platform_list_page"
+          ],
+          "intent": "specific_listing",
+          "query": "通泰国际 一居室 整租 经海路 京东总部",
+          "query_id": "near_office-q06",
+          "sources": [
+            "fang",
+            "beike_lianjia",
+            "lianjia_mobile_list",
+            "wellcee",
+            "anjuke_58"
+          ],
+          "zone_id": "near_office",
+          "zone_label": "0-2km 近场"
+        },
+        {
+          "community": "通泰国际",
+          "expected_url_classes": [
+            "platform_listing_detail",
+            "platform_list_page"
+          ],
+          "intent": "specific_listing",
+          "query": "site:m.lianjia.com/chuzu/bj/brand/200301001000/yizhuang1 通泰国际 一居室 经海路",
+          "query_id": "near_office-q07",
+          "sources": [
+            "lianjia_mobile_list"
+          ],
+          "zone_id": "near_office",
+          "zone_label": "0-2km 近场"
+        },
+        {
+          "community": "通泰国际",
+          "expected_url_classes": [
+            "platform_listing_detail",
+            "platform_list_page"
+          ],
+          "intent": "specific_listing",
+          "query": "site:wellcee.com/rent-apartment 通泰国际 京东总部 租房",
+          "query_id": "near_office-q08",
+          "sources": [
+            "wellcee"
+          ],
+          "zone_id": "near_office",
+          "zone_label": "0-2km 近场"
+        }
+      ],
+      "source_name": "near_office_public",
+      "source_tier": "P0",
+      "sources": [
+        "fang",
+        "beike_lianjia",
+        "lianjia_mobile_list",
+        "wellcee",
+        "anjuke_58"
+      ],
+      "zone_ids": [
+        "near_office"
+      ]
+    },
+    {
+      "batch_id": "main_residential",
+      "detail_open_policy": "open_detail_or_list_items_first",
+      "expected_output": {
+        "candidate_policy": "L1 only after page_opened and enough visible fields; otherwise L0 lead pool.",
+        "url_classes": [
+          "platform_listing_detail",
+          "platform_list_page",
+          "community_topic"
+        ]
+      },
+      "goal": "获取次渠/次渠南主力住宅圈公开房源",
+      "intent": "specific_listing",
+      "intents": [
+        "specific_listing",
+        "community_supply"
+      ],
+      "max_detail_pages": 8,
+      "max_results_per_query": 8,
+      "priority": 3,
+      "queries": [
+        {
+          "community": "次渠",
+          "expected_url_classes": [
+            "platform_listing_detail",
+            "platform_list_page",
+            "community_topic"
+          ],
+          "intent": "specific_listing",
+          "query": "北京 次渠 一居室 6000以内 租房 京东总部",
+          "query_id": "main_residential-q01",
+          "sources": [
+            "fang",
+            "anjuke_58",
+            "lianjia_mobile_list",
+            "beike_lianjia"
+          ],
+          "zone_id": "main_residential",
+          "zone_label": "2-5km 主力住宅圈"
+        },
+        {
+          "community": "次渠",
+          "expected_url_classes": [
+            "platform_listing_detail",
+            "platform_list_page",
+            "community_topic"
+          ],
+          "intent": "specific_listing",
+          "query": "site:m.lianjia.com/chuzu/bj/brand/200301001000/beijingjingjijishukaifaqu 次渠 一居室 租房",
+          "query_id": "main_residential-q02",
+          "sources": [
+            "lianjia_mobile_list"
+          ],
+          "zone_id": "main_residential",
+          "zone_label": "2-5km 主力住宅圈"
+        },
+        {
+          "community": "次渠",
+          "expected_url_classes": [
+            "platform_listing_detail",
+            "platform_list_page",
+            "community_topic"
+          ],
+          "intent": "specific_listing",
+          "query": "site:bj.zu.anjuke.com 次渠 一居室 京东总部",
+          "query_id": "main_residential-q03",
+          "sources": [
+            "anjuke_58"
+          ],
+          "zone_id": "main_residential",
+          "zone_label": "2-5km 主力住宅圈"
+        },
+        {
+          "community": "次渠",
+          "expected_url_classes": [
+            "platform_listing_detail",
+            "platform_list_page",
+            "community_topic"
+          ],
+          "intent": "specific_listing",
+          "query": "site:m.58.com/bj/zufang 次渠 一居室 租房",
+          "query_id": "main_residential-q04",
+          "sources": [
+            "anjuke_58"
+          ],
+          "zone_id": "main_residential",
+          "zone_label": "2-5km 主力住宅圈"
+        },
+        {
+          "community": "次渠南",
+          "expected_url_classes": [
+            "platform_listing_detail",
+            "platform_list_page",
+            "community_topic"
+          ],
+          "intent": "specific_listing",
+          "query": "北京 次渠南 一居室 6000以内 租房 京东总部",
+          "query_id": "main_residential-q05",
+          "sources": [
+            "fang",
+            "anjuke_58",
+            "lianjia_mobile_list",
+            "beike_lianjia"
+          ],
+          "zone_id": "main_residential",
+          "zone_label": "2-5km 主力住宅圈"
+        },
+        {
+          "community": "次渠南",
+          "expected_url_classes": [
+            "platform_listing_detail",
+            "platform_list_page",
+            "community_topic"
+          ],
+          "intent": "specific_listing",
+          "query": "site:m.lianjia.com/chuzu/bj/brand/200301001000/beijingjingjijishukaifaqu 次渠南 一居室 租房",
+          "query_id": "main_residential-q06",
+          "sources": [
+            "lianjia_mobile_list"
+          ],
+          "zone_id": "main_residential",
+          "zone_label": "2-5km 主力住宅圈"
+        },
+        {
+          "community": "次渠南",
+          "expected_url_classes": [
+            "platform_listing_detail",
+            "platform_list_page",
+            "community_topic"
+          ],
+          "intent": "specific_listing",
+          "query": "site:bj.zu.anjuke.com 次渠南 一居室 京东总部",
+          "query_id": "main_residential-q07",
+          "sources": [
+            "anjuke_58"
+          ],
+          "zone_id": "main_residential",
+          "zone_label": "2-5km 主力住宅圈"
+        },
+        {
+          "community": "次渠南",
+          "expected_url_classes": [
+            "platform_listing_detail",
+            "platform_list_page",
+            "community_topic"
+          ],
+          "intent": "specific_listing",
+          "query": "site:m.58.com/bj/zufang 次渠南 一居室 租房",
+          "query_id": "main_residential-q08",
+          "sources": [
+            "anjuke_58"
+          ],
+          "zone_id": "main_residential",
+          "zone_label": "2-5km 主力住宅圈"
+        }
+      ],
+      "source_name": "main_residential_public",
+      "source_tier": "P0",
+      "sources": [
+        "fang",
+        "anjuke_58",
+        "lianjia_mobile_list",
+        "beike_lianjia"
+      ],
+      "zone_ids": [
+        "main_residential"
+      ]
+    },
+    {
+      "batch_id": "space_budget_backup",
+      "detail_open_policy": "open_detail_or_list_items_first",
+      "expected_output": {
+        "candidate_policy": "L1 only after page_opened and enough visible fields; otherwise L0 lead pool.",
+        "url_classes": [
+          "platform_listing_detail",
+          "platform_list_page"
+        ]
+      },
+      "goal": "候选不足时扩展马驹桥等面积/预算备选圈",
+      "intent": "budget_backup",
+      "intents": [
+        "budget_backup",
+        "community_supply"
+      ],
+      "max_detail_pages": 6,
+      "max_results_per_query": 8,
+      "priority": 4,
+      "queries": [
+        {
+          "community": "马驹桥",
+          "expected_url_classes": [
+            "platform_listing_detail",
+            "platform_list_page"
+          ],
+          "intent": "budget_backup",
+          "query": "北京 马驹桥 一居室 6000以内 租房 京东总部",
+          "query_id": "space_budget_backup-q01",
+          "sources": [
+            "fang",
+            "anjuke_58",
+            "lianjia_mobile_list",
+            "beike_lianjia"
+          ],
+          "zone_id": "space_budget_backup",
+          "zone_label": "5-8km 面积/预算备选"
+        },
+        {
+          "community": "马驹桥",
+          "expected_url_classes": [
+            "platform_listing_detail",
+            "platform_list_page"
+          ],
+          "intent": "budget_backup",
+          "query": "马驹桥 经海路 通勤 租房 一居室",
+          "query_id": "space_budget_backup-q02",
+          "sources": [
+            "fang",
+            "anjuke_58",
+            "lianjia_mobile_list",
+            "beike_lianjia"
+          ],
+          "zone_id": "space_budget_backup",
+          "zone_label": "5-8km 面积/预算备选"
+        },
+        {
+          "community": "富力尚悦居",
+          "expected_url_classes": [
+            "platform_listing_detail",
+            "platform_list_page"
+          ],
+          "intent": "budget_backup",
+          "query": "北京 富力尚悦居 一居室 6000以内 租房 京东总部",
+          "query_id": "space_budget_backup-q03",
+          "sources": [
+            "fang",
+            "anjuke_58",
+            "lianjia_mobile_list",
+            "beike_lianjia"
+          ],
+          "zone_id": "space_budget_backup",
+          "zone_label": "5-8km 面积/预算备选"
+        },
+        {
+          "community": "富力尚悦居",
+          "expected_url_classes": [
+            "platform_listing_detail",
+            "platform_list_page"
+          ],
+          "intent": "budget_backup",
+          "query": "富力尚悦居 经海路 通勤 租房 一居室",
+          "query_id": "space_budget_backup-q04",
+          "sources": [
+            "fang",
+            "anjuke_58",
+            "lianjia_mobile_list",
+            "beike_lianjia"
+          ],
+          "zone_id": "space_budget_backup",
+          "zone_label": "5-8km 面积/预算备选"
+        },
+        {
+          "community": "星悦国际",
+          "expected_url_classes": [
+            "platform_listing_detail",
+            "platform_list_page"
+          ],
+          "intent": "budget_backup",
+          "query": "北京 星悦国际 一居室 6000以内 租房 京东总部",
+          "query_id": "space_budget_backup-q05",
+          "sources": [
+            "fang",
+            "anjuke_58",
+            "lianjia_mobile_list",
+            "beike_lianjia"
+          ],
+          "zone_id": "space_budget_backup",
+          "zone_label": "5-8km 面积/预算备选"
+        },
+        {
+          "community": "星悦国际",
+          "expected_url_classes": [
+            "platform_listing_detail",
+            "platform_list_page"
+          ],
+          "intent": "budget_backup",
+          "query": "星悦国际 经海路 通勤 租房 一居室",
+          "query_id": "space_budget_backup-q06",
+          "sources": [
+            "fang",
+            "anjuke_58",
+            "lianjia_mobile_list",
+            "beike_lianjia"
+          ],
+          "zone_id": "space_budget_backup",
+          "zone_label": "5-8km 面积/预算备选"
+        }
+      ],
+      "source_name": "space_budget_backup",
+      "source_tier": "P1",
+      "sources": [
+        "fang",
+        "anjuke_58",
+        "lianjia_mobile_list",
+        "beike_lianjia"
+      ],
+      "zone_ids": [
+        "space_budget_backup"
+      ]
+    },
+    {
+      "batch_id": "transfer_personal",
+      "detail_open_policy": "open_topic_page_then_extract_visible_fields",
+      "expected_output": {
+        "candidate_policy": "L1 only after page_opened and enough visible fields; otherwise L0 lead pool.",
+        "url_classes": [
+          "community_topic",
+          "platform_listing_detail"
+        ]
+      },
+      "goal": "发现公开转租/个人房源帖子并打开正文核验",
+      "intent": "transfer_personal",
+      "intents": [
+        "transfer_personal",
+        "community_supply"
+      ],
+      "max_detail_pages": 6,
+      "max_results_per_query": 8,
+      "priority": 5,
+      "queries": [
+        {
+          "community": "经海路",
+          "expected_url_classes": [
+            "community_topic",
+            "platform_listing_detail"
+          ],
+          "intent": "transfer_personal",
+          "query": "site:douban.com/group 经海路 京东总部 租房 一居室",
+          "query_id": "transfer_personal-q01",
+          "sources": [
+            "douban_public_group"
+          ],
+          "zone_id": "near_office",
+          "zone_label": "0-2km 近场"
+        },
+        {
+          "community": "经海路",
+          "expected_url_classes": [
+            "community_topic",
+            "platform_listing_detail"
+          ],
+          "intent": "transfer_personal",
+          "query": "site:m.douban.com/group 经海路 转租 京东总部",
+          "query_id": "transfer_personal-q02",
+          "sources": [
+            "douban_public_group"
+          ],
+          "zone_id": "near_office",
+          "zone_label": "0-2km 近场"
+        },
+        {
+          "community": "通泰国际",
+          "expected_url_classes": [
+            "community_topic",
+            "platform_listing_detail"
+          ],
+          "intent": "transfer_personal",
+          "query": "site:douban.com/group 通泰国际 京东总部 租房 一居室",
+          "query_id": "transfer_personal-q03",
+          "sources": [
+            "douban_public_group"
+          ],
+          "zone_id": "near_office",
+          "zone_label": "0-2km 近场"
+        },
+        {
+          "community": "通泰国际",
+          "expected_url_classes": [
+            "community_topic",
+            "platform_listing_detail"
+          ],
+          "intent": "transfer_personal",
+          "query": "site:m.douban.com/group 通泰国际 转租 京东总部",
+          "query_id": "transfer_personal-q04",
+          "sources": [
+            "douban_public_group"
+          ],
+          "zone_id": "near_office",
+          "zone_label": "0-2km 近场"
+        }
+      ],
+      "source_name": "public_transfer_personal",
+      "source_tier": "P1",
+      "sources": [
+        "douban_public_group"
+      ],
+      "zone_ids": [
+        "near_office",
+        "main_residential"
+      ]
+    },
+    {
+      "batch_id": "brand_apartment",
+      "detail_open_policy": "open_detail_or_list_items_first",
+      "expected_output": {
+        "candidate_policy": "L1 only after page_opened and enough visible fields; otherwise L0 lead pool.",
+        "url_classes": [
+          "platform_listing_detail",
+          "platform_list_page"
+        ]
+      },
+      "goal": "发现品牌公寓和短期过渡选项",
+      "intent": "brand_apartment",
+      "intents": [
+        "brand_apartment",
+        "transition_option"
+      ],
+      "max_detail_pages": 4,
+      "max_results_per_query": 8,
+      "priority": 6,
+      "queries": [
+        {
+          "community": "经海路",
+          "expected_url_classes": [
+            "platform_listing_detail",
+            "platform_list_page"
+          ],
+          "intent": "brand_apartment",
+          "query": "site:wellcee.com/rent-apartment 经海路 京东总部 经海路",
+          "query_id": "brand_apartment-q01",
+          "sources": [
+            "wellcee"
+          ],
+          "zone_id": "near_office",
+          "zone_label": "0-2km 近场"
+        },
+        {
+          "community": "经海路",
+          "expected_url_classes": [
+            "platform_listing_detail",
+            "platform_list_page"
+          ],
+          "intent": "brand_apartment",
+          "query": "site:ziroom.com 经海路 自如 一居室 京东总部",
+          "query_id": "brand_apartment-q02",
+          "sources": [
+            "ziroom"
+          ],
+          "zone_id": "near_office",
+          "zone_label": "0-2km 近场"
+        },
+        {
+          "community": "经海路",
+          "expected_url_classes": [
+            "platform_listing_detail",
+            "platform_list_page"
+          ],
+          "intent": "brand_apartment",
+          "query": "经海路 乐乎 公寓 经海路 京东总部",
+          "query_id": "brand_apartment-q03",
+          "sources": [
+            "lefull"
+          ],
+          "zone_id": "near_office",
+          "zone_label": "0-2km 近场"
+        },
+        {
+          "community": "经海路",
+          "expected_url_classes": [
+            "platform_listing_detail",
+            "platform_list_page"
+          ],
+          "intent": "brand_apartment",
+          "query": "site:wb-v3.lefull.cn/Search/ContentSearch 经海路 乐乎 公寓",
+          "query_id": "brand_apartment-q04",
+          "sources": [
+            "lefull"
+          ],
+          "zone_id": "near_office",
+          "zone_label": "0-2km 近场"
+        },
+        {
+          "community": "经海路",
+          "expected_url_classes": [
+            "platform_listing_detail",
+            "platform_list_page"
+          ],
+          "intent": "brand_apartment",
+          "query": "泊寓 亦庄店 经海三路 京东总部",
+          "query_id": "brand_apartment-q05",
+          "sources": [
+            "inboyu"
+          ],
+          "zone_id": "near_office",
+          "zone_label": "0-2km 近场"
+        },
+        {
+          "community": "经海路",
+          "expected_url_classes": [
+            "platform_listing_detail",
+            "platform_list_page"
+          ],
+          "intent": "brand_apartment",
+          "query": "site:m.inboyu.com 亦庄店 经海三路 泊寓",
+          "query_id": "brand_apartment-q06",
+          "sources": [
+            "inboyu"
+          ],
+          "zone_id": "near_office",
+          "zone_label": "0-2km 近场"
+        },
+        {
+          "community": "经海路",
+          "expected_url_classes": [
+            "platform_listing_detail",
+            "platform_list_page"
+          ],
+          "intent": "brand_apartment",
+          "query": "蜂客 经海二路 荣京东街 京东总部",
+          "query_id": "brand_apartment-q07",
+          "sources": [
+            "brand_apartment_public"
+          ],
+          "zone_id": "near_office",
+          "zone_label": "0-2km 近场"
+        },
+        {
+          "community": "经海路",
+          "expected_url_classes": [
+            "platform_listing_detail",
+            "platform_list_page"
+          ],
+          "intent": "brand_apartment",
+          "query": "有巢 亦庄文化园 京东总部",
+          "query_id": "brand_apartment-q08",
+          "sources": [
+            "brand_apartment_public"
+          ],
+          "zone_id": "near_office",
+          "zone_label": "0-2km 近场"
+        },
+        {
+          "community": "经海路",
+          "expected_url_classes": [
+            "platform_listing_detail",
+            "platform_list_page"
+          ],
+          "intent": "brand_apartment",
+          "query": "城家 亦庄 马驹桥 京东总部",
+          "query_id": "brand_apartment-q09",
+          "sources": [
+            "brand_apartment_public"
+          ],
+          "zone_id": "near_office",
+          "zone_label": "0-2km 近场"
+        }
+      ],
+      "source_name": "brand_apartment_transition",
+      "source_tier": "P1",
+      "sources": [
+        "ziroom",
+        "wellcee",
+        "lefull",
+        "inboyu",
+        "brand_apartment_public"
+      ],
+      "zone_ids": [
+        "near_office",
+        "main_residential"
+      ]
+    }
+  ]
+}

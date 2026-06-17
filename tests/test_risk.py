@@ -21,3 +21,18 @@ def test_low_price_and_missing_fee_flags():
     flags = risk_flags_for_listing(item, profile)
     assert "low_price_anomaly" in flags
     assert "fee_terms_missing" in flags
+
+
+def test_yizhuang_jd_specific_risk_flags():
+    item = ListingItem(
+        item_id="jd-risk",
+        source_id="fang",
+        source_tier="P0",
+        title="经海路公寓一居",
+        body="商水商电，二房东转租授权待确认，晚归班车末班需核实，另有服务费。",
+    )
+    flags = risk_flags_for_listing(item)
+    assert "commercial_utilities" in flags
+    assert "sublessor_authorization_needed" in flags
+    assert "shuttle_or_late_return_needs_verification" in flags
+    assert "fee_items_need_confirmation" in flags

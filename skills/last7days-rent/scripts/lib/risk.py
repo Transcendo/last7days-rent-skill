@@ -78,6 +78,16 @@ def risk_flags_for_listing(item: ListingItem, profile: RentProfile | None = None
         flags.append("refuses_viewing")
     if any(token in text for token in ["先交定金", "定金留房", "看房费", "资料费"]):
         flags.append("deposit_pressure")
+    if any(token in text for token in ["商水商电", "商住", "公寓属性"]):
+        flags.append("commercial_utilities")
+    if any(token in text for token in ["隔断", "群租"]):
+        flags.append("partition_risk")
+    if any(token in text for token in ["二房东", "转租授权", "代签"]):
+        flags.append("sublessor_authorization_needed")
+    if any(token in text for token in ["班车", "末班", "晚归"]):
+        flags.append("shuttle_or_late_return_needs_verification")
+    if any(token in text for token in ["服务费", "中介费", "物业费", "取暖费", "网费"]):
+        flags.append("fee_items_need_confirmation")
     return list(dict.fromkeys(flags))
 
 
@@ -96,5 +106,10 @@ def risk_score(flags: list[str]) -> float:
         "hard_filter_over_budget": 0.6,
         "official_verifier_not_recall_source": 0.4,
         "no_actionable_contact": 0.8,
+        "commercial_utilities": 0.2,
+        "partition_risk": 0.45,
+        "sublessor_authorization_needed": 0.35,
+        "shuttle_or_late_return_needs_verification": 0.15,
+        "fee_items_need_confirmation": 0.2,
     }
     return min(1.0, sum(weights.get(flag, 0.1) for flag in set(flags)))

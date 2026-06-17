@@ -29,9 +29,14 @@ class SourceMeta:
 
 SOURCE_REGISTRY: dict[str, SourceMeta] = {
     "beike_lianjia": SourceMeta("beike_lianjia", "ke.com,lianjia.com", "P0", "A", "ListingItem[]", "L1", False, True, True, ["platform"], "https://sh.zu.ke.com/zufang/wujiaochang/", True, "enabled"),
+    "lianjia_mobile_list": SourceMeta("lianjia_mobile_list", "m.lianjia.com", "P0", "A", "ListingItem[]", "L1", False, True, True, ["platform"], "https://m.lianjia.com/chuzu/bj/brand/200301001000/yizhuang1/hk1rp4/", True, "enabled"),
     "wellcee": SourceMeta("wellcee", "wellcee.com", "P0", "A", "ListingItem[]", "L1", False, True, False, ["platform", "original_post", "phone", "wechat", "email"], None, True, "url_import_limited"),
     "fang": SourceMeta("fang", "fang.com", "P0", "A", "ListingItem[]", "L1", False, True, True, ["platform", "phone"], "https://sh.zu.fang.com/house-a026-b01647/", True, "enabled"),
     "official_verifier": SourceMeta("official_verifier", "official rental verifier", "P0", "B", "VerificationEvidence[]", "L1", False, False, False, ["official_verifier"], None, True, "verifier_only"),
+    "douban_public_group": SourceMeta("douban_public_group", "douban.com,m.douban.com", "P1", "B", "SourceCandidate[]", "L0", False, True, False, ["original_post", "platform"], None, True, "runtime_discovery_only"),
+    "lefull": SourceMeta("lefull", "lefull.cn", "P1", "B", "SourceCandidate[]", "L0", False, True, False, ["platform"], "https://wb-v3.lefull.cn/Search/ContentSearch?keywords=%E7%BB%8F%E6%B5%B7%E8%B7%AF", True, "runtime_discovery_only"),
+    "inboyu": SourceMeta("inboyu", "inboyu.com", "P1", "B", "SourceCandidate[]", "L0", False, True, False, ["platform"], "https://m.inboyu.com/shenzhen/site/online-book?project_id=39e400f9-63c6-171d-1800-0594a8509b9f", True, "runtime_discovery_only"),
+    "brand_apartment_public": SourceMeta("brand_apartment_public", "lefull.cn,inboyu.com,ke.com,lianjia.com", "P1", "B", "SourceCandidate[]", "L0", False, True, False, ["platform"], None, True, "runtime_discovery_only"),
     "ziroom": SourceMeta("ziroom", "ziroom.com", "P1", "C", "candidate_only", "L0", True, False, False, ["unknown"], None, False, "roadmap_p1"),
     "woaiwojia": SourceMeta("woaiwojia", "5i5j.com", "P1", "C", "candidate_only", "L0", True, False, False, ["unknown"], None, False, "roadmap_p1"),
     "58": SourceMeta("58", "58.com", "P1", "C", "candidate_only", "L0", True, False, False, ["unknown"], None, False, "roadmap_p1"),

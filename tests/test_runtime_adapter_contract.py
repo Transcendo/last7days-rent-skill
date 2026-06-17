@@ -17,6 +17,9 @@ def test_search_brief_contains_runtime_budget_and_collection_rules():
         },
         load_anchor_pack(),
     )
-    assert brief["run_budget"]["max_detail_pages_total"] == 20
+    assert brief["run_budget"]["max_detail_pages_total"] == 48
+    assert brief["run_budget"]["target_l1_or_better"] == 8
+    assert brief["collection_rules"]["l0_policy"] == "lead_pool_only"
+    assert brief["collection_rules"]["main_recommendation_min_trust"] == "L1"
     assert "batch_id" in brief["collection_rules"]["must_capture"]
     assert "raw_excerpt" in brief["collection_rules"]["must_capture"]

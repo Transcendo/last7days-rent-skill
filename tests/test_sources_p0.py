@@ -20,6 +20,11 @@ def test_registry_disables_non_mvp_sources():
         assert registry[source_id]["enabled"] is False
         assert registry[source_id]["status"] == "roadmap_p1"
     assert is_enabled_p0_source("wellcee")
+    assert is_enabled_p0_source("lianjia_mobile_list")
+    for source_id in ["douban_public_group", "lefull", "inboyu", "brand_apartment_public"]:
+        assert registry[source_id]["enabled"] is True
+        assert registry[source_id]["status"] == "runtime_discovery_only"
+        assert registry[source_id]["can_promote_to_listing"] is True
     assert get_source_meta("official_verifier").can_promote_to_listing is False
 
 

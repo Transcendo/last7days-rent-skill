@@ -8,7 +8,16 @@ from .commute_plan import derive_commute_areas
 from .schema import CandidateLead, RentProfile, SourceCandidate
 
 
-ACTIONABLE_SOURCE_IDS = {"beike_lianjia", "wellcee", "fang"}
+ACTIONABLE_SOURCE_IDS = {
+    "beike_lianjia",
+    "lianjia_mobile_list",
+    "wellcee",
+    "fang",
+    "douban_public_group",
+    "lefull",
+    "inboyu",
+    "brand_apartment_public",
+}
 
 
 def build_candidate_leads(

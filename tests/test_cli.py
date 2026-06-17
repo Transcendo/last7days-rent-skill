@@ -43,8 +43,11 @@ def test_profile_wizard_plan_ingest_render_cli_flow(tmp_path):
     plan = run_cli(["plan"], tmp_path)
     assert plan.returncode == 0, plan.stderr
     brief = json.loads(plan.stdout)
-    assert "二居室" in " ".join(brief["search_batches"][0]["queries"])
-    assert "5500" in " ".join(brief["search_batches"][0]["queries"])
+    first_batch_queries = " ".join(query["query"] for query in brief["search_batches"][0]["queries"])
+    assert "二居室" in first_batch_queries
+    assert "5500" in first_batch_queries
+    assert brief["collection_rules"]["l0_policy"] == "lead_pool_only"
+    assert brief["run_budget"]["max_detail_pages_total"] == 48
 
     evidence_path = Path("tests/fixtures/evidence/jd_hq_runtime_evidence.json")
     validate = run_cli(["ingest", "--evidence", str(evidence_path), "--validate"], tmp_path)

@@ -4,61 +4,381 @@
     "京东总部",
     "京东亦庄总部"
   ],
+  "anchor": {
+    "address_keywords": [
+      "亦庄",
+      "经海路",
+      "科创十一街"
+    ],
+    "campus_name": "京东总部",
+    "needs_confirmation": [
+      "具体楼栋入口",
+      "园区门",
+      "班车站点",
+      "每周到岗频率",
+      "晚归频率"
+    ],
+    "office_aliases": [
+      "北京京东总部",
+      "京东亦庄总部",
+      "京东总部"
+    ]
+  },
   "anchor_id": "beijing-jd-hq-yizhuang",
+  "budget_bands": [
+    {
+      "band_id": "target_5000",
+      "max": 5000,
+      "min": 4000,
+      "usage": "preferred_match"
+    },
+    {
+      "band_id": "max_6000",
+      "max": 6000,
+      "min": 5000,
+      "usage": "acceptable_if_commute_or_quality_better"
+    }
+  ],
   "campus_name": "京东总部",
   "city": "北京",
   "commute_zones": [
     {
       "keywords": [
         "经海路",
-        "锋创科技园",
-        "通泰国际公馆"
+        "通泰国际",
+        "定海园",
+        "锋创科技园"
       ],
-      "label": "近公司",
+      "label": "0-2km 近场",
       "priority": "A",
-      "risk_notes": [
-        "公寓/商住属性较多",
-        "需核验水电和居住登记"
+      "query_boost": [
+        "步行",
+        "骑行",
+        "京东总部",
+        "经海路"
+      ],
+      "risk_checks": [
+        "商水商电",
+        "公寓属性",
+        "居住登记"
       ],
       "zone_id": "near_office"
     },
     {
       "keywords": [
+        "次渠",
         "次渠南",
+        "禧瑞天著",
         "次渠嘉园",
         "次渠锦园",
         "次渠南里"
       ],
-      "label": "住宅性价比",
+      "label": "2-5km 主力住宅圈",
       "priority": "A",
-      "risk_notes": [
-        "需确认到京东总部实际骑行/公交时间"
+      "query_boost": [
+        "一居",
+        "整租",
+        "京东总部",
+        "经海路"
       ],
-      "zone_id": "value_residential"
+      "risk_checks": [
+        "实际通勤",
+        "晚归路线",
+        "班车站点"
+      ],
+      "zone_id": "main_residential"
     },
     {
       "keywords": [
-        "东惠家园",
-        "玉江佳园",
-        "次渠北里",
-        "泰禾1号街区",
         "马驹桥",
-        "亦庄文化园",
-        "荣京东街"
+        "富力尚悦居",
+        "星悦国际",
+        "国风美仑",
+        "珠江四季悦城"
       ],
-      "label": "预算备选",
+      "label": "5-8km 面积/预算备选",
       "priority": "B",
-      "risk_notes": [
-        "可能是开间/公寓/合租变体",
-        "需严格核验通勤时间"
+      "query_boost": [
+        "预算",
+        "面积",
+        "整租",
+        "一居"
       ],
-      "zone_id": "budget_backup"
+      "risk_checks": [
+        "通勤时间",
+        "低价引流",
+        "房源真实性"
+      ],
+      "zone_id": "space_budget_backup"
+    },
+    {
+      "keywords": [
+        "东石公园",
+        "万科城市之光",
+        "亦庄文化园",
+        "荣京东街",
+        "上海沙龙"
+      ],
+      "label": "生活补充圈",
+      "priority": "C",
+      "query_boost": [
+        "生活配套",
+        "地铁",
+        "京东总部"
+      ],
+      "risk_checks": [
+        "通勤时间",
+        "晚归打车"
+      ],
+      "zone_id": "lifestyle_backup"
     }
   ],
   "company": "京东",
+  "entry_policy": {
+    "l0_policy": "lead_pool_only",
+    "l1_required": {
+      "min_visible_core_fields": 3,
+      "page_opened": true,
+      "required_fields": [
+        "source_url",
+        "observed_at",
+        "raw_excerpt"
+      ]
+    },
+    "main_recommendation_min_trust": "L1"
+  },
+  "guide_sources": [
+    {
+      "confidence": "medium",
+      "source_name": "NestHub 京东总部租房指南",
+      "source_updated_at": "2026-05-07",
+      "source_url": "https://nest-hub.eggcampus.com/docs/beijing/jd-headquarters-renting-guide",
+      "usage": "guide_only_not_realtime_listing"
+    },
+    {
+      "confidence": "medium_low",
+      "source_name": "NestHub llms-full prior seed",
+      "source_url": "https://nest-hub.eggcampus.com/llms-full.txt",
+      "usage": "public_prior_seed_not_realtime_listing"
+    }
+  ],
   "office_keywords": [
     "科创十一街",
     "经海路",
     "亦庄"
+  ],
+  "risk_checks": [
+    "商水商电",
+    "隔断群租",
+    "班车未核验",
+    "夜归不稳",
+    "二房东授权缺失",
+    "费用不清",
+    "低价引流"
+  ],
+  "runtime_budget": {
+    "expand_if_l1_below": 5,
+    "max_detail_pages_per_source": 8,
+    "max_detail_pages_total": 48,
+    "max_results_per_query": 8,
+    "max_search_queries": 45,
+    "stop_after_consecutive_empty_batches": 2,
+    "target_candidates_total": 30,
+    "target_l1_or_better": 8,
+    "target_main_recommendations": 5
+  },
+  "source_matrix": [
+    {
+      "batch_id": "p0_price_anchor",
+      "detail_open_policy": "open_detail_or_list_items_first",
+      "expected_url_classes": [
+        "platform_listing_detail",
+        "platform_list_page"
+      ],
+      "intents": [
+        "price_anchor",
+        "specific_listing"
+      ],
+      "max_detail_pages": 8,
+      "query_templates": [
+        "site:fang.com/zf/bj {zone} {bedroom_label} {budget_max}以内 租房 京东总部",
+        "{community} 京东总部 {bedroom_label} {budget_max}以内 租房 房天下",
+        "site:m.ke.com/chuzu/bj {zone} 公寓 京东总部",
+        "site:lianjia.com 北京 {community} {bedroom_label} {budget_max}以内 租房",
+        "site:m.lianjia.com/chuzu/bj/brand/200301001000 {community} 经海路 {bedroom_label} 租房",
+        "site:wellcee.com/rent-apartment {community} 京东总部 经海路 租房"
+      ],
+      "source_name": "public_platform_price_anchor",
+      "sources": [
+        "fang",
+        "beike_lianjia",
+        "lianjia_mobile_list",
+        "wellcee"
+      ],
+      "source_tier": "P0",
+      "target_query_count": 10,
+      "zone_ids": [
+        "near_office",
+        "main_residential"
+      ]
+    },
+    {
+      "batch_id": "near_office",
+      "detail_open_policy": "open_detail_or_list_items_first",
+      "expected_url_classes": [
+        "platform_listing_detail",
+        "platform_list_page"
+      ],
+      "intents": [
+        "specific_listing",
+        "community_supply"
+      ],
+      "max_detail_pages": 8,
+      "query_templates": [
+        "{city} {zone} {bedroom_label} {budget_max}以内 租房 京东总部",
+        "{community} {bedroom_label} 整租 经海路 京东总部",
+        "site:m.lianjia.com/chuzu/bj/brand/200301001000/yizhuang1 {community} {bedroom_label} 经海路",
+        "site:wellcee.com/rent-apartment {community} 京东总部 租房"
+      ],
+      "source_name": "near_office_public",
+      "sources": [
+        "fang",
+        "beike_lianjia",
+        "lianjia_mobile_list",
+        "wellcee",
+        "anjuke_58"
+      ],
+      "source_tier": "P0",
+      "target_query_count": 8,
+      "zone_ids": [
+        "near_office"
+      ]
+    },
+    {
+      "batch_id": "main_residential",
+      "detail_open_policy": "open_detail_or_list_items_first",
+      "expected_url_classes": [
+        "platform_listing_detail",
+        "platform_list_page",
+        "community_topic"
+      ],
+      "intents": [
+        "specific_listing",
+        "community_supply"
+      ],
+      "max_detail_pages": 8,
+      "query_templates": [
+        "{city} {community} {bedroom_label} {budget_max}以内 租房 京东总部",
+        "site:m.lianjia.com/chuzu/bj/brand/200301001000/beijingjingjijishukaifaqu {community} {bedroom_label} 租房",
+        "site:bj.zu.anjuke.com {community} {bedroom_label} 京东总部",
+        "site:m.58.com/bj/zufang {community} {bedroom_label} 租房"
+      ],
+      "source_name": "main_residential_public",
+      "sources": [
+        "fang",
+        "anjuke_58",
+        "lianjia_mobile_list",
+        "beike_lianjia"
+      ],
+      "source_tier": "P0",
+      "target_query_count": 8,
+      "zone_ids": [
+        "main_residential"
+      ]
+    },
+    {
+      "batch_id": "space_budget_backup",
+      "detail_open_policy": "open_detail_or_list_items_first",
+      "expected_url_classes": [
+        "platform_listing_detail",
+        "platform_list_page"
+      ],
+      "intents": [
+        "budget_backup",
+        "community_supply"
+      ],
+      "max_detail_pages": 6,
+      "query_templates": [
+        "{city} {community} {bedroom_label} {budget_max}以内 租房 京东总部",
+        "{community} 经海路 通勤 租房 {bedroom_label}"
+      ],
+      "source_name": "space_budget_backup",
+      "sources": [
+        "fang",
+        "anjuke_58",
+        "lianjia_mobile_list",
+        "beike_lianjia"
+      ],
+      "source_tier": "P1",
+      "target_query_count": 6,
+      "zone_ids": [
+        "space_budget_backup"
+      ]
+    },
+    {
+      "batch_id": "transfer_personal",
+      "detail_open_policy": "open_topic_page_then_extract_visible_fields",
+      "expected_url_classes": [
+        "community_topic",
+        "platform_listing_detail"
+      ],
+      "intents": [
+        "transfer_personal",
+        "community_supply"
+      ],
+      "max_detail_pages": 6,
+      "query_templates": [
+        "site:douban.com/group {zone} 京东总部 租房 {bedroom_label}",
+        "site:m.douban.com/group {community} 转租 京东总部"
+      ],
+      "source_name": "public_transfer_personal",
+      "sources": [
+        "douban_public_group"
+      ],
+      "source_tier": "P1",
+      "target_query_count": 4,
+      "zone_ids": [
+        "near_office",
+        "main_residential"
+      ]
+    },
+    {
+      "batch_id": "brand_apartment",
+      "detail_open_policy": "open_detail_or_list_items_first",
+      "expected_url_classes": [
+        "platform_listing_detail",
+        "platform_list_page"
+      ],
+      "intents": [
+        "brand_apartment",
+        "transition_option"
+      ],
+      "max_detail_pages": 4,
+      "query_templates": [
+        "site:wellcee.com/rent-apartment {zone} 京东总部 经海路",
+        "site:ziroom.com {zone} 自如 {bedroom_label} 京东总部",
+        "{zone} 乐乎 公寓 经海路 京东总部",
+        "site:wb-v3.lefull.cn/Search/ContentSearch {zone} 乐乎 公寓",
+        "泊寓 亦庄店 经海三路 京东总部",
+        "site:m.inboyu.com 亦庄店 经海三路 泊寓",
+        "蜂客 经海二路 荣京东街 京东总部",
+        "有巢 亦庄文化园 京东总部",
+        "城家 亦庄 马驹桥 京东总部"
+      ],
+      "source_name": "brand_apartment_transition",
+      "sources": [
+        "ziroom",
+        "wellcee",
+        "lefull",
+        "inboyu",
+        "brand_apartment_public"
+      ],
+      "source_tier": "P1",
+      "target_query_count": 9,
+      "zone_ids": [
+        "near_office",
+        "main_residential"
+      ]
+    }
   ]
 }

@@ -1,0 +1,4167 @@
+{
+  "execution_summary": {
+    "blocked_pages": 2,
+    "detail_pages_opened": 14,
+    "items_emitted": 23,
+    "l1_or_better_estimate": 14,
+    "queries_executed": 12,
+    "search_results_seen": 80
+  },
+  "listings": [
+    {
+      "area_sqm": null,
+      "area_text": "待核验",
+      "bedrooms": 1,
+      "community": "锋创科技园",
+      "commute_tags": [
+        "经海路"
+      ],
+      "contact_path": {
+        "entry_url": "https://www.douban.com/group/topic/333161541/",
+        "type": "original_post"
+      },
+      "district_hint": "经海路",
+      "evidence_count": 8,
+      "first_seen_at": "2026-06-14T12:05:00+08:00",
+      "last_opened_at": "2026-06-14T12:15:00+08:00",
+      "last_seen_at": "2026-06-14T12:15:00+08:00",
+      "layout_text": "整租一室",
+      "listing_id": "listing-99e1a5f5499eaaec",
+      "match_score": 1.0,
+      "next_actions": [
+        "确认仍在租",
+        "确认费用条款",
+        "确认看房时间"
+      ],
+      "observations": [
+        {
+          "batch_id": "transfer_personal",
+          "canonical_url": "https://www.douban.com/group/topic/333161541/",
+          "contact_path": {
+            "entry_url": "https://www.douban.com/group/topic/333161541/",
+            "type": "original_post"
+          },
+          "evidence_id": "live-douban-l1-004",
+          "listing_candidate_status": "candidate_l1",
+          "normalized_fields": {
+            "area_sqm": null,
+            "bedrooms": 1,
+            "price_monthly": 4000
+          },
+          "observed_at": "2026-06-14T12:05:00+08:00",
+          "page_opened": true,
+          "query": "site:douban.com/group 锋创科技园 整租一室 4000",
+          "query_id": "transfer_personal-q04",
+          "raw_excerpt": "豆瓣公开小组话题标题可见：锋创科技园高楼层边户整租一室，公开回复显示预算线索约4000，发布时间 2026-06-10。",
+          "reject_reasons": [],
+          "source_domain": "www.douban.com",
+          "source_name": "豆瓣公开小组",
+          "source_tier": "P1",
+          "source_type": "community_post",
+          "source_url": "https://www.douban.com/group/topic/333161541/",
+          "url_class": "community_topic",
+          "visible_fields": {
+            "community": "锋创科技园",
+            "district_hint": "经海路",
+            "layout_text": "整租一室",
+            "price_text": "约4000元/月",
+            "published_at": "2026-06-10"
+          }
+        },
+        {
+          "batch_id": "transfer_personal",
+          "canonical_url": "https://m.douban.com/group/501098/#topic-333161541",
+          "contact_path": {
+            "entry_url": "https://m.douban.com/group/501098/",
+            "type": "original_post"
+          },
+          "evidence_id": "live-douban-l0-004",
+          "listing_candidate_status": "candidate_l0",
+          "normalized_fields": {
+            "area_sqm": null,
+            "bedrooms": 1,
+            "price_monthly": 4000
+          },
+          "observed_at": "2026-06-14T12:15:00+08:00",
+          "page_opened": true,
+          "query": "m.douban.com/group/501098 锋创 整租一室 4000",
+          "query_id": "transfer_personal-q08",
+          "raw_excerpt": "豆瓣公开小组列表页可见：锋创科技园高楼层边户整租一室，公开回复含价格线索。",
+          "reject_reasons": [],
+          "source_domain": "m.douban.com",
+          "source_name": "豆瓣公开小组列表",
+          "source_tier": "P1",
+          "source_type": "community_list",
+          "source_url": "https://m.douban.com/group/501098/",
+          "url_class": "community_list_page",
+          "visible_fields": {
+            "community": "锋创科技园",
+            "district_hint": "经海路",
+            "layout_text": "整租一室",
+            "price_text": "约4000元/月",
+            "published_at": "2026-06-10"
+          }
+        },
+        {
+          "batch_id": "transfer_personal",
+          "canonical_url": "https://www.douban.com/group/topic/333161541/",
+          "contact_path": {
+            "entry_url": "https://www.douban.com/group/topic/333161541/",
+            "type": "original_post"
+          },
+          "evidence_id": "live-douban-l1-004",
+          "listing_candidate_status": "candidate_l1",
+          "normalized_fields": {
+            "area_sqm": null,
+            "bedrooms": 1,
+            "price_monthly": 4000
+          },
+          "observed_at": "2026-06-14T12:05:00+08:00",
+          "page_opened": true,
+          "query": "site:douban.com/group 锋创科技园 整租一室 4000",
+          "query_id": "transfer_personal-q04",
+          "raw_excerpt": "豆瓣公开小组话题标题可见：锋创科技园高楼层边户整租一室，公开回复显示预算线索约4000，发布时间 2026-06-10。",
+          "reject_reasons": [],
+          "source_domain": "www.douban.com",
+          "source_name": "豆瓣公开小组",
+          "source_tier": "P1",
+          "source_type": "community_post",
+          "source_url": "https://www.douban.com/group/topic/333161541/",
+          "url_class": "community_topic",
+          "visible_fields": {
+            "community": "锋创科技园",
+            "district_hint": "经海路",
+            "layout_text": "整租一室",
+            "price_text": "约4000元/月",
+            "published_at": "2026-06-10"
+          }
+        },
+        {
+          "batch_id": "transfer_personal",
+          "canonical_url": "https://m.douban.com/group/501098/#topic-333161541",
+          "contact_path": {
+            "entry_url": "https://m.douban.com/group/501098/",
+            "type": "original_post"
+          },
+          "evidence_id": "live-douban-l0-004",
+          "listing_candidate_status": "candidate_l0",
+          "normalized_fields": {
+            "area_sqm": null,
+            "bedrooms": 1,
+            "price_monthly": 4000
+          },
+          "observed_at": "2026-06-14T12:15:00+08:00",
+          "page_opened": true,
+          "query": "m.douban.com/group/501098 锋创 整租一室 4000",
+          "query_id": "transfer_personal-q08",
+          "raw_excerpt": "豆瓣公开小组列表页可见：锋创科技园高楼层边户整租一室，公开回复含价格线索。",
+          "reject_reasons": [],
+          "source_domain": "m.douban.com",
+          "source_name": "豆瓣公开小组列表",
+          "source_tier": "P1",
+          "source_type": "community_list",
+          "source_url": "https://m.douban.com/group/501098/",
+          "url_class": "community_list_page",
+          "visible_fields": {
+            "community": "锋创科技园",
+            "district_hint": "经海路",
+            "layout_text": "整租一室",
+            "price_text": "约4000元/月",
+            "published_at": "2026-06-10"
+          }
+        },
+        {
+          "batch_id": "transfer_personal",
+          "canonical_url": "https://www.douban.com/group/topic/333161541/",
+          "contact_path": {
+            "entry_url": "https://www.douban.com/group/topic/333161541/",
+            "type": "original_post"
+          },
+          "evidence_id": "live-douban-l1-004",
+          "listing_candidate_status": "candidate_l1",
+          "normalized_fields": {
+            "area_sqm": null,
+            "bedrooms": 1,
+            "price_monthly": 4000
+          },
+          "observed_at": "2026-06-14T12:05:00+08:00",
+          "page_opened": true,
+          "query": "site:douban.com/group 锋创科技园 整租一室 4000",
+          "query_id": "transfer_personal-q04",
+          "raw_excerpt": "豆瓣公开小组话题标题可见：锋创科技园高楼层边户整租一室，公开回复显示预算线索约4000，发布时间 2026-06-10。",
+          "reject_reasons": [],
+          "source_domain": "www.douban.com",
+          "source_name": "豆瓣公开小组",
+          "source_tier": "P1",
+          "source_type": "community_post",
+          "source_url": "https://www.douban.com/group/topic/333161541/",
+          "url_class": "community_topic",
+          "visible_fields": {
+            "community": "锋创科技园",
+            "district_hint": "经海路",
+            "layout_text": "整租一室",
+            "price_text": "约4000元/月",
+            "published_at": "2026-06-10"
+          }
+        },
+        {
+          "batch_id": "transfer_personal",
+          "canonical_url": "https://m.douban.com/group/501098/#topic-333161541",
+          "contact_path": {
+            "entry_url": "https://m.douban.com/group/501098/",
+            "type": "original_post"
+          },
+          "evidence_id": "live-douban-l0-004",
+          "listing_candidate_status": "candidate_l0",
+          "normalized_fields": {
+            "area_sqm": null,
+            "bedrooms": 1,
+            "price_monthly": 4000
+          },
+          "observed_at": "2026-06-14T12:15:00+08:00",
+          "page_opened": true,
+          "query": "m.douban.com/group/501098 锋创 整租一室 4000",
+          "query_id": "transfer_personal-q08",
+          "raw_excerpt": "豆瓣公开小组列表页可见：锋创科技园高楼层边户整租一室，公开回复含价格线索。",
+          "reject_reasons": [],
+          "source_domain": "m.douban.com",
+          "source_name": "豆瓣公开小组列表",
+          "source_tier": "P1",
+          "source_type": "community_list",
+          "source_url": "https://m.douban.com/group/501098/",
+          "url_class": "community_list_page",
+          "visible_fields": {
+            "community": "锋创科技园",
+            "district_hint": "经海路",
+            "layout_text": "整租一室",
+            "price_text": "约4000元/月",
+            "published_at": "2026-06-10"
+          }
+        },
+        {
+          "batch_id": "transfer_personal",
+          "canonical_url": "https://www.douban.com/group/topic/333161541/",
+          "contact_path": {
+            "entry_url": "https://www.douban.com/group/topic/333161541/",
+            "type": "original_post"
+          },
+          "evidence_id": "live-douban-l1-004",
+          "listing_candidate_status": "candidate_l1",
+          "normalized_fields": {
+            "area_sqm": null,
+            "bedrooms": 1,
+            "price_monthly": 4000
+          },
+          "observed_at": "2026-06-14T12:05:00+08:00",
+          "page_opened": true,
+          "query": "site:douban.com/group 锋创科技园 整租一室 4000",
+          "query_id": "transfer_personal-q04",
+          "raw_excerpt": "豆瓣公开小组话题标题可见：锋创科技园高楼层边户整租一室，公开回复显示预算线索约4000，发布时间 2026-06-10。",
+          "reject_reasons": [],
+          "source_domain": "www.douban.com",
+          "source_name": "豆瓣公开小组",
+          "source_tier": "P1",
+          "source_type": "community_post",
+          "source_url": "https://www.douban.com/group/topic/333161541/",
+          "url_class": "community_topic",
+          "visible_fields": {
+            "community": "锋创科技园",
+            "district_hint": "经海路",
+            "layout_text": "整租一室",
+            "price_text": "约4000元/月",
+            "published_at": "2026-06-10"
+          }
+        },
+        {
+          "batch_id": "transfer_personal",
+          "canonical_url": "https://m.douban.com/group/501098/#topic-333161541",
+          "contact_path": {
+            "entry_url": "https://m.douban.com/group/501098/",
+            "type": "original_post"
+          },
+          "evidence_id": "live-douban-l0-004",
+          "listing_candidate_status": "candidate_l0",
+          "normalized_fields": {
+            "area_sqm": null,
+            "bedrooms": 1,
+            "price_monthly": 4000
+          },
+          "observed_at": "2026-06-14T12:15:00+08:00",
+          "page_opened": true,
+          "query": "m.douban.com/group/501098 锋创 整租一室 4000",
+          "query_id": "transfer_personal-q08",
+          "raw_excerpt": "豆瓣公开小组列表页可见：锋创科技园高楼层边户整租一室，公开回复含价格线索。",
+          "reject_reasons": [],
+          "source_domain": "m.douban.com",
+          "source_name": "豆瓣公开小组列表",
+          "source_tier": "P1",
+          "source_type": "community_list",
+          "source_url": "https://m.douban.com/group/501098/",
+          "url_class": "community_list_page",
+          "visible_fields": {
+            "community": "锋创科技园",
+            "district_hint": "经海路",
+            "layout_text": "整租一室",
+            "price_text": "约4000元/月",
+            "published_at": "2026-06-10"
+          }
+        }
+      ],
+      "price_monthly": 4000,
+      "price_text": "约4000元/月",
+      "priority": "A",
+      "recommendation_band": "main",
+      "risk_flags": [],
+      "risk_score": 0.0,
+      "source_domains": [
+        "www.douban.com",
+        "m.douban.com"
+      ],
+      "source_names": [
+        "豆瓣公开小组",
+        "豆瓣公开小组列表"
+      ],
+      "source_tiers": [
+        "P1"
+      ],
+      "source_urls": [
+        "https://www.douban.com/group/topic/333161541/",
+        "https://m.douban.com/group/501098/"
+      ],
+      "status": "new",
+      "title": "锋创科技园高楼层边户整租一室",
+      "trust_level": "L2"
+    },
+    {
+      "area_sqm": 60,
+      "area_text": "60平",
+      "bedrooms": 1,
+      "community": "马驹桥一号桥",
+      "commute_tags": [
+        "马驹桥"
+      ],
+      "contact_path": {
+        "entry_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+        "type": "platform_entry"
+      },
+      "district_hint": "马驹桥",
+      "evidence_count": 4,
+      "first_seen_at": "2026-06-14T12:00:00+08:00",
+      "last_opened_at": "2026-06-14T12:00:00+08:00",
+      "last_seen_at": "2026-06-14T12:00:00+08:00",
+      "layout_text": "1室1厅",
+      "listing_id": "listing-3345ba557246cc6c",
+      "match_score": 1.0,
+      "next_actions": [
+        "确认仍在租",
+        "确认费用条款",
+        "确认看房时间"
+      ],
+      "observations": [
+        {
+          "batch_id": "p0_price_anchor",
+          "canonical_url": "https://fang.com/houses/zf_252548bj/9,3,-h316-i35/#fang-194",
+          "contact_path": {
+            "entry_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+            "type": "platform_entry"
+          },
+          "evidence_id": "live-fang-002",
+          "listing_candidate_status": "candidate_l1",
+          "normalized_fields": {
+            "area_sqm": 60,
+            "bedrooms": 1,
+            "price_monthly": 2900
+          },
+          "observed_at": "2026-06-14T12:00:00+08:00",
+          "page_opened": true,
+          "query": "site:fang.com/zf/bj 亦庄 一居室 租房 京东总部",
+          "query_id": "p0_price_anchor-q02",
+          "raw_excerpt": "房天下公开列表页可见：马驹桥一号桥，精装一居，1室1厅，60平，2900元/月，马驹桥。",
+          "reject_reasons": [],
+          "source_domain": "fang.com",
+          "source_name": "房天下",
+          "source_tier": "P0",
+          "source_type": "platform_list_page",
+          "source_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+          "url_class": "platform_list_page",
+          "visible_fields": {
+            "area_text": "60平",
+            "community": "马驹桥一号桥",
+            "district_hint": "马驹桥",
+            "layout_text": "1室1厅",
+            "price_text": "2900元/月",
+            "updated_at": "房天下公开列表页当前可见"
+          }
+        },
+        {
+          "batch_id": "p0_price_anchor",
+          "canonical_url": "https://fang.com/houses/zf_252548bj/9,3,-h316-i35/#fang-194",
+          "contact_path": {
+            "entry_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+            "type": "platform_entry"
+          },
+          "evidence_id": "live-fang-002",
+          "listing_candidate_status": "candidate_l1",
+          "normalized_fields": {
+            "area_sqm": 60,
+            "bedrooms": 1,
+            "price_monthly": 2900
+          },
+          "observed_at": "2026-06-14T12:00:00+08:00",
+          "page_opened": true,
+          "query": "site:fang.com/zf/bj 亦庄 一居室 租房 京东总部",
+          "query_id": "p0_price_anchor-q02",
+          "raw_excerpt": "房天下公开列表页可见：马驹桥一号桥，精装一居，1室1厅，60平，2900元/月，马驹桥。",
+          "reject_reasons": [],
+          "source_domain": "fang.com",
+          "source_name": "房天下",
+          "source_tier": "P0",
+          "source_type": "platform_list_page",
+          "source_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+          "url_class": "platform_list_page",
+          "visible_fields": {
+            "area_text": "60平",
+            "community": "马驹桥一号桥",
+            "district_hint": "马驹桥",
+            "layout_text": "1室1厅",
+            "price_text": "2900元/月",
+            "updated_at": "房天下公开列表页当前可见"
+          }
+        },
+        {
+          "batch_id": "p0_price_anchor",
+          "canonical_url": "https://fang.com/houses/zf_252548bj/9,3,-h316-i35/#fang-194",
+          "contact_path": {
+            "entry_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+            "type": "platform_entry"
+          },
+          "evidence_id": "live-fang-002",
+          "listing_candidate_status": "candidate_l1",
+          "normalized_fields": {
+            "area_sqm": 60,
+            "bedrooms": 1,
+            "price_monthly": 2900
+          },
+          "observed_at": "2026-06-14T12:00:00+08:00",
+          "page_opened": true,
+          "query": "site:fang.com/zf/bj 亦庄 一居室 租房 京东总部",
+          "query_id": "p0_price_anchor-q02",
+          "raw_excerpt": "房天下公开列表页可见：马驹桥一号桥，精装一居，1室1厅，60平，2900元/月，马驹桥。",
+          "reject_reasons": [],
+          "source_domain": "fang.com",
+          "source_name": "房天下",
+          "source_tier": "P0",
+          "source_type": "platform_list_page",
+          "source_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+          "url_class": "platform_list_page",
+          "visible_fields": {
+            "area_text": "60平",
+            "community": "马驹桥一号桥",
+            "district_hint": "马驹桥",
+            "layout_text": "1室1厅",
+            "price_text": "2900元/月",
+            "updated_at": "房天下公开列表页当前可见"
+          }
+        },
+        {
+          "batch_id": "p0_price_anchor",
+          "canonical_url": "https://fang.com/houses/zf_252548bj/9,3,-h316-i35/#fang-194",
+          "contact_path": {
+            "entry_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+            "type": "platform_entry"
+          },
+          "evidence_id": "live-fang-002",
+          "listing_candidate_status": "candidate_l1",
+          "normalized_fields": {
+            "area_sqm": 60,
+            "bedrooms": 1,
+            "price_monthly": 2900
+          },
+          "observed_at": "2026-06-14T12:00:00+08:00",
+          "page_opened": true,
+          "query": "site:fang.com/zf/bj 亦庄 一居室 租房 京东总部",
+          "query_id": "p0_price_anchor-q02",
+          "raw_excerpt": "房天下公开列表页可见：马驹桥一号桥，精装一居，1室1厅，60平，2900元/月，马驹桥。",
+          "reject_reasons": [],
+          "source_domain": "fang.com",
+          "source_name": "房天下",
+          "source_tier": "P0",
+          "source_type": "platform_list_page",
+          "source_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+          "url_class": "platform_list_page",
+          "visible_fields": {
+            "area_text": "60平",
+            "community": "马驹桥一号桥",
+            "district_hint": "马驹桥",
+            "layout_text": "1室1厅",
+            "price_text": "2900元/月",
+            "updated_at": "房天下公开列表页当前可见"
+          }
+        }
+      ],
+      "price_monthly": 2900,
+      "price_text": "2900元/月",
+      "priority": "A",
+      "recommendation_band": "main",
+      "risk_flags": [],
+      "risk_score": 0.0,
+      "source_domains": [
+        "fang.com"
+      ],
+      "source_names": [
+        "房天下"
+      ],
+      "source_tiers": [
+        "P0"
+      ],
+      "source_urls": [
+        "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/"
+      ],
+      "status": "new",
+      "title": "马驹桥一号桥精装一居",
+      "trust_level": "L1"
+    },
+    {
+      "area_sqm": 89,
+      "area_text": "89平",
+      "bedrooms": 2,
+      "community": "次渠家园",
+      "commute_tags": [
+        "次渠"
+      ],
+      "contact_path": {
+        "entry_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+        "type": "platform_entry"
+      },
+      "district_hint": "次渠",
+      "evidence_count": 4,
+      "first_seen_at": "2026-06-14T12:00:00+08:00",
+      "last_opened_at": "2026-06-14T12:00:00+08:00",
+      "last_seen_at": "2026-06-14T12:00:00+08:00",
+      "layout_text": "2室1厅",
+      "listing_id": "listing-07144c6036c70d76",
+      "match_score": 1.0,
+      "next_actions": [
+        "确认仍在租",
+        "确认费用条款",
+        "确认看房时间"
+      ],
+      "observations": [
+        {
+          "batch_id": "main_residential",
+          "canonical_url": "https://fang.com/houses/zf_252548bj/9,3,-h316-i35/#fang-199",
+          "contact_path": {
+            "entry_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+            "type": "platform_entry"
+          },
+          "evidence_id": "live-fang-004",
+          "listing_candidate_status": "candidate_l1",
+          "normalized_fields": {
+            "area_sqm": 89,
+            "bedrooms": 2,
+            "price_monthly": 3700
+          },
+          "observed_at": "2026-06-14T12:00:00+08:00",
+          "page_opened": true,
+          "query": "北京 次渠 二居室 6000以内 租房 京东总部",
+          "query_id": "main_residential-q02",
+          "raw_excerpt": "房天下公开列表页可见：次渠家园，89平，2室1厅，3700元/月，次渠。",
+          "reject_reasons": [],
+          "source_domain": "fang.com",
+          "source_name": "房天下",
+          "source_tier": "P0",
+          "source_type": "platform_list_page",
+          "source_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+          "url_class": "platform_list_page",
+          "visible_fields": {
+            "area_text": "89平",
+            "community": "次渠家园",
+            "district_hint": "次渠",
+            "layout_text": "2室1厅",
+            "price_text": "3700元/月",
+            "updated_at": "房天下公开列表页当前可见"
+          }
+        },
+        {
+          "batch_id": "main_residential",
+          "canonical_url": "https://fang.com/houses/zf_252548bj/9,3,-h316-i35/#fang-199",
+          "contact_path": {
+            "entry_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+            "type": "platform_entry"
+          },
+          "evidence_id": "live-fang-004",
+          "listing_candidate_status": "candidate_l1",
+          "normalized_fields": {
+            "area_sqm": 89,
+            "bedrooms": 2,
+            "price_monthly": 3700
+          },
+          "observed_at": "2026-06-14T12:00:00+08:00",
+          "page_opened": true,
+          "query": "北京 次渠 二居室 6000以内 租房 京东总部",
+          "query_id": "main_residential-q02",
+          "raw_excerpt": "房天下公开列表页可见：次渠家园，89平，2室1厅，3700元/月，次渠。",
+          "reject_reasons": [],
+          "source_domain": "fang.com",
+          "source_name": "房天下",
+          "source_tier": "P0",
+          "source_type": "platform_list_page",
+          "source_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+          "url_class": "platform_list_page",
+          "visible_fields": {
+            "area_text": "89平",
+            "community": "次渠家园",
+            "district_hint": "次渠",
+            "layout_text": "2室1厅",
+            "price_text": "3700元/月",
+            "updated_at": "房天下公开列表页当前可见"
+          }
+        },
+        {
+          "batch_id": "main_residential",
+          "canonical_url": "https://fang.com/houses/zf_252548bj/9,3,-h316-i35/#fang-199",
+          "contact_path": {
+            "entry_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+            "type": "platform_entry"
+          },
+          "evidence_id": "live-fang-004",
+          "listing_candidate_status": "candidate_l1",
+          "normalized_fields": {
+            "area_sqm": 89,
+            "bedrooms": 2,
+            "price_monthly": 3700
+          },
+          "observed_at": "2026-06-14T12:00:00+08:00",
+          "page_opened": true,
+          "query": "北京 次渠 二居室 6000以内 租房 京东总部",
+          "query_id": "main_residential-q02",
+          "raw_excerpt": "房天下公开列表页可见：次渠家园，89平，2室1厅，3700元/月，次渠。",
+          "reject_reasons": [],
+          "source_domain": "fang.com",
+          "source_name": "房天下",
+          "source_tier": "P0",
+          "source_type": "platform_list_page",
+          "source_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+          "url_class": "platform_list_page",
+          "visible_fields": {
+            "area_text": "89平",
+            "community": "次渠家园",
+            "district_hint": "次渠",
+            "layout_text": "2室1厅",
+            "price_text": "3700元/月",
+            "updated_at": "房天下公开列表页当前可见"
+          }
+        },
+        {
+          "batch_id": "main_residential",
+          "canonical_url": "https://fang.com/houses/zf_252548bj/9,3,-h316-i35/#fang-199",
+          "contact_path": {
+            "entry_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+            "type": "platform_entry"
+          },
+          "evidence_id": "live-fang-004",
+          "listing_candidate_status": "candidate_l1",
+          "normalized_fields": {
+            "area_sqm": 89,
+            "bedrooms": 2,
+            "price_monthly": 3700
+          },
+          "observed_at": "2026-06-14T12:00:00+08:00",
+          "page_opened": true,
+          "query": "北京 次渠 二居室 6000以内 租房 京东总部",
+          "query_id": "main_residential-q02",
+          "raw_excerpt": "房天下公开列表页可见：次渠家园，89平，2室1厅，3700元/月，次渠。",
+          "reject_reasons": [],
+          "source_domain": "fang.com",
+          "source_name": "房天下",
+          "source_tier": "P0",
+          "source_type": "platform_list_page",
+          "source_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+          "url_class": "platform_list_page",
+          "visible_fields": {
+            "area_text": "89平",
+            "community": "次渠家园",
+            "district_hint": "次渠",
+            "layout_text": "2室1厅",
+            "price_text": "3700元/月",
+            "updated_at": "房天下公开列表页当前可见"
+          }
+        }
+      ],
+      "price_monthly": 3700,
+      "price_text": "3700元/月",
+      "priority": "A",
+      "recommendation_band": "main",
+      "risk_flags": [],
+      "risk_score": 0.0,
+      "source_domains": [
+        "fang.com"
+      ],
+      "source_names": [
+        "房天下"
+      ],
+      "source_tiers": [
+        "P0"
+      ],
+      "source_urls": [
+        "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/"
+      ],
+      "status": "new",
+      "title": "次渠家园两居整租",
+      "trust_level": "L1"
+    },
+    {
+      "area_sqm": 58,
+      "area_text": "58平",
+      "bedrooms": 1,
+      "community": "泰禾一号街区",
+      "commute_tags": [
+        "台湖"
+      ],
+      "contact_path": {
+        "entry_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+        "type": "platform_entry"
+      },
+      "district_hint": "台湖",
+      "evidence_count": 4,
+      "first_seen_at": "2026-06-14T12:00:00+08:00",
+      "last_opened_at": "2026-06-14T12:00:00+08:00",
+      "last_seen_at": "2026-06-14T12:00:00+08:00",
+      "layout_text": "1室0厅",
+      "listing_id": "listing-00259268e6ed0837",
+      "match_score": 1.0,
+      "next_actions": [
+        "确认仍在租",
+        "确认费用条款",
+        "确认看房时间"
+      ],
+      "observations": [
+        {
+          "batch_id": "main_residential",
+          "canonical_url": "https://fang.com/houses/zf_252548bj/9,3,-h316-i35/#fang-202",
+          "contact_path": {
+            "entry_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+            "type": "platform_entry"
+          },
+          "evidence_id": "live-fang-005",
+          "listing_candidate_status": "candidate_l1",
+          "normalized_fields": {
+            "area_sqm": 58,
+            "bedrooms": 1,
+            "price_monthly": 3900
+          },
+          "observed_at": "2026-06-14T12:00:00+08:00",
+          "page_opened": true,
+          "query": "北京 台湖 一居室 6000以内 租房 京东总部",
+          "query_id": "space_budget_backup-q01",
+          "raw_excerpt": "房天下公开列表页可见：泰禾一号街区，58平，1室0厅，3900元/月，台湖。",
+          "reject_reasons": [],
+          "source_domain": "fang.com",
+          "source_name": "房天下",
+          "source_tier": "P0",
+          "source_type": "platform_list_page",
+          "source_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+          "url_class": "platform_list_page",
+          "visible_fields": {
+            "area_text": "58平",
+            "community": "泰禾一号街区",
+            "district_hint": "台湖",
+            "layout_text": "1室0厅",
+            "price_text": "3900元/月",
+            "updated_at": "房天下公开列表页当前可见"
+          }
+        },
+        {
+          "batch_id": "main_residential",
+          "canonical_url": "https://fang.com/houses/zf_252548bj/9,3,-h316-i35/#fang-202",
+          "contact_path": {
+            "entry_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+            "type": "platform_entry"
+          },
+          "evidence_id": "live-fang-005",
+          "listing_candidate_status": "candidate_l1",
+          "normalized_fields": {
+            "area_sqm": 58,
+            "bedrooms": 1,
+            "price_monthly": 3900
+          },
+          "observed_at": "2026-06-14T12:00:00+08:00",
+          "page_opened": true,
+          "query": "北京 台湖 一居室 6000以内 租房 京东总部",
+          "query_id": "space_budget_backup-q01",
+          "raw_excerpt": "房天下公开列表页可见：泰禾一号街区，58平，1室0厅，3900元/月，台湖。",
+          "reject_reasons": [],
+          "source_domain": "fang.com",
+          "source_name": "房天下",
+          "source_tier": "P0",
+          "source_type": "platform_list_page",
+          "source_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+          "url_class": "platform_list_page",
+          "visible_fields": {
+            "area_text": "58平",
+            "community": "泰禾一号街区",
+            "district_hint": "台湖",
+            "layout_text": "1室0厅",
+            "price_text": "3900元/月",
+            "updated_at": "房天下公开列表页当前可见"
+          }
+        },
+        {
+          "batch_id": "main_residential",
+          "canonical_url": "https://fang.com/houses/zf_252548bj/9,3,-h316-i35/#fang-202",
+          "contact_path": {
+            "entry_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+            "type": "platform_entry"
+          },
+          "evidence_id": "live-fang-005",
+          "listing_candidate_status": "candidate_l1",
+          "normalized_fields": {
+            "area_sqm": 58,
+            "bedrooms": 1,
+            "price_monthly": 3900
+          },
+          "observed_at": "2026-06-14T12:00:00+08:00",
+          "page_opened": true,
+          "query": "北京 台湖 一居室 6000以内 租房 京东总部",
+          "query_id": "space_budget_backup-q01",
+          "raw_excerpt": "房天下公开列表页可见：泰禾一号街区，58平，1室0厅，3900元/月，台湖。",
+          "reject_reasons": [],
+          "source_domain": "fang.com",
+          "source_name": "房天下",
+          "source_tier": "P0",
+          "source_type": "platform_list_page",
+          "source_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+          "url_class": "platform_list_page",
+          "visible_fields": {
+            "area_text": "58平",
+            "community": "泰禾一号街区",
+            "district_hint": "台湖",
+            "layout_text": "1室0厅",
+            "price_text": "3900元/月",
+            "updated_at": "房天下公开列表页当前可见"
+          }
+        },
+        {
+          "batch_id": "main_residential",
+          "canonical_url": "https://fang.com/houses/zf_252548bj/9,3,-h316-i35/#fang-202",
+          "contact_path": {
+            "entry_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+            "type": "platform_entry"
+          },
+          "evidence_id": "live-fang-005",
+          "listing_candidate_status": "candidate_l1",
+          "normalized_fields": {
+            "area_sqm": 58,
+            "bedrooms": 1,
+            "price_monthly": 3900
+          },
+          "observed_at": "2026-06-14T12:00:00+08:00",
+          "page_opened": true,
+          "query": "北京 台湖 一居室 6000以内 租房 京东总部",
+          "query_id": "space_budget_backup-q01",
+          "raw_excerpt": "房天下公开列表页可见：泰禾一号街区，58平，1室0厅，3900元/月，台湖。",
+          "reject_reasons": [],
+          "source_domain": "fang.com",
+          "source_name": "房天下",
+          "source_tier": "P0",
+          "source_type": "platform_list_page",
+          "source_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+          "url_class": "platform_list_page",
+          "visible_fields": {
+            "area_text": "58平",
+            "community": "泰禾一号街区",
+            "district_hint": "台湖",
+            "layout_text": "1室0厅",
+            "price_text": "3900元/月",
+            "updated_at": "房天下公开列表页当前可见"
+          }
+        }
+      ],
+      "price_monthly": 3900,
+      "price_text": "3900元/月",
+      "priority": "A",
+      "recommendation_band": "main",
+      "risk_flags": [],
+      "risk_score": 0.0,
+      "source_domains": [
+        "fang.com"
+      ],
+      "source_names": [
+        "房天下"
+      ],
+      "source_tiers": [
+        "P0"
+      ],
+      "source_urls": [
+        "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/"
+      ],
+      "status": "new",
+      "title": "泰禾一号街区开间",
+      "trust_level": "L1"
+    },
+    {
+      "area_sqm": 106,
+      "area_text": "106平",
+      "bedrooms": 3,
+      "community": "次渠家园",
+      "commute_tags": [
+        "次渠"
+      ],
+      "contact_path": {
+        "entry_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+        "type": "platform_entry"
+      },
+      "district_hint": "次渠",
+      "evidence_count": 4,
+      "first_seen_at": "2026-06-14T12:00:00+08:00",
+      "last_opened_at": "2026-06-14T12:00:00+08:00",
+      "last_seen_at": "2026-06-14T12:00:00+08:00",
+      "layout_text": "3室1厅",
+      "listing_id": "listing-f8e62c094bf513d6",
+      "match_score": 1.0,
+      "next_actions": [
+        "确认仍在租",
+        "确认费用条款",
+        "确认看房时间"
+      ],
+      "observations": [
+        {
+          "batch_id": "main_residential",
+          "canonical_url": "https://fang.com/houses/zf_252548bj/9,3,-h316-i35/#fang-197",
+          "contact_path": {
+            "entry_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+            "type": "platform_entry"
+          },
+          "evidence_id": "live-fang-003",
+          "listing_candidate_status": "candidate_l1",
+          "normalized_fields": {
+            "area_sqm": 106,
+            "bedrooms": 3,
+            "price_monthly": 4200
+          },
+          "observed_at": "2026-06-14T12:00:00+08:00",
+          "page_opened": true,
+          "query": "北京 次渠 一居室 6000以内 租房 京东总部",
+          "query_id": "main_residential-q01",
+          "raw_excerpt": "房天下公开列表页可见：次渠家园，106平，3室1厅，4200元/月，次渠。",
+          "reject_reasons": [],
+          "source_domain": "fang.com",
+          "source_name": "房天下",
+          "source_tier": "P0",
+          "source_type": "platform_list_page",
+          "source_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+          "url_class": "platform_list_page",
+          "visible_fields": {
+            "area_text": "106平",
+            "community": "次渠家园",
+            "district_hint": "次渠",
+            "layout_text": "3室1厅",
+            "price_text": "4200元/月",
+            "updated_at": "房天下公开列表页当前可见"
+          }
+        },
+        {
+          "batch_id": "main_residential",
+          "canonical_url": "https://fang.com/houses/zf_252548bj/9,3,-h316-i35/#fang-197",
+          "contact_path": {
+            "entry_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+            "type": "platform_entry"
+          },
+          "evidence_id": "live-fang-003",
+          "listing_candidate_status": "candidate_l1",
+          "normalized_fields": {
+            "area_sqm": 106,
+            "bedrooms": 3,
+            "price_monthly": 4200
+          },
+          "observed_at": "2026-06-14T12:00:00+08:00",
+          "page_opened": true,
+          "query": "北京 次渠 一居室 6000以内 租房 京东总部",
+          "query_id": "main_residential-q01",
+          "raw_excerpt": "房天下公开列表页可见：次渠家园，106平，3室1厅，4200元/月，次渠。",
+          "reject_reasons": [],
+          "source_domain": "fang.com",
+          "source_name": "房天下",
+          "source_tier": "P0",
+          "source_type": "platform_list_page",
+          "source_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+          "url_class": "platform_list_page",
+          "visible_fields": {
+            "area_text": "106平",
+            "community": "次渠家园",
+            "district_hint": "次渠",
+            "layout_text": "3室1厅",
+            "price_text": "4200元/月",
+            "updated_at": "房天下公开列表页当前可见"
+          }
+        },
+        {
+          "batch_id": "main_residential",
+          "canonical_url": "https://fang.com/houses/zf_252548bj/9,3,-h316-i35/#fang-197",
+          "contact_path": {
+            "entry_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+            "type": "platform_entry"
+          },
+          "evidence_id": "live-fang-003",
+          "listing_candidate_status": "candidate_l1",
+          "normalized_fields": {
+            "area_sqm": 106,
+            "bedrooms": 3,
+            "price_monthly": 4200
+          },
+          "observed_at": "2026-06-14T12:00:00+08:00",
+          "page_opened": true,
+          "query": "北京 次渠 一居室 6000以内 租房 京东总部",
+          "query_id": "main_residential-q01",
+          "raw_excerpt": "房天下公开列表页可见：次渠家园，106平，3室1厅，4200元/月，次渠。",
+          "reject_reasons": [],
+          "source_domain": "fang.com",
+          "source_name": "房天下",
+          "source_tier": "P0",
+          "source_type": "platform_list_page",
+          "source_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+          "url_class": "platform_list_page",
+          "visible_fields": {
+            "area_text": "106平",
+            "community": "次渠家园",
+            "district_hint": "次渠",
+            "layout_text": "3室1厅",
+            "price_text": "4200元/月",
+            "updated_at": "房天下公开列表页当前可见"
+          }
+        },
+        {
+          "batch_id": "main_residential",
+          "canonical_url": "https://fang.com/houses/zf_252548bj/9,3,-h316-i35/#fang-197",
+          "contact_path": {
+            "entry_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+            "type": "platform_entry"
+          },
+          "evidence_id": "live-fang-003",
+          "listing_candidate_status": "candidate_l1",
+          "normalized_fields": {
+            "area_sqm": 106,
+            "bedrooms": 3,
+            "price_monthly": 4200
+          },
+          "observed_at": "2026-06-14T12:00:00+08:00",
+          "page_opened": true,
+          "query": "北京 次渠 一居室 6000以内 租房 京东总部",
+          "query_id": "main_residential-q01",
+          "raw_excerpt": "房天下公开列表页可见：次渠家园，106平，3室1厅，4200元/月，次渠。",
+          "reject_reasons": [],
+          "source_domain": "fang.com",
+          "source_name": "房天下",
+          "source_tier": "P0",
+          "source_type": "platform_list_page",
+          "source_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+          "url_class": "platform_list_page",
+          "visible_fields": {
+            "area_text": "106平",
+            "community": "次渠家园",
+            "district_hint": "次渠",
+            "layout_text": "3室1厅",
+            "price_text": "4200元/月",
+            "updated_at": "房天下公开列表页当前可见"
+          }
+        }
+      ],
+      "price_monthly": 4200,
+      "price_text": "4200元/月",
+      "priority": "A",
+      "recommendation_band": "main",
+      "risk_flags": [],
+      "risk_score": 0.0,
+      "source_domains": [
+        "fang.com"
+      ],
+      "source_names": [
+        "房天下"
+      ],
+      "source_tiers": [
+        "P0"
+      ],
+      "source_urls": [
+        "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/"
+      ],
+      "status": "new",
+      "title": "次渠家园三居整租",
+      "trust_level": "L1"
+    },
+    {
+      "area_sqm": 73,
+      "area_text": "73平",
+      "bedrooms": 1,
+      "community": "林肯公园C区",
+      "commute_tags": [
+        "亦庄"
+      ],
+      "contact_path": {
+        "entry_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+        "type": "platform_entry"
+      },
+      "district_hint": "亦庄",
+      "evidence_count": 4,
+      "first_seen_at": "2026-06-14T12:00:00+08:00",
+      "last_opened_at": "2026-06-14T12:00:00+08:00",
+      "last_seen_at": "2026-06-14T12:00:00+08:00",
+      "layout_text": "1室1厅",
+      "listing_id": "listing-830e5ead3f2637b1",
+      "match_score": 1.0,
+      "next_actions": [
+        "确认仍在租",
+        "确认费用条款",
+        "确认看房时间"
+      ],
+      "observations": [
+        {
+          "batch_id": "space_budget_backup",
+          "canonical_url": "https://fang.com/houses/zf_252548bj/9,3,-h316-i35/#fang-211",
+          "contact_path": {
+            "entry_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+            "type": "platform_entry"
+          },
+          "evidence_id": "live-fang-009",
+          "listing_candidate_status": "candidate_l1",
+          "normalized_fields": {
+            "area_sqm": 73,
+            "bedrooms": 1,
+            "price_monthly": 4500
+          },
+          "observed_at": "2026-06-14T12:00:00+08:00",
+          "page_opened": true,
+          "query": "北京 亦庄 一居室 6000以内 租房",
+          "query_id": "near_office-q05",
+          "raw_excerpt": "房天下公开列表页可见：林肯公园C区，1室1厅，73平，4500元/月，亦庄。",
+          "reject_reasons": [],
+          "source_domain": "fang.com",
+          "source_name": "房天下",
+          "source_tier": "P0",
+          "source_type": "platform_list_page",
+          "source_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+          "url_class": "platform_list_page",
+          "visible_fields": {
+            "area_text": "73平",
+            "community": "林肯公园C区",
+            "district_hint": "亦庄",
+            "layout_text": "1室1厅",
+            "price_text": "4500元/月",
+            "updated_at": "房天下公开列表页当前可见"
+          }
+        },
+        {
+          "batch_id": "space_budget_backup",
+          "canonical_url": "https://fang.com/houses/zf_252548bj/9,3,-h316-i35/#fang-211",
+          "contact_path": {
+            "entry_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+            "type": "platform_entry"
+          },
+          "evidence_id": "live-fang-009",
+          "listing_candidate_status": "candidate_l1",
+          "normalized_fields": {
+            "area_sqm": 73,
+            "bedrooms": 1,
+            "price_monthly": 4500
+          },
+          "observed_at": "2026-06-14T12:00:00+08:00",
+          "page_opened": true,
+          "query": "北京 亦庄 一居室 6000以内 租房",
+          "query_id": "near_office-q05",
+          "raw_excerpt": "房天下公开列表页可见：林肯公园C区，1室1厅，73平，4500元/月，亦庄。",
+          "reject_reasons": [],
+          "source_domain": "fang.com",
+          "source_name": "房天下",
+          "source_tier": "P0",
+          "source_type": "platform_list_page",
+          "source_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+          "url_class": "platform_list_page",
+          "visible_fields": {
+            "area_text": "73平",
+            "community": "林肯公园C区",
+            "district_hint": "亦庄",
+            "layout_text": "1室1厅",
+            "price_text": "4500元/月",
+            "updated_at": "房天下公开列表页当前可见"
+          }
+        },
+        {
+          "batch_id": "space_budget_backup",
+          "canonical_url": "https://fang.com/houses/zf_252548bj/9,3,-h316-i35/#fang-211",
+          "contact_path": {
+            "entry_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+            "type": "platform_entry"
+          },
+          "evidence_id": "live-fang-009",
+          "listing_candidate_status": "candidate_l1",
+          "normalized_fields": {
+            "area_sqm": 73,
+            "bedrooms": 1,
+            "price_monthly": 4500
+          },
+          "observed_at": "2026-06-14T12:00:00+08:00",
+          "page_opened": true,
+          "query": "北京 亦庄 一居室 6000以内 租房",
+          "query_id": "near_office-q05",
+          "raw_excerpt": "房天下公开列表页可见：林肯公园C区，1室1厅，73平，4500元/月，亦庄。",
+          "reject_reasons": [],
+          "source_domain": "fang.com",
+          "source_name": "房天下",
+          "source_tier": "P0",
+          "source_type": "platform_list_page",
+          "source_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+          "url_class": "platform_list_page",
+          "visible_fields": {
+            "area_text": "73平",
+            "community": "林肯公园C区",
+            "district_hint": "亦庄",
+            "layout_text": "1室1厅",
+            "price_text": "4500元/月",
+            "updated_at": "房天下公开列表页当前可见"
+          }
+        },
+        {
+          "batch_id": "space_budget_backup",
+          "canonical_url": "https://fang.com/houses/zf_252548bj/9,3,-h316-i35/#fang-211",
+          "contact_path": {
+            "entry_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+            "type": "platform_entry"
+          },
+          "evidence_id": "live-fang-009",
+          "listing_candidate_status": "candidate_l1",
+          "normalized_fields": {
+            "area_sqm": 73,
+            "bedrooms": 1,
+            "price_monthly": 4500
+          },
+          "observed_at": "2026-06-14T12:00:00+08:00",
+          "page_opened": true,
+          "query": "北京 亦庄 一居室 6000以内 租房",
+          "query_id": "near_office-q05",
+          "raw_excerpt": "房天下公开列表页可见：林肯公园C区，1室1厅，73平，4500元/月，亦庄。",
+          "reject_reasons": [],
+          "source_domain": "fang.com",
+          "source_name": "房天下",
+          "source_tier": "P0",
+          "source_type": "platform_list_page",
+          "source_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+          "url_class": "platform_list_page",
+          "visible_fields": {
+            "area_text": "73平",
+            "community": "林肯公园C区",
+            "district_hint": "亦庄",
+            "layout_text": "1室1厅",
+            "price_text": "4500元/月",
+            "updated_at": "房天下公开列表页当前可见"
+          }
+        }
+      ],
+      "price_monthly": 4500,
+      "price_text": "4500元/月",
+      "priority": "A",
+      "recommendation_band": "main",
+      "risk_flags": [],
+      "risk_score": 0.0,
+      "source_domains": [
+        "fang.com"
+      ],
+      "source_names": [
+        "房天下"
+      ],
+      "source_tiers": [
+        "P0"
+      ],
+      "source_urls": [
+        "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/"
+      ],
+      "status": "new",
+      "title": "林肯公园C区一居",
+      "trust_level": "L1"
+    },
+    {
+      "area_sqm": 79,
+      "area_text": "79平",
+      "bedrooms": 2,
+      "community": "星岛嘉园",
+      "commute_tags": [
+        "亦庄"
+      ],
+      "contact_path": {
+        "entry_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+        "type": "platform_entry"
+      },
+      "district_hint": "亦庄",
+      "evidence_count": 4,
+      "first_seen_at": "2026-06-14T12:00:00+08:00",
+      "last_opened_at": "2026-06-14T12:00:00+08:00",
+      "last_seen_at": "2026-06-14T12:00:00+08:00",
+      "layout_text": "2室1厅",
+      "listing_id": "listing-68a496332e19beec",
+      "match_score": 1.0,
+      "next_actions": [
+        "确认仍在租",
+        "确认费用条款",
+        "确认看房时间"
+      ],
+      "observations": [
+        {
+          "batch_id": "main_residential",
+          "canonical_url": "https://fang.com/houses/zf_252548bj/9,3,-h316-i35/#fang-205",
+          "contact_path": {
+            "entry_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+            "type": "platform_entry"
+          },
+          "evidence_id": "live-fang-007",
+          "listing_candidate_status": "candidate_l1",
+          "normalized_fields": {
+            "area_sqm": 79,
+            "bedrooms": 2,
+            "price_monthly": 4700
+          },
+          "observed_at": "2026-06-14T12:00:00+08:00",
+          "page_opened": true,
+          "query": "北京 亦庄 二居室 6000以内 租房",
+          "query_id": "near_office-q04",
+          "raw_excerpt": "房天下公开列表页可见：星岛嘉园，2室1厅，79平，4700元/月，亦庄。",
+          "reject_reasons": [],
+          "source_domain": "fang.com",
+          "source_name": "房天下",
+          "source_tier": "P0",
+          "source_type": "platform_list_page",
+          "source_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+          "url_class": "platform_list_page",
+          "visible_fields": {
+            "area_text": "79平",
+            "community": "星岛嘉园",
+            "district_hint": "亦庄",
+            "layout_text": "2室1厅",
+            "price_text": "4700元/月",
+            "updated_at": "房天下公开列表页当前可见"
+          }
+        },
+        {
+          "batch_id": "main_residential",
+          "canonical_url": "https://fang.com/houses/zf_252548bj/9,3,-h316-i35/#fang-205",
+          "contact_path": {
+            "entry_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+            "type": "platform_entry"
+          },
+          "evidence_id": "live-fang-007",
+          "listing_candidate_status": "candidate_l1",
+          "normalized_fields": {
+            "area_sqm": 79,
+            "bedrooms": 2,
+            "price_monthly": 4700
+          },
+          "observed_at": "2026-06-14T12:00:00+08:00",
+          "page_opened": true,
+          "query": "北京 亦庄 二居室 6000以内 租房",
+          "query_id": "near_office-q04",
+          "raw_excerpt": "房天下公开列表页可见：星岛嘉园，2室1厅，79平，4700元/月，亦庄。",
+          "reject_reasons": [],
+          "source_domain": "fang.com",
+          "source_name": "房天下",
+          "source_tier": "P0",
+          "source_type": "platform_list_page",
+          "source_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+          "url_class": "platform_list_page",
+          "visible_fields": {
+            "area_text": "79平",
+            "community": "星岛嘉园",
+            "district_hint": "亦庄",
+            "layout_text": "2室1厅",
+            "price_text": "4700元/月",
+            "updated_at": "房天下公开列表页当前可见"
+          }
+        },
+        {
+          "batch_id": "main_residential",
+          "canonical_url": "https://fang.com/houses/zf_252548bj/9,3,-h316-i35/#fang-205",
+          "contact_path": {
+            "entry_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+            "type": "platform_entry"
+          },
+          "evidence_id": "live-fang-007",
+          "listing_candidate_status": "candidate_l1",
+          "normalized_fields": {
+            "area_sqm": 79,
+            "bedrooms": 2,
+            "price_monthly": 4700
+          },
+          "observed_at": "2026-06-14T12:00:00+08:00",
+          "page_opened": true,
+          "query": "北京 亦庄 二居室 6000以内 租房",
+          "query_id": "near_office-q04",
+          "raw_excerpt": "房天下公开列表页可见：星岛嘉园，2室1厅，79平，4700元/月，亦庄。",
+          "reject_reasons": [],
+          "source_domain": "fang.com",
+          "source_name": "房天下",
+          "source_tier": "P0",
+          "source_type": "platform_list_page",
+          "source_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+          "url_class": "platform_list_page",
+          "visible_fields": {
+            "area_text": "79平",
+            "community": "星岛嘉园",
+            "district_hint": "亦庄",
+            "layout_text": "2室1厅",
+            "price_text": "4700元/月",
+            "updated_at": "房天下公开列表页当前可见"
+          }
+        },
+        {
+          "batch_id": "main_residential",
+          "canonical_url": "https://fang.com/houses/zf_252548bj/9,3,-h316-i35/#fang-205",
+          "contact_path": {
+            "entry_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+            "type": "platform_entry"
+          },
+          "evidence_id": "live-fang-007",
+          "listing_candidate_status": "candidate_l1",
+          "normalized_fields": {
+            "area_sqm": 79,
+            "bedrooms": 2,
+            "price_monthly": 4700
+          },
+          "observed_at": "2026-06-14T12:00:00+08:00",
+          "page_opened": true,
+          "query": "北京 亦庄 二居室 6000以内 租房",
+          "query_id": "near_office-q04",
+          "raw_excerpt": "房天下公开列表页可见：星岛嘉园，2室1厅，79平，4700元/月，亦庄。",
+          "reject_reasons": [],
+          "source_domain": "fang.com",
+          "source_name": "房天下",
+          "source_tier": "P0",
+          "source_type": "platform_list_page",
+          "source_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+          "url_class": "platform_list_page",
+          "visible_fields": {
+            "area_text": "79平",
+            "community": "星岛嘉园",
+            "district_hint": "亦庄",
+            "layout_text": "2室1厅",
+            "price_text": "4700元/月",
+            "updated_at": "房天下公开列表页当前可见"
+          }
+        }
+      ],
+      "price_monthly": 4700,
+      "price_text": "4700元/月",
+      "priority": "A",
+      "recommendation_band": "main",
+      "risk_flags": [],
+      "risk_score": 0.0,
+      "source_domains": [
+        "fang.com"
+      ],
+      "source_names": [
+        "房天下"
+      ],
+      "source_tiers": [
+        "P0"
+      ],
+      "source_urls": [
+        "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/"
+      ],
+      "status": "new",
+      "title": "星岛嘉园两居",
+      "trust_level": "L1"
+    },
+    {
+      "area_sqm": 81,
+      "area_text": "81平",
+      "bedrooms": 1,
+      "community": "林肯公园C区",
+      "commute_tags": [
+        "亦庄"
+      ],
+      "contact_path": {
+        "entry_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+        "type": "platform_entry"
+      },
+      "district_hint": "亦庄",
+      "evidence_count": 4,
+      "first_seen_at": "2026-06-14T12:00:00+08:00",
+      "last_opened_at": "2026-06-14T12:00:00+08:00",
+      "last_seen_at": "2026-06-14T12:00:00+08:00",
+      "layout_text": "1室1厅",
+      "listing_id": "listing-a0b26a1163c8bcfa",
+      "match_score": 1.0,
+      "next_actions": [
+        "确认仍在租",
+        "确认费用条款",
+        "确认看房时间"
+      ],
+      "observations": [
+        {
+          "batch_id": "space_budget_backup",
+          "canonical_url": "https://fang.com/houses/zf_252548bj/9,3,-h316-i35/#fang-213",
+          "contact_path": {
+            "entry_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+            "type": "platform_entry"
+          },
+          "evidence_id": "live-fang-010",
+          "listing_candidate_status": "candidate_l1",
+          "normalized_fields": {
+            "area_sqm": 81,
+            "bedrooms": 1,
+            "price_monthly": 4800
+          },
+          "observed_at": "2026-06-14T12:00:00+08:00",
+          "page_opened": true,
+          "query": "北京 亦庄 一居室 6000以内 租房 京东总部",
+          "query_id": "near_office-q06",
+          "raw_excerpt": "房天下公开列表页可见：林肯公园C区，1室1厅，81平，4800元/月，亦庄。",
+          "reject_reasons": [],
+          "source_domain": "fang.com",
+          "source_name": "房天下",
+          "source_tier": "P0",
+          "source_type": "platform_list_page",
+          "source_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+          "url_class": "platform_list_page",
+          "visible_fields": {
+            "area_text": "81平",
+            "community": "林肯公园C区",
+            "district_hint": "亦庄",
+            "layout_text": "1室1厅",
+            "price_text": "4800元/月",
+            "updated_at": "房天下公开列表页当前可见"
+          }
+        },
+        {
+          "batch_id": "space_budget_backup",
+          "canonical_url": "https://fang.com/houses/zf_252548bj/9,3,-h316-i35/#fang-213",
+          "contact_path": {
+            "entry_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+            "type": "platform_entry"
+          },
+          "evidence_id": "live-fang-010",
+          "listing_candidate_status": "candidate_l1",
+          "normalized_fields": {
+            "area_sqm": 81,
+            "bedrooms": 1,
+            "price_monthly": 4800
+          },
+          "observed_at": "2026-06-14T12:00:00+08:00",
+          "page_opened": true,
+          "query": "北京 亦庄 一居室 6000以内 租房 京东总部",
+          "query_id": "near_office-q06",
+          "raw_excerpt": "房天下公开列表页可见：林肯公园C区，1室1厅，81平，4800元/月，亦庄。",
+          "reject_reasons": [],
+          "source_domain": "fang.com",
+          "source_name": "房天下",
+          "source_tier": "P0",
+          "source_type": "platform_list_page",
+          "source_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+          "url_class": "platform_list_page",
+          "visible_fields": {
+            "area_text": "81平",
+            "community": "林肯公园C区",
+            "district_hint": "亦庄",
+            "layout_text": "1室1厅",
+            "price_text": "4800元/月",
+            "updated_at": "房天下公开列表页当前可见"
+          }
+        },
+        {
+          "batch_id": "space_budget_backup",
+          "canonical_url": "https://fang.com/houses/zf_252548bj/9,3,-h316-i35/#fang-213",
+          "contact_path": {
+            "entry_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+            "type": "platform_entry"
+          },
+          "evidence_id": "live-fang-010",
+          "listing_candidate_status": "candidate_l1",
+          "normalized_fields": {
+            "area_sqm": 81,
+            "bedrooms": 1,
+            "price_monthly": 4800
+          },
+          "observed_at": "2026-06-14T12:00:00+08:00",
+          "page_opened": true,
+          "query": "北京 亦庄 一居室 6000以内 租房 京东总部",
+          "query_id": "near_office-q06",
+          "raw_excerpt": "房天下公开列表页可见：林肯公园C区，1室1厅，81平，4800元/月，亦庄。",
+          "reject_reasons": [],
+          "source_domain": "fang.com",
+          "source_name": "房天下",
+          "source_tier": "P0",
+          "source_type": "platform_list_page",
+          "source_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+          "url_class": "platform_list_page",
+          "visible_fields": {
+            "area_text": "81平",
+            "community": "林肯公园C区",
+            "district_hint": "亦庄",
+            "layout_text": "1室1厅",
+            "price_text": "4800元/月",
+            "updated_at": "房天下公开列表页当前可见"
+          }
+        },
+        {
+          "batch_id": "space_budget_backup",
+          "canonical_url": "https://fang.com/houses/zf_252548bj/9,3,-h316-i35/#fang-213",
+          "contact_path": {
+            "entry_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+            "type": "platform_entry"
+          },
+          "evidence_id": "live-fang-010",
+          "listing_candidate_status": "candidate_l1",
+          "normalized_fields": {
+            "area_sqm": 81,
+            "bedrooms": 1,
+            "price_monthly": 4800
+          },
+          "observed_at": "2026-06-14T12:00:00+08:00",
+          "page_opened": true,
+          "query": "北京 亦庄 一居室 6000以内 租房 京东总部",
+          "query_id": "near_office-q06",
+          "raw_excerpt": "房天下公开列表页可见：林肯公园C区，1室1厅，81平，4800元/月，亦庄。",
+          "reject_reasons": [],
+          "source_domain": "fang.com",
+          "source_name": "房天下",
+          "source_tier": "P0",
+          "source_type": "platform_list_page",
+          "source_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+          "url_class": "platform_list_page",
+          "visible_fields": {
+            "area_text": "81平",
+            "community": "林肯公园C区",
+            "district_hint": "亦庄",
+            "layout_text": "1室1厅",
+            "price_text": "4800元/月",
+            "updated_at": "房天下公开列表页当前可见"
+          }
+        }
+      ],
+      "price_monthly": 4800,
+      "price_text": "4800元/月",
+      "priority": "A",
+      "recommendation_band": "main",
+      "risk_flags": [],
+      "risk_score": 0.0,
+      "source_domains": [
+        "fang.com"
+      ],
+      "source_names": [
+        "房天下"
+      ],
+      "source_tiers": [
+        "P0"
+      ],
+      "source_urls": [
+        "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/"
+      ],
+      "status": "new",
+      "title": "林肯公园C区大一居",
+      "trust_level": "L1"
+    },
+    {
+      "area_sqm": 91,
+      "area_text": "91平",
+      "bedrooms": 2,
+      "community": "鹿海园五里",
+      "commute_tags": [
+        "亦庄"
+      ],
+      "contact_path": {
+        "entry_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+        "type": "platform_entry"
+      },
+      "district_hint": "亦庄",
+      "evidence_count": 4,
+      "first_seen_at": "2026-06-14T12:00:00+08:00",
+      "last_opened_at": "2026-06-14T12:00:00+08:00",
+      "last_seen_at": "2026-06-14T12:00:00+08:00",
+      "layout_text": "2室2厅",
+      "listing_id": "listing-edb0ad55bb271103",
+      "match_score": 1.0,
+      "next_actions": [
+        "确认仍在租",
+        "确认费用条款",
+        "确认看房时间"
+      ],
+      "observations": [
+        {
+          "batch_id": "main_residential",
+          "canonical_url": "https://fang.com/houses/zf_252548bj/9,3,-h316-i35/#fang-203",
+          "contact_path": {
+            "entry_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+            "type": "platform_entry"
+          },
+          "evidence_id": "live-fang-006",
+          "listing_candidate_status": "candidate_l1",
+          "normalized_fields": {
+            "area_sqm": 91,
+            "bedrooms": 2,
+            "price_monthly": 5300
+          },
+          "observed_at": "2026-06-14T12:00:00+08:00",
+          "page_opened": true,
+          "query": "北京 亦庄 二居室 6000以内 租房 京东总部",
+          "query_id": "near_office-q03",
+          "raw_excerpt": "房天下公开列表页可见：鹿海园五里，2室2厅，91平，5300元/月，亦庄。",
+          "reject_reasons": [],
+          "source_domain": "fang.com",
+          "source_name": "房天下",
+          "source_tier": "P0",
+          "source_type": "platform_list_page",
+          "source_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+          "url_class": "platform_list_page",
+          "visible_fields": {
+            "area_text": "91平",
+            "community": "鹿海园五里",
+            "district_hint": "亦庄",
+            "layout_text": "2室2厅",
+            "price_text": "5300元/月",
+            "updated_at": "房天下公开列表页当前可见"
+          }
+        },
+        {
+          "batch_id": "main_residential",
+          "canonical_url": "https://fang.com/houses/zf_252548bj/9,3,-h316-i35/#fang-203",
+          "contact_path": {
+            "entry_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+            "type": "platform_entry"
+          },
+          "evidence_id": "live-fang-006",
+          "listing_candidate_status": "candidate_l1",
+          "normalized_fields": {
+            "area_sqm": 91,
+            "bedrooms": 2,
+            "price_monthly": 5300
+          },
+          "observed_at": "2026-06-14T12:00:00+08:00",
+          "page_opened": true,
+          "query": "北京 亦庄 二居室 6000以内 租房 京东总部",
+          "query_id": "near_office-q03",
+          "raw_excerpt": "房天下公开列表页可见：鹿海园五里，2室2厅，91平，5300元/月，亦庄。",
+          "reject_reasons": [],
+          "source_domain": "fang.com",
+          "source_name": "房天下",
+          "source_tier": "P0",
+          "source_type": "platform_list_page",
+          "source_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+          "url_class": "platform_list_page",
+          "visible_fields": {
+            "area_text": "91平",
+            "community": "鹿海园五里",
+            "district_hint": "亦庄",
+            "layout_text": "2室2厅",
+            "price_text": "5300元/月",
+            "updated_at": "房天下公开列表页当前可见"
+          }
+        },
+        {
+          "batch_id": "main_residential",
+          "canonical_url": "https://fang.com/houses/zf_252548bj/9,3,-h316-i35/#fang-203",
+          "contact_path": {
+            "entry_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+            "type": "platform_entry"
+          },
+          "evidence_id": "live-fang-006",
+          "listing_candidate_status": "candidate_l1",
+          "normalized_fields": {
+            "area_sqm": 91,
+            "bedrooms": 2,
+            "price_monthly": 5300
+          },
+          "observed_at": "2026-06-14T12:00:00+08:00",
+          "page_opened": true,
+          "query": "北京 亦庄 二居室 6000以内 租房 京东总部",
+          "query_id": "near_office-q03",
+          "raw_excerpt": "房天下公开列表页可见：鹿海园五里，2室2厅，91平，5300元/月，亦庄。",
+          "reject_reasons": [],
+          "source_domain": "fang.com",
+          "source_name": "房天下",
+          "source_tier": "P0",
+          "source_type": "platform_list_page",
+          "source_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+          "url_class": "platform_list_page",
+          "visible_fields": {
+            "area_text": "91平",
+            "community": "鹿海园五里",
+            "district_hint": "亦庄",
+            "layout_text": "2室2厅",
+            "price_text": "5300元/月",
+            "updated_at": "房天下公开列表页当前可见"
+          }
+        },
+        {
+          "batch_id": "main_residential",
+          "canonical_url": "https://fang.com/houses/zf_252548bj/9,3,-h316-i35/#fang-203",
+          "contact_path": {
+            "entry_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+            "type": "platform_entry"
+          },
+          "evidence_id": "live-fang-006",
+          "listing_candidate_status": "candidate_l1",
+          "normalized_fields": {
+            "area_sqm": 91,
+            "bedrooms": 2,
+            "price_monthly": 5300
+          },
+          "observed_at": "2026-06-14T12:00:00+08:00",
+          "page_opened": true,
+          "query": "北京 亦庄 二居室 6000以内 租房 京东总部",
+          "query_id": "near_office-q03",
+          "raw_excerpt": "房天下公开列表页可见：鹿海园五里，2室2厅，91平，5300元/月，亦庄。",
+          "reject_reasons": [],
+          "source_domain": "fang.com",
+          "source_name": "房天下",
+          "source_tier": "P0",
+          "source_type": "platform_list_page",
+          "source_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+          "url_class": "platform_list_page",
+          "visible_fields": {
+            "area_text": "91平",
+            "community": "鹿海园五里",
+            "district_hint": "亦庄",
+            "layout_text": "2室2厅",
+            "price_text": "5300元/月",
+            "updated_at": "房天下公开列表页当前可见"
+          }
+        }
+      ],
+      "price_monthly": 5300,
+      "price_text": "5300元/月",
+      "priority": "A",
+      "recommendation_band": "main",
+      "risk_flags": [],
+      "risk_score": 0.0,
+      "source_domains": [
+        "fang.com"
+      ],
+      "source_names": [
+        "房天下"
+      ],
+      "source_tiers": [
+        "P0"
+      ],
+      "source_urls": [
+        "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/"
+      ],
+      "status": "new",
+      "title": "鹿海园五里两居",
+      "trust_level": "L1"
+    },
+    {
+      "area_sqm": 100,
+      "area_text": "100平",
+      "bedrooms": 3,
+      "community": "首开国风美仑",
+      "commute_tags": [
+        "马驹桥"
+      ],
+      "contact_path": {
+        "entry_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+        "type": "platform_entry"
+      },
+      "district_hint": "马驹桥",
+      "evidence_count": 4,
+      "first_seen_at": "2026-06-14T12:00:00+08:00",
+      "last_opened_at": "2026-06-14T12:00:00+08:00",
+      "last_seen_at": "2026-06-14T12:00:00+08:00",
+      "layout_text": "3室2厅",
+      "listing_id": "listing-b0f6e1534e40cbc6",
+      "match_score": 1.0,
+      "next_actions": [
+        "确认仍在租",
+        "确认费用条款",
+        "确认看房时间"
+      ],
+      "observations": [
+        {
+          "batch_id": "space_budget_backup",
+          "canonical_url": "https://fang.com/houses/zf_252548bj/9,3,-h316-i35/#fang-207",
+          "contact_path": {
+            "entry_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+            "type": "platform_entry"
+          },
+          "evidence_id": "live-fang-008",
+          "listing_candidate_status": "candidate_l1",
+          "normalized_fields": {
+            "area_sqm": 100,
+            "bedrooms": 3,
+            "price_monthly": 6200
+          },
+          "observed_at": "2026-06-14T12:00:00+08:00",
+          "page_opened": true,
+          "query": "北京 马驹桥 租房 京东总部",
+          "query_id": "space_budget_backup-q02",
+          "raw_excerpt": "房天下公开列表页可见：首开国风美仑，3室2厅，100平，6200元/月，马驹桥。",
+          "reject_reasons": [],
+          "source_domain": "fang.com",
+          "source_name": "房天下",
+          "source_tier": "P0",
+          "source_type": "platform_list_page",
+          "source_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+          "url_class": "platform_list_page",
+          "visible_fields": {
+            "area_text": "100平",
+            "community": "首开国风美仑",
+            "district_hint": "马驹桥",
+            "layout_text": "3室2厅",
+            "price_text": "6200元/月",
+            "updated_at": "房天下公开列表页当前可见"
+          }
+        },
+        {
+          "batch_id": "space_budget_backup",
+          "canonical_url": "https://fang.com/houses/zf_252548bj/9,3,-h316-i35/#fang-207",
+          "contact_path": {
+            "entry_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+            "type": "platform_entry"
+          },
+          "evidence_id": "live-fang-008",
+          "listing_candidate_status": "candidate_l1",
+          "normalized_fields": {
+            "area_sqm": 100,
+            "bedrooms": 3,
+            "price_monthly": 6200
+          },
+          "observed_at": "2026-06-14T12:00:00+08:00",
+          "page_opened": true,
+          "query": "北京 马驹桥 租房 京东总部",
+          "query_id": "space_budget_backup-q02",
+          "raw_excerpt": "房天下公开列表页可见：首开国风美仑，3室2厅，100平，6200元/月，马驹桥。",
+          "reject_reasons": [],
+          "source_domain": "fang.com",
+          "source_name": "房天下",
+          "source_tier": "P0",
+          "source_type": "platform_list_page",
+          "source_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+          "url_class": "platform_list_page",
+          "visible_fields": {
+            "area_text": "100平",
+            "community": "首开国风美仑",
+            "district_hint": "马驹桥",
+            "layout_text": "3室2厅",
+            "price_text": "6200元/月",
+            "updated_at": "房天下公开列表页当前可见"
+          }
+        },
+        {
+          "batch_id": "space_budget_backup",
+          "canonical_url": "https://fang.com/houses/zf_252548bj/9,3,-h316-i35/#fang-207",
+          "contact_path": {
+            "entry_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+            "type": "platform_entry"
+          },
+          "evidence_id": "live-fang-008",
+          "listing_candidate_status": "candidate_l1",
+          "normalized_fields": {
+            "area_sqm": 100,
+            "bedrooms": 3,
+            "price_monthly": 6200
+          },
+          "observed_at": "2026-06-14T12:00:00+08:00",
+          "page_opened": true,
+          "query": "北京 马驹桥 租房 京东总部",
+          "query_id": "space_budget_backup-q02",
+          "raw_excerpt": "房天下公开列表页可见：首开国风美仑，3室2厅，100平，6200元/月，马驹桥。",
+          "reject_reasons": [],
+          "source_domain": "fang.com",
+          "source_name": "房天下",
+          "source_tier": "P0",
+          "source_type": "platform_list_page",
+          "source_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+          "url_class": "platform_list_page",
+          "visible_fields": {
+            "area_text": "100平",
+            "community": "首开国风美仑",
+            "district_hint": "马驹桥",
+            "layout_text": "3室2厅",
+            "price_text": "6200元/月",
+            "updated_at": "房天下公开列表页当前可见"
+          }
+        },
+        {
+          "batch_id": "space_budget_backup",
+          "canonical_url": "https://fang.com/houses/zf_252548bj/9,3,-h316-i35/#fang-207",
+          "contact_path": {
+            "entry_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+            "type": "platform_entry"
+          },
+          "evidence_id": "live-fang-008",
+          "listing_candidate_status": "candidate_l1",
+          "normalized_fields": {
+            "area_sqm": 100,
+            "bedrooms": 3,
+            "price_monthly": 6200
+          },
+          "observed_at": "2026-06-14T12:00:00+08:00",
+          "page_opened": true,
+          "query": "北京 马驹桥 租房 京东总部",
+          "query_id": "space_budget_backup-q02",
+          "raw_excerpt": "房天下公开列表页可见：首开国风美仑，3室2厅，100平，6200元/月，马驹桥。",
+          "reject_reasons": [],
+          "source_domain": "fang.com",
+          "source_name": "房天下",
+          "source_tier": "P0",
+          "source_type": "platform_list_page",
+          "source_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+          "url_class": "platform_list_page",
+          "visible_fields": {
+            "area_text": "100平",
+            "community": "首开国风美仑",
+            "district_hint": "马驹桥",
+            "layout_text": "3室2厅",
+            "price_text": "6200元/月",
+            "updated_at": "房天下公开列表页当前可见"
+          }
+        }
+      ],
+      "price_monthly": 6200,
+      "price_text": "6200元/月",
+      "priority": "A",
+      "recommendation_band": "main",
+      "risk_flags": [],
+      "risk_score": 0.0,
+      "source_domains": [
+        "fang.com"
+      ],
+      "source_names": [
+        "房天下"
+      ],
+      "source_tiers": [
+        "P0"
+      ],
+      "source_urls": [
+        "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/"
+      ],
+      "status": "new",
+      "title": "首开国风美仑三居",
+      "trust_level": "L1"
+    },
+    {
+      "area_sqm": 103,
+      "area_text": "103平",
+      "bedrooms": 3,
+      "community": "泰河园七里三区",
+      "commute_tags": [
+        "亦庄"
+      ],
+      "contact_path": {
+        "entry_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+        "type": "platform_entry"
+      },
+      "district_hint": "亦庄",
+      "evidence_count": 4,
+      "first_seen_at": "2026-06-14T12:00:00+08:00",
+      "last_opened_at": "2026-06-14T12:00:00+08:00",
+      "last_seen_at": "2026-06-14T12:00:00+08:00",
+      "layout_text": "3室2厅",
+      "listing_id": "listing-95abbd7216d9bc01",
+      "match_score": 1.0,
+      "next_actions": [
+        "确认仍在租",
+        "确认费用条款",
+        "确认看房时间"
+      ],
+      "observations": [
+        {
+          "batch_id": "p0_price_anchor",
+          "canonical_url": "https://fang.com/houses/zf_252548bj/9,3,-h316-i35/#fang-189",
+          "contact_path": {
+            "entry_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+            "type": "platform_entry"
+          },
+          "evidence_id": "live-fang-001",
+          "listing_candidate_status": "candidate_l1",
+          "normalized_fields": {
+            "area_sqm": 103,
+            "bedrooms": 3,
+            "price_monthly": 6700
+          },
+          "observed_at": "2026-06-14T12:00:00+08:00",
+          "page_opened": true,
+          "query": "site:fang.com/zf/bj 经海路 一居室 6000以内 租房 京东总部",
+          "query_id": "p0_price_anchor-q01",
+          "raw_excerpt": "房天下公开列表页可见：泰河园七里三区，两室朝南带电梯，三室两厅，103平，6700元/月，亦庄。",
+          "reject_reasons": [],
+          "source_domain": "fang.com",
+          "source_name": "房天下",
+          "source_tier": "P0",
+          "source_type": "platform_list_page",
+          "source_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+          "url_class": "platform_list_page",
+          "visible_fields": {
+            "area_text": "103平",
+            "community": "泰河园七里三区",
+            "district_hint": "亦庄",
+            "layout_text": "3室2厅",
+            "price_text": "6700元/月",
+            "updated_at": "房天下公开列表页当前可见"
+          }
+        },
+        {
+          "batch_id": "p0_price_anchor",
+          "canonical_url": "https://fang.com/houses/zf_252548bj/9,3,-h316-i35/#fang-189",
+          "contact_path": {
+            "entry_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+            "type": "platform_entry"
+          },
+          "evidence_id": "live-fang-001",
+          "listing_candidate_status": "candidate_l1",
+          "normalized_fields": {
+            "area_sqm": 103,
+            "bedrooms": 3,
+            "price_monthly": 6700
+          },
+          "observed_at": "2026-06-14T12:00:00+08:00",
+          "page_opened": true,
+          "query": "site:fang.com/zf/bj 经海路 一居室 6000以内 租房 京东总部",
+          "query_id": "p0_price_anchor-q01",
+          "raw_excerpt": "房天下公开列表页可见：泰河园七里三区，两室朝南带电梯，三室两厅，103平，6700元/月，亦庄。",
+          "reject_reasons": [],
+          "source_domain": "fang.com",
+          "source_name": "房天下",
+          "source_tier": "P0",
+          "source_type": "platform_list_page",
+          "source_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+          "url_class": "platform_list_page",
+          "visible_fields": {
+            "area_text": "103平",
+            "community": "泰河园七里三区",
+            "district_hint": "亦庄",
+            "layout_text": "3室2厅",
+            "price_text": "6700元/月",
+            "updated_at": "房天下公开列表页当前可见"
+          }
+        },
+        {
+          "batch_id": "p0_price_anchor",
+          "canonical_url": "https://fang.com/houses/zf_252548bj/9,3,-h316-i35/#fang-189",
+          "contact_path": {
+            "entry_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+            "type": "platform_entry"
+          },
+          "evidence_id": "live-fang-001",
+          "listing_candidate_status": "candidate_l1",
+          "normalized_fields": {
+            "area_sqm": 103,
+            "bedrooms": 3,
+            "price_monthly": 6700
+          },
+          "observed_at": "2026-06-14T12:00:00+08:00",
+          "page_opened": true,
+          "query": "site:fang.com/zf/bj 经海路 一居室 6000以内 租房 京东总部",
+          "query_id": "p0_price_anchor-q01",
+          "raw_excerpt": "房天下公开列表页可见：泰河园七里三区，两室朝南带电梯，三室两厅，103平，6700元/月，亦庄。",
+          "reject_reasons": [],
+          "source_domain": "fang.com",
+          "source_name": "房天下",
+          "source_tier": "P0",
+          "source_type": "platform_list_page",
+          "source_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+          "url_class": "platform_list_page",
+          "visible_fields": {
+            "area_text": "103平",
+            "community": "泰河园七里三区",
+            "district_hint": "亦庄",
+            "layout_text": "3室2厅",
+            "price_text": "6700元/月",
+            "updated_at": "房天下公开列表页当前可见"
+          }
+        },
+        {
+          "batch_id": "p0_price_anchor",
+          "canonical_url": "https://fang.com/houses/zf_252548bj/9,3,-h316-i35/#fang-189",
+          "contact_path": {
+            "entry_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+            "type": "platform_entry"
+          },
+          "evidence_id": "live-fang-001",
+          "listing_candidate_status": "candidate_l1",
+          "normalized_fields": {
+            "area_sqm": 103,
+            "bedrooms": 3,
+            "price_monthly": 6700
+          },
+          "observed_at": "2026-06-14T12:00:00+08:00",
+          "page_opened": true,
+          "query": "site:fang.com/zf/bj 经海路 一居室 6000以内 租房 京东总部",
+          "query_id": "p0_price_anchor-q01",
+          "raw_excerpt": "房天下公开列表页可见：泰河园七里三区，两室朝南带电梯，三室两厅，103平，6700元/月，亦庄。",
+          "reject_reasons": [],
+          "source_domain": "fang.com",
+          "source_name": "房天下",
+          "source_tier": "P0",
+          "source_type": "platform_list_page",
+          "source_url": "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/",
+          "url_class": "platform_list_page",
+          "visible_fields": {
+            "area_text": "103平",
+            "community": "泰河园七里三区",
+            "district_hint": "亦庄",
+            "layout_text": "3室2厅",
+            "price_text": "6700元/月",
+            "updated_at": "房天下公开列表页当前可见"
+          }
+        }
+      ],
+      "price_monthly": 6700,
+      "price_text": "6700元/月",
+      "priority": "A",
+      "recommendation_band": "main",
+      "risk_flags": [],
+      "risk_score": 0.0,
+      "source_domains": [
+        "fang.com"
+      ],
+      "source_names": [
+        "房天下"
+      ],
+      "source_tiers": [
+        "P0"
+      ],
+      "source_urls": [
+        "https://fang.com/houses/zf_252548bj/9%2C3%2C-h316-i35/"
+      ],
+      "status": "new",
+      "title": "泰河园七里三区三室两厅",
+      "trust_level": "L1"
+    },
+    {
+      "area_sqm": 60,
+      "area_text": "60平",
+      "bedrooms": 1,
+      "community": "次渠南里",
+      "commute_tags": [
+        "次渠南"
+      ],
+      "contact_path": {
+        "entry_url": "https://www.douban.com/group/topic/333319048/",
+        "type": "original_post"
+      },
+      "district_hint": "次渠南",
+      "evidence_count": 4,
+      "first_seen_at": "2026-06-14T12:05:00+08:00",
+      "last_opened_at": "2026-06-14T12:05:00+08:00",
+      "last_seen_at": "2026-06-14T12:05:00+08:00",
+      "layout_text": "一居室",
+      "listing_id": "listing-fc331e4a63639fae",
+      "match_score": 0.8,
+      "next_actions": [
+        "确认仍在租",
+        "确认费用条款",
+        "确认看房时间"
+      ],
+      "observations": [
+        {
+          "batch_id": "transfer_personal",
+          "canonical_url": "https://www.douban.com/group/topic/333319048/",
+          "contact_path": {
+            "entry_url": "https://www.douban.com/group/topic/333319048/",
+            "type": "original_post"
+          },
+          "evidence_id": "live-douban-l1-001",
+          "listing_candidate_status": "candidate_l1",
+          "normalized_fields": {
+            "area_sqm": 60,
+            "bedrooms": 1,
+            "price_monthly": null
+          },
+          "observed_at": "2026-06-14T12:05:00+08:00",
+          "page_opened": true,
+          "query": "site:douban.com/group 次渠南 京东总部 租房 一居",
+          "query_id": "transfer_personal-q01",
+          "raw_excerpt": "豆瓣公开小组话题标题可见：次渠南里小区一居室60平转租，发布时间 2026-06-13。",
+          "reject_reasons": [],
+          "source_domain": "www.douban.com",
+          "source_name": "豆瓣公开小组",
+          "source_tier": "P1",
+          "source_type": "community_post",
+          "source_url": "https://www.douban.com/group/topic/333319048/",
+          "url_class": "community_topic",
+          "visible_fields": {
+            "area_text": "60平",
+            "community": "次渠南里",
+            "district_hint": "次渠南",
+            "layout_text": "一居室",
+            "published_at": "2026-06-13"
+          }
+        },
+        {
+          "batch_id": "transfer_personal",
+          "canonical_url": "https://www.douban.com/group/topic/333319048/",
+          "contact_path": {
+            "entry_url": "https://www.douban.com/group/topic/333319048/",
+            "type": "original_post"
+          },
+          "evidence_id": "live-douban-l1-001",
+          "listing_candidate_status": "candidate_l1",
+          "normalized_fields": {
+            "area_sqm": 60,
+            "bedrooms": 1,
+            "price_monthly": null
+          },
+          "observed_at": "2026-06-14T12:05:00+08:00",
+          "page_opened": true,
+          "query": "site:douban.com/group 次渠南 京东总部 租房 一居",
+          "query_id": "transfer_personal-q01",
+          "raw_excerpt": "豆瓣公开小组话题标题可见：次渠南里小区一居室60平转租，发布时间 2026-06-13。",
+          "reject_reasons": [],
+          "source_domain": "www.douban.com",
+          "source_name": "豆瓣公开小组",
+          "source_tier": "P1",
+          "source_type": "community_post",
+          "source_url": "https://www.douban.com/group/topic/333319048/",
+          "url_class": "community_topic",
+          "visible_fields": {
+            "area_text": "60平",
+            "community": "次渠南里",
+            "district_hint": "次渠南",
+            "layout_text": "一居室",
+            "published_at": "2026-06-13"
+          }
+        },
+        {
+          "batch_id": "transfer_personal",
+          "canonical_url": "https://www.douban.com/group/topic/333319048/",
+          "contact_path": {
+            "entry_url": "https://www.douban.com/group/topic/333319048/",
+            "type": "original_post"
+          },
+          "evidence_id": "live-douban-l1-001",
+          "listing_candidate_status": "candidate_l1",
+          "normalized_fields": {
+            "area_sqm": 60,
+            "bedrooms": 1,
+            "price_monthly": null
+          },
+          "observed_at": "2026-06-14T12:05:00+08:00",
+          "page_opened": true,
+          "query": "site:douban.com/group 次渠南 京东总部 租房 一居",
+          "query_id": "transfer_personal-q01",
+          "raw_excerpt": "豆瓣公开小组话题标题可见：次渠南里小区一居室60平转租，发布时间 2026-06-13。",
+          "reject_reasons": [],
+          "source_domain": "www.douban.com",
+          "source_name": "豆瓣公开小组",
+          "source_tier": "P1",
+          "source_type": "community_post",
+          "source_url": "https://www.douban.com/group/topic/333319048/",
+          "url_class": "community_topic",
+          "visible_fields": {
+            "area_text": "60平",
+            "community": "次渠南里",
+            "district_hint": "次渠南",
+            "layout_text": "一居室",
+            "published_at": "2026-06-13"
+          }
+        },
+        {
+          "batch_id": "transfer_personal",
+          "canonical_url": "https://www.douban.com/group/topic/333319048/",
+          "contact_path": {
+            "entry_url": "https://www.douban.com/group/topic/333319048/",
+            "type": "original_post"
+          },
+          "evidence_id": "live-douban-l1-001",
+          "listing_candidate_status": "candidate_l1",
+          "normalized_fields": {
+            "area_sqm": 60,
+            "bedrooms": 1,
+            "price_monthly": null
+          },
+          "observed_at": "2026-06-14T12:05:00+08:00",
+          "page_opened": true,
+          "query": "site:douban.com/group 次渠南 京东总部 租房 一居",
+          "query_id": "transfer_personal-q01",
+          "raw_excerpt": "豆瓣公开小组话题标题可见：次渠南里小区一居室60平转租，发布时间 2026-06-13。",
+          "reject_reasons": [],
+          "source_domain": "www.douban.com",
+          "source_name": "豆瓣公开小组",
+          "source_tier": "P1",
+          "source_type": "community_post",
+          "source_url": "https://www.douban.com/group/topic/333319048/",
+          "url_class": "community_topic",
+          "visible_fields": {
+            "area_text": "60平",
+            "community": "次渠南里",
+            "district_hint": "次渠南",
+            "layout_text": "一居室",
+            "published_at": "2026-06-13"
+          }
+        }
+      ],
+      "price_monthly": null,
+      "price_text": "待核验",
+      "priority": "A",
+      "recommendation_band": "main",
+      "risk_flags": [],
+      "risk_score": 0.0,
+      "source_domains": [
+        "www.douban.com"
+      ],
+      "source_names": [
+        "豆瓣公开小组"
+      ],
+      "source_tiers": [
+        "P1"
+      ],
+      "source_urls": [
+        "https://www.douban.com/group/topic/333319048/"
+      ],
+      "status": "new",
+      "title": "次渠南里小区一居室60平转租",
+      "trust_level": "L1"
+    },
+    {
+      "area_sqm": null,
+      "area_text": "待核验",
+      "bedrooms": 1,
+      "community": "锋创科技园",
+      "commute_tags": [
+        "经海路"
+      ],
+      "contact_path": {
+        "entry_url": "https://www.douban.com/group/topic/333248575/",
+        "type": "original_post"
+      },
+      "district_hint": "经海路",
+      "evidence_count": 4,
+      "first_seen_at": "2026-06-14T12:05:00+08:00",
+      "last_opened_at": "2026-06-14T12:05:00+08:00",
+      "last_seen_at": "2026-06-14T12:05:00+08:00",
+      "layout_text": "整租一室",
+      "listing_id": "listing-9ab608ea35a28cb8",
+      "match_score": 0.8,
+      "next_actions": [
+        "确认仍在租",
+        "确认费用条款",
+        "确认看房时间"
+      ],
+      "observations": [
+        {
+          "batch_id": "transfer_personal",
+          "canonical_url": "https://www.douban.com/group/topic/333248575/",
+          "contact_path": {
+            "entry_url": "https://www.douban.com/group/topic/333248575/",
+            "type": "original_post"
+          },
+          "evidence_id": "live-douban-l1-002",
+          "listing_candidate_status": "candidate_l1",
+          "normalized_fields": {
+            "area_sqm": null,
+            "bedrooms": 1,
+            "price_monthly": null
+          },
+          "observed_at": "2026-06-14T12:05:00+08:00",
+          "page_opened": true,
+          "query": "site:douban.com/group 锋创科技园 整租一室 京东总部",
+          "query_id": "transfer_personal-q02",
+          "raw_excerpt": "豆瓣公开小组话题标题可见：转租锋创整租一室，价格便宜，发布时间 2026-06-12。",
+          "reject_reasons": [],
+          "source_domain": "www.douban.com",
+          "source_name": "豆瓣公开小组",
+          "source_tier": "P1",
+          "source_type": "community_post",
+          "source_url": "https://www.douban.com/group/topic/333248575/",
+          "url_class": "community_topic",
+          "visible_fields": {
+            "community": "锋创科技园",
+            "district_hint": "经海路",
+            "layout_text": "整租一室",
+            "published_at": "2026-06-12"
+          }
+        },
+        {
+          "batch_id": "transfer_personal",
+          "canonical_url": "https://www.douban.com/group/topic/333248575/",
+          "contact_path": {
+            "entry_url": "https://www.douban.com/group/topic/333248575/",
+            "type": "original_post"
+          },
+          "evidence_id": "live-douban-l1-002",
+          "listing_candidate_status": "candidate_l1",
+          "normalized_fields": {
+            "area_sqm": null,
+            "bedrooms": 1,
+            "price_monthly": null
+          },
+          "observed_at": "2026-06-14T12:05:00+08:00",
+          "page_opened": true,
+          "query": "site:douban.com/group 锋创科技园 整租一室 京东总部",
+          "query_id": "transfer_personal-q02",
+          "raw_excerpt": "豆瓣公开小组话题标题可见：转租锋创整租一室，价格便宜，发布时间 2026-06-12。",
+          "reject_reasons": [],
+          "source_domain": "www.douban.com",
+          "source_name": "豆瓣公开小组",
+          "source_tier": "P1",
+          "source_type": "community_post",
+          "source_url": "https://www.douban.com/group/topic/333248575/",
+          "url_class": "community_topic",
+          "visible_fields": {
+            "community": "锋创科技园",
+            "district_hint": "经海路",
+            "layout_text": "整租一室",
+            "published_at": "2026-06-12"
+          }
+        },
+        {
+          "batch_id": "transfer_personal",
+          "canonical_url": "https://www.douban.com/group/topic/333248575/",
+          "contact_path": {
+            "entry_url": "https://www.douban.com/group/topic/333248575/",
+            "type": "original_post"
+          },
+          "evidence_id": "live-douban-l1-002",
+          "listing_candidate_status": "candidate_l1",
+          "normalized_fields": {
+            "area_sqm": null,
+            "bedrooms": 1,
+            "price_monthly": null
+          },
+          "observed_at": "2026-06-14T12:05:00+08:00",
+          "page_opened": true,
+          "query": "site:douban.com/group 锋创科技园 整租一室 京东总部",
+          "query_id": "transfer_personal-q02",
+          "raw_excerpt": "豆瓣公开小组话题标题可见：转租锋创整租一室，价格便宜，发布时间 2026-06-12。",
+          "reject_reasons": [],
+          "source_domain": "www.douban.com",
+          "source_name": "豆瓣公开小组",
+          "source_tier": "P1",
+          "source_type": "community_post",
+          "source_url": "https://www.douban.com/group/topic/333248575/",
+          "url_class": "community_topic",
+          "visible_fields": {
+            "community": "锋创科技园",
+            "district_hint": "经海路",
+            "layout_text": "整租一室",
+            "published_at": "2026-06-12"
+          }
+        },
+        {
+          "batch_id": "transfer_personal",
+          "canonical_url": "https://www.douban.com/group/topic/333248575/",
+          "contact_path": {
+            "entry_url": "https://www.douban.com/group/topic/333248575/",
+            "type": "original_post"
+          },
+          "evidence_id": "live-douban-l1-002",
+          "listing_candidate_status": "candidate_l1",
+          "normalized_fields": {
+            "area_sqm": null,
+            "bedrooms": 1,
+            "price_monthly": null
+          },
+          "observed_at": "2026-06-14T12:05:00+08:00",
+          "page_opened": true,
+          "query": "site:douban.com/group 锋创科技园 整租一室 京东总部",
+          "query_id": "transfer_personal-q02",
+          "raw_excerpt": "豆瓣公开小组话题标题可见：转租锋创整租一室，价格便宜，发布时间 2026-06-12。",
+          "reject_reasons": [],
+          "source_domain": "www.douban.com",
+          "source_name": "豆瓣公开小组",
+          "source_tier": "P1",
+          "source_type": "community_post",
+          "source_url": "https://www.douban.com/group/topic/333248575/",
+          "url_class": "community_topic",
+          "visible_fields": {
+            "community": "锋创科技园",
+            "district_hint": "经海路",
+            "layout_text": "整租一室",
+            "published_at": "2026-06-12"
+          }
+        }
+      ],
+      "price_monthly": null,
+      "price_text": "待核验",
+      "priority": "A",
+      "recommendation_band": "main",
+      "risk_flags": [],
+      "risk_score": 0.0,
+      "source_domains": [
+        "www.douban.com"
+      ],
+      "source_names": [
+        "豆瓣公开小组"
+      ],
+      "source_tiers": [
+        "P1"
+      ],
+      "source_urls": [
+        "https://www.douban.com/group/topic/333248575/"
+      ],
+      "status": "new",
+      "title": "转租锋创整租一室",
+      "trust_level": "L1"
+    },
+    {
+      "area_sqm": null,
+      "area_text": "待核验",
+      "bedrooms": 1,
+      "community": "锋创科技园",
+      "commute_tags": [
+        "经海路"
+      ],
+      "contact_path": {
+        "entry_url": "https://www.douban.com/group/topic/333239822/",
+        "type": "original_post"
+      },
+      "district_hint": "经海路",
+      "evidence_count": 4,
+      "first_seen_at": "2026-06-14T12:05:00+08:00",
+      "last_opened_at": "2026-06-14T12:05:00+08:00",
+      "last_seen_at": "2026-06-14T12:05:00+08:00",
+      "layout_text": "开间",
+      "listing_id": "listing-fcbfaf63a0d8c840",
+      "match_score": 0.8,
+      "next_actions": [
+        "确认仍在租",
+        "确认费用条款",
+        "确认看房时间"
+      ],
+      "observations": [
+        {
+          "batch_id": "transfer_personal",
+          "canonical_url": "https://www.douban.com/group/topic/333239822/",
+          "contact_path": {
+            "entry_url": "https://www.douban.com/group/topic/333239822/",
+            "type": "original_post"
+          },
+          "evidence_id": "live-douban-l1-003",
+          "listing_candidate_status": "candidate_l1",
+          "normalized_fields": {
+            "area_sqm": null,
+            "bedrooms": 1,
+            "price_monthly": null
+          },
+          "observed_at": "2026-06-14T12:05:00+08:00",
+          "page_opened": true,
+          "query": "site:douban.com/group 锋创科技园 开间 租房 京东总部",
+          "query_id": "transfer_personal-q03",
+          "raw_excerpt": "豆瓣公开小组话题标题可见：步行京东超近，锋创科技园西向开间，发布时间 2026-06-12。",
+          "reject_reasons": [],
+          "source_domain": "www.douban.com",
+          "source_name": "豆瓣公开小组",
+          "source_tier": "P1",
+          "source_type": "community_post",
+          "source_url": "https://www.douban.com/group/topic/333239822/",
+          "url_class": "community_topic",
+          "visible_fields": {
+            "community": "锋创科技园",
+            "district_hint": "经海路",
+            "layout_text": "开间",
+            "published_at": "2026-06-12"
+          }
+        },
+        {
+          "batch_id": "transfer_personal",
+          "canonical_url": "https://www.douban.com/group/topic/333239822/",
+          "contact_path": {
+            "entry_url": "https://www.douban.com/group/topic/333239822/",
+            "type": "original_post"
+          },
+          "evidence_id": "live-douban-l1-003",
+          "listing_candidate_status": "candidate_l1",
+          "normalized_fields": {
+            "area_sqm": null,
+            "bedrooms": 1,
+            "price_monthly": null
+          },
+          "observed_at": "2026-06-14T12:05:00+08:00",
+          "page_opened": true,
+          "query": "site:douban.com/group 锋创科技园 开间 租房 京东总部",
+          "query_id": "transfer_personal-q03",
+          "raw_excerpt": "豆瓣公开小组话题标题可见：步行京东超近，锋创科技园西向开间，发布时间 2026-06-12。",
+          "reject_reasons": [],
+          "source_domain": "www.douban.com",
+          "source_name": "豆瓣公开小组",
+          "source_tier": "P1",
+          "source_type": "community_post",
+          "source_url": "https://www.douban.com/group/topic/333239822/",
+          "url_class": "community_topic",
+          "visible_fields": {
+            "community": "锋创科技园",
+            "district_hint": "经海路",
+            "layout_text": "开间",
+            "published_at": "2026-06-12"
+          }
+        },
+        {
+          "batch_id": "transfer_personal",
+          "canonical_url": "https://www.douban.com/group/topic/333239822/",
+          "contact_path": {
+            "entry_url": "https://www.douban.com/group/topic/333239822/",
+            "type": "original_post"
+          },
+          "evidence_id": "live-douban-l1-003",
+          "listing_candidate_status": "candidate_l1",
+          "normalized_fields": {
+            "area_sqm": null,
+            "bedrooms": 1,
+            "price_monthly": null
+          },
+          "observed_at": "2026-06-14T12:05:00+08:00",
+          "page_opened": true,
+          "query": "site:douban.com/group 锋创科技园 开间 租房 京东总部",
+          "query_id": "transfer_personal-q03",
+          "raw_excerpt": "豆瓣公开小组话题标题可见：步行京东超近，锋创科技园西向开间，发布时间 2026-06-12。",
+          "reject_reasons": [],
+          "source_domain": "www.douban.com",
+          "source_name": "豆瓣公开小组",
+          "source_tier": "P1",
+          "source_type": "community_post",
+          "source_url": "https://www.douban.com/group/topic/333239822/",
+          "url_class": "community_topic",
+          "visible_fields": {
+            "community": "锋创科技园",
+            "district_hint": "经海路",
+            "layout_text": "开间",
+            "published_at": "2026-06-12"
+          }
+        },
+        {
+          "batch_id": "transfer_personal",
+          "canonical_url": "https://www.douban.com/group/topic/333239822/",
+          "contact_path": {
+            "entry_url": "https://www.douban.com/group/topic/333239822/",
+            "type": "original_post"
+          },
+          "evidence_id": "live-douban-l1-003",
+          "listing_candidate_status": "candidate_l1",
+          "normalized_fields": {
+            "area_sqm": null,
+            "bedrooms": 1,
+            "price_monthly": null
+          },
+          "observed_at": "2026-06-14T12:05:00+08:00",
+          "page_opened": true,
+          "query": "site:douban.com/group 锋创科技园 开间 租房 京东总部",
+          "query_id": "transfer_personal-q03",
+          "raw_excerpt": "豆瓣公开小组话题标题可见：步行京东超近，锋创科技园西向开间，发布时间 2026-06-12。",
+          "reject_reasons": [],
+          "source_domain": "www.douban.com",
+          "source_name": "豆瓣公开小组",
+          "source_tier": "P1",
+          "source_type": "community_post",
+          "source_url": "https://www.douban.com/group/topic/333239822/",
+          "url_class": "community_topic",
+          "visible_fields": {
+            "community": "锋创科技园",
+            "district_hint": "经海路",
+            "layout_text": "开间",
+            "published_at": "2026-06-12"
+          }
+        }
+      ],
+      "price_monthly": null,
+      "price_text": "待核验",
+      "priority": "A",
+      "recommendation_band": "main",
+      "risk_flags": [],
+      "risk_score": 0.0,
+      "source_domains": [
+        "www.douban.com"
+      ],
+      "source_names": [
+        "豆瓣公开小组"
+      ],
+      "source_tiers": [
+        "P1"
+      ],
+      "source_urls": [
+        "https://www.douban.com/group/topic/333239822/"
+      ],
+      "status": "new",
+      "title": "锋创科技园西向开间",
+      "trust_level": "L1"
+    },
+    {
+      "area_sqm": 60,
+      "area_text": "60平",
+      "bedrooms": 1,
+      "community": "次渠南里",
+      "commute_tags": [
+        "次渠南"
+      ],
+      "contact_path": {
+        "entry_url": "https://m.douban.com/group/501098/",
+        "type": "original_post"
+      },
+      "district_hint": "次渠南",
+      "evidence_count": 4,
+      "first_seen_at": "2026-06-14T12:15:00+08:00",
+      "last_opened_at": "2026-06-14T12:15:00+08:00",
+      "last_seen_at": "2026-06-14T12:15:00+08:00",
+      "layout_text": "一居室",
+      "listing_id": "listing-dc5c962cffa39700",
+      "match_score": 0.8,
+      "next_actions": [
+        "确认仍在租",
+        "确认费用条款",
+        "确认看房时间"
+      ],
+      "observations": [
+        {
+          "batch_id": "transfer_personal",
+          "canonical_url": "https://m.douban.com/group/501098/#topic-333319048",
+          "contact_path": {
+            "entry_url": "https://m.douban.com/group/501098/",
+            "type": "original_post"
+          },
+          "evidence_id": "live-douban-l0-001",
+          "listing_candidate_status": "candidate_l0",
+          "normalized_fields": {
+            "area_sqm": 60,
+            "bedrooms": 1,
+            "price_monthly": null
+          },
+          "observed_at": "2026-06-14T12:15:00+08:00",
+          "page_opened": true,
+          "query": "m.douban.com/group/501098 京东总部 租房",
+          "query_id": "transfer_personal-q05",
+          "raw_excerpt": "豆瓣公开小组列表页可见：次渠南里小区一居室60平转租。",
+          "reject_reasons": [],
+          "source_domain": "m.douban.com",
+          "source_name": "豆瓣公开小组列表",
+          "source_tier": "P1",
+          "source_type": "community_list",
+          "source_url": "https://m.douban.com/group/501098/",
+          "url_class": "community_list_page",
+          "visible_fields": {
+            "area_text": "60平",
+            "community": "次渠南里",
+            "district_hint": "次渠南",
+            "layout_text": "一居室",
+            "published_at": "2026-06-13"
+          }
+        },
+        {
+          "batch_id": "transfer_personal",
+          "canonical_url": "https://m.douban.com/group/501098/#topic-333319048",
+          "contact_path": {
+            "entry_url": "https://m.douban.com/group/501098/",
+            "type": "original_post"
+          },
+          "evidence_id": "live-douban-l0-001",
+          "listing_candidate_status": "candidate_l0",
+          "normalized_fields": {
+            "area_sqm": 60,
+            "bedrooms": 1,
+            "price_monthly": null
+          },
+          "observed_at": "2026-06-14T12:15:00+08:00",
+          "page_opened": true,
+          "query": "m.douban.com/group/501098 京东总部 租房",
+          "query_id": "transfer_personal-q05",
+          "raw_excerpt": "豆瓣公开小组列表页可见：次渠南里小区一居室60平转租。",
+          "reject_reasons": [],
+          "source_domain": "m.douban.com",
+          "source_name": "豆瓣公开小组列表",
+          "source_tier": "P1",
+          "source_type": "community_list",
+          "source_url": "https://m.douban.com/group/501098/",
+          "url_class": "community_list_page",
+          "visible_fields": {
+            "area_text": "60平",
+            "community": "次渠南里",
+            "district_hint": "次渠南",
+            "layout_text": "一居室",
+            "published_at": "2026-06-13"
+          }
+        },
+        {
+          "batch_id": "transfer_personal",
+          "canonical_url": "https://m.douban.com/group/501098/#topic-333319048",
+          "contact_path": {
+            "entry_url": "https://m.douban.com/group/501098/",
+            "type": "original_post"
+          },
+          "evidence_id": "live-douban-l0-001",
+          "listing_candidate_status": "candidate_l0",
+          "normalized_fields": {
+            "area_sqm": 60,
+            "bedrooms": 1,
+            "price_monthly": null
+          },
+          "observed_at": "2026-06-14T12:15:00+08:00",
+          "page_opened": true,
+          "query": "m.douban.com/group/501098 京东总部 租房",
+          "query_id": "transfer_personal-q05",
+          "raw_excerpt": "豆瓣公开小组列表页可见：次渠南里小区一居室60平转租。",
+          "reject_reasons": [],
+          "source_domain": "m.douban.com",
+          "source_name": "豆瓣公开小组列表",
+          "source_tier": "P1",
+          "source_type": "community_list",
+          "source_url": "https://m.douban.com/group/501098/",
+          "url_class": "community_list_page",
+          "visible_fields": {
+            "area_text": "60平",
+            "community": "次渠南里",
+            "district_hint": "次渠南",
+            "layout_text": "一居室",
+            "published_at": "2026-06-13"
+          }
+        },
+        {
+          "batch_id": "transfer_personal",
+          "canonical_url": "https://m.douban.com/group/501098/#topic-333319048",
+          "contact_path": {
+            "entry_url": "https://m.douban.com/group/501098/",
+            "type": "original_post"
+          },
+          "evidence_id": "live-douban-l0-001",
+          "listing_candidate_status": "candidate_l0",
+          "normalized_fields": {
+            "area_sqm": 60,
+            "bedrooms": 1,
+            "price_monthly": null
+          },
+          "observed_at": "2026-06-14T12:15:00+08:00",
+          "page_opened": true,
+          "query": "m.douban.com/group/501098 京东总部 租房",
+          "query_id": "transfer_personal-q05",
+          "raw_excerpt": "豆瓣公开小组列表页可见：次渠南里小区一居室60平转租。",
+          "reject_reasons": [],
+          "source_domain": "m.douban.com",
+          "source_name": "豆瓣公开小组列表",
+          "source_tier": "P1",
+          "source_type": "community_list",
+          "source_url": "https://m.douban.com/group/501098/",
+          "url_class": "community_list_page",
+          "visible_fields": {
+            "area_text": "60平",
+            "community": "次渠南里",
+            "district_hint": "次渠南",
+            "layout_text": "一居室",
+            "published_at": "2026-06-13"
+          }
+        }
+      ],
+      "price_monthly": null,
+      "price_text": "待核验",
+      "priority": "A",
+      "recommendation_band": "main",
+      "risk_flags": [],
+      "risk_score": 0.0,
+      "source_domains": [
+        "m.douban.com"
+      ],
+      "source_names": [
+        "豆瓣公开小组列表"
+      ],
+      "source_tiers": [
+        "P1"
+      ],
+      "source_urls": [
+        "https://m.douban.com/group/501098/"
+      ],
+      "status": "new",
+      "title": "次渠南里小区一居室60平转租",
+      "trust_level": "L1"
+    },
+    {
+      "area_sqm": null,
+      "area_text": "待核验",
+      "bedrooms": 1,
+      "community": "锋创科技园",
+      "commute_tags": [
+        "经海路"
+      ],
+      "contact_path": {
+        "entry_url": "https://m.douban.com/group/501098/",
+        "type": "original_post"
+      },
+      "district_hint": "经海路",
+      "evidence_count": 4,
+      "first_seen_at": "2026-06-14T12:15:00+08:00",
+      "last_opened_at": "2026-06-14T12:15:00+08:00",
+      "last_seen_at": "2026-06-14T12:15:00+08:00",
+      "layout_text": "整租一室",
+      "listing_id": "listing-6f2f4a9dfabf288a",
+      "match_score": 0.8,
+      "next_actions": [
+        "确认仍在租",
+        "确认费用条款",
+        "确认看房时间"
+      ],
+      "observations": [
+        {
+          "batch_id": "transfer_personal",
+          "canonical_url": "https://m.douban.com/group/501098/#topic-333248575",
+          "contact_path": {
+            "entry_url": "https://m.douban.com/group/501098/",
+            "type": "original_post"
+          },
+          "evidence_id": "live-douban-l0-002",
+          "listing_candidate_status": "candidate_l0",
+          "normalized_fields": {
+            "area_sqm": null,
+            "bedrooms": 1,
+            "price_monthly": null
+          },
+          "observed_at": "2026-06-14T12:15:00+08:00",
+          "page_opened": true,
+          "query": "m.douban.com/group/501098 锋创 整租一室",
+          "query_id": "transfer_personal-q06",
+          "raw_excerpt": "豆瓣公开小组列表页可见：转租锋创整租一室，价格便宜。",
+          "reject_reasons": [],
+          "source_domain": "m.douban.com",
+          "source_name": "豆瓣公开小组列表",
+          "source_tier": "P1",
+          "source_type": "community_list",
+          "source_url": "https://m.douban.com/group/501098/",
+          "url_class": "community_list_page",
+          "visible_fields": {
+            "community": "锋创科技园",
+            "district_hint": "经海路",
+            "layout_text": "整租一室",
+            "published_at": "2026-06-12"
+          }
+        },
+        {
+          "batch_id": "transfer_personal",
+          "canonical_url": "https://m.douban.com/group/501098/#topic-333248575",
+          "contact_path": {
+            "entry_url": "https://m.douban.com/group/501098/",
+            "type": "original_post"
+          },
+          "evidence_id": "live-douban-l0-002",
+          "listing_candidate_status": "candidate_l0",
+          "normalized_fields": {
+            "area_sqm": null,
+            "bedrooms": 1,
+            "price_monthly": null
+          },
+          "observed_at": "2026-06-14T12:15:00+08:00",
+          "page_opened": true,
+          "query": "m.douban.com/group/501098 锋创 整租一室",
+          "query_id": "transfer_personal-q06",
+          "raw_excerpt": "豆瓣公开小组列表页可见：转租锋创整租一室，价格便宜。",
+          "reject_reasons": [],
+          "source_domain": "m.douban.com",
+          "source_name": "豆瓣公开小组列表",
+          "source_tier": "P1",
+          "source_type": "community_list",
+          "source_url": "https://m.douban.com/group/501098/",
+          "url_class": "community_list_page",
+          "visible_fields": {
+            "community": "锋创科技园",
+            "district_hint": "经海路",
+            "layout_text": "整租一室",
+            "published_at": "2026-06-12"
+          }
+        },
+        {
+          "batch_id": "transfer_personal",
+          "canonical_url": "https://m.douban.com/group/501098/#topic-333248575",
+          "contact_path": {
+            "entry_url": "https://m.douban.com/group/501098/",
+            "type": "original_post"
+          },
+          "evidence_id": "live-douban-l0-002",
+          "listing_candidate_status": "candidate_l0",
+          "normalized_fields": {
+            "area_sqm": null,
+            "bedrooms": 1,
+            "price_monthly": null
+          },
+          "observed_at": "2026-06-14T12:15:00+08:00",
+          "page_opened": true,
+          "query": "m.douban.com/group/501098 锋创 整租一室",
+          "query_id": "transfer_personal-q06",
+          "raw_excerpt": "豆瓣公开小组列表页可见：转租锋创整租一室，价格便宜。",
+          "reject_reasons": [],
+          "source_domain": "m.douban.com",
+          "source_name": "豆瓣公开小组列表",
+          "source_tier": "P1",
+          "source_type": "community_list",
+          "source_url": "https://m.douban.com/group/501098/",
+          "url_class": "community_list_page",
+          "visible_fields": {
+            "community": "锋创科技园",
+            "district_hint": "经海路",
+            "layout_text": "整租一室",
+            "published_at": "2026-06-12"
+          }
+        },
+        {
+          "batch_id": "transfer_personal",
+          "canonical_url": "https://m.douban.com/group/501098/#topic-333248575",
+          "contact_path": {
+            "entry_url": "https://m.douban.com/group/501098/",
+            "type": "original_post"
+          },
+          "evidence_id": "live-douban-l0-002",
+          "listing_candidate_status": "candidate_l0",
+          "normalized_fields": {
+            "area_sqm": null,
+            "bedrooms": 1,
+            "price_monthly": null
+          },
+          "observed_at": "2026-06-14T12:15:00+08:00",
+          "page_opened": true,
+          "query": "m.douban.com/group/501098 锋创 整租一室",
+          "query_id": "transfer_personal-q06",
+          "raw_excerpt": "豆瓣公开小组列表页可见：转租锋创整租一室，价格便宜。",
+          "reject_reasons": [],
+          "source_domain": "m.douban.com",
+          "source_name": "豆瓣公开小组列表",
+          "source_tier": "P1",
+          "source_type": "community_list",
+          "source_url": "https://m.douban.com/group/501098/",
+          "url_class": "community_list_page",
+          "visible_fields": {
+            "community": "锋创科技园",
+            "district_hint": "经海路",
+            "layout_text": "整租一室",
+            "published_at": "2026-06-12"
+          }
+        }
+      ],
+      "price_monthly": null,
+      "price_text": "待核验",
+      "priority": "A",
+      "recommendation_band": "main",
+      "risk_flags": [],
+      "risk_score": 0.0,
+      "source_domains": [
+        "m.douban.com"
+      ],
+      "source_names": [
+        "豆瓣公开小组列表"
+      ],
+      "source_tiers": [
+        "P1"
+      ],
+      "source_urls": [
+        "https://m.douban.com/group/501098/"
+      ],
+      "status": "new",
+      "title": "转租锋创整租一室",
+      "trust_level": "L1"
+    },
+    {
+      "area_sqm": null,
+      "area_text": "待核验",
+      "bedrooms": 1,
+      "community": "锋创科技园",
+      "commute_tags": [
+        "经海路"
+      ],
+      "contact_path": {
+        "entry_url": "https://m.douban.com/group/501098/",
+        "type": "original_post"
+      },
+      "district_hint": "经海路",
+      "evidence_count": 4,
+      "first_seen_at": "2026-06-14T12:15:00+08:00",
+      "last_opened_at": "2026-06-14T12:15:00+08:00",
+      "last_seen_at": "2026-06-14T12:15:00+08:00",
+      "layout_text": "开间",
+      "listing_id": "listing-19500c5f1e808b02",
+      "match_score": 0.8,
+      "next_actions": [
+        "确认仍在租",
+        "确认费用条款",
+        "确认看房时间"
+      ],
+      "observations": [
+        {
+          "batch_id": "transfer_personal",
+          "canonical_url": "https://m.douban.com/group/501098/#topic-333239822",
+          "contact_path": {
+            "entry_url": "https://m.douban.com/group/501098/",
+            "type": "original_post"
+          },
+          "evidence_id": "live-douban-l0-003",
+          "listing_candidate_status": "candidate_l0",
+          "normalized_fields": {
+            "area_sqm": null,
+            "bedrooms": 1,
+            "price_monthly": null
+          },
+          "observed_at": "2026-06-14T12:15:00+08:00",
+          "page_opened": true,
+          "query": "m.douban.com/group/501098 锋创 开间 京东",
+          "query_id": "transfer_personal-q07",
+          "raw_excerpt": "豆瓣公开小组列表页可见：步行京东超近，锋创科技园西向开间。",
+          "reject_reasons": [],
+          "source_domain": "m.douban.com",
+          "source_name": "豆瓣公开小组列表",
+          "source_tier": "P1",
+          "source_type": "community_list",
+          "source_url": "https://m.douban.com/group/501098/",
+          "url_class": "community_list_page",
+          "visible_fields": {
+            "community": "锋创科技园",
+            "district_hint": "经海路",
+            "layout_text": "开间",
+            "published_at": "2026-06-12"
+          }
+        },
+        {
+          "batch_id": "transfer_personal",
+          "canonical_url": "https://m.douban.com/group/501098/#topic-333239822",
+          "contact_path": {
+            "entry_url": "https://m.douban.com/group/501098/",
+            "type": "original_post"
+          },
+          "evidence_id": "live-douban-l0-003",
+          "listing_candidate_status": "candidate_l0",
+          "normalized_fields": {
+            "area_sqm": null,
+            "bedrooms": 1,
+            "price_monthly": null
+          },
+          "observed_at": "2026-06-14T12:15:00+08:00",
+          "page_opened": true,
+          "query": "m.douban.com/group/501098 锋创 开间 京东",
+          "query_id": "transfer_personal-q07",
+          "raw_excerpt": "豆瓣公开小组列表页可见：步行京东超近，锋创科技园西向开间。",
+          "reject_reasons": [],
+          "source_domain": "m.douban.com",
+          "source_name": "豆瓣公开小组列表",
+          "source_tier": "P1",
+          "source_type": "community_list",
+          "source_url": "https://m.douban.com/group/501098/",
+          "url_class": "community_list_page",
+          "visible_fields": {
+            "community": "锋创科技园",
+            "district_hint": "经海路",
+            "layout_text": "开间",
+            "published_at": "2026-06-12"
+          }
+        },
+        {
+          "batch_id": "transfer_personal",
+          "canonical_url": "https://m.douban.com/group/501098/#topic-333239822",
+          "contact_path": {
+            "entry_url": "https://m.douban.com/group/501098/",
+            "type": "original_post"
+          },
+          "evidence_id": "live-douban-l0-003",
+          "listing_candidate_status": "candidate_l0",
+          "normalized_fields": {
+            "area_sqm": null,
+            "bedrooms": 1,
+            "price_monthly": null
+          },
+          "observed_at": "2026-06-14T12:15:00+08:00",
+          "page_opened": true,
+          "query": "m.douban.com/group/501098 锋创 开间 京东",
+          "query_id": "transfer_personal-q07",
+          "raw_excerpt": "豆瓣公开小组列表页可见：步行京东超近，锋创科技园西向开间。",
+          "reject_reasons": [],
+          "source_domain": "m.douban.com",
+          "source_name": "豆瓣公开小组列表",
+          "source_tier": "P1",
+          "source_type": "community_list",
+          "source_url": "https://m.douban.com/group/501098/",
+          "url_class": "community_list_page",
+          "visible_fields": {
+            "community": "锋创科技园",
+            "district_hint": "经海路",
+            "layout_text": "开间",
+            "published_at": "2026-06-12"
+          }
+        },
+        {
+          "batch_id": "transfer_personal",
+          "canonical_url": "https://m.douban.com/group/501098/#topic-333239822",
+          "contact_path": {
+            "entry_url": "https://m.douban.com/group/501098/",
+            "type": "original_post"
+          },
+          "evidence_id": "live-douban-l0-003",
+          "listing_candidate_status": "candidate_l0",
+          "normalized_fields": {
+            "area_sqm": null,
+            "bedrooms": 1,
+            "price_monthly": null
+          },
+          "observed_at": "2026-06-14T12:15:00+08:00",
+          "page_opened": true,
+          "query": "m.douban.com/group/501098 锋创 开间 京东",
+          "query_id": "transfer_personal-q07",
+          "raw_excerpt": "豆瓣公开小组列表页可见：步行京东超近，锋创科技园西向开间。",
+          "reject_reasons": [],
+          "source_domain": "m.douban.com",
+          "source_name": "豆瓣公开小组列表",
+          "source_tier": "P1",
+          "source_type": "community_list",
+          "source_url": "https://m.douban.com/group/501098/",
+          "url_class": "community_list_page",
+          "visible_fields": {
+            "community": "锋创科技园",
+            "district_hint": "经海路",
+            "layout_text": "开间",
+            "published_at": "2026-06-12"
+          }
+        }
+      ],
+      "price_monthly": null,
+      "price_text": "待核验",
+      "priority": "A",
+      "recommendation_band": "main",
+      "risk_flags": [],
+      "risk_score": 0.0,
+      "source_domains": [
+        "m.douban.com"
+      ],
+      "source_names": [
+        "豆瓣公开小组列表"
+      ],
+      "source_tiers": [
+        "P1"
+      ],
+      "source_urls": [
+        "https://m.douban.com/group/501098/"
+      ],
+      "status": "new",
+      "title": "锋创科技园西向开间",
+      "trust_level": "L1"
+    },
+    {
+      "area_sqm": 60,
+      "area_text": "60平",
+      "bedrooms": 1,
+      "community": "锋创科技园",
+      "commute_tags": [
+        "经海路"
+      ],
+      "contact_path": {
+        "entry_url": "https://bj.zu.anjuke.com/fangyuan/4606873501674499",
+        "type": "platform_entry"
+      },
+      "district_hint": "经海路",
+      "evidence_count": 4,
+      "first_seen_at": "2026-06-14T12:10:00+08:00",
+      "last_opened_at": null,
+      "last_seen_at": "2026-06-14T12:10:00+08:00",
+      "layout_text": "一居室",
+      "listing_id": "listing-cf93fbbbcc78de22",
+      "match_score": 0.65,
+      "next_actions": [
+        "确认仍在租",
+        "确认费用条款",
+        "确认看房时间"
+      ],
+      "observations": [
+        {
+          "batch_id": "near_office",
+          "canonical_url": "https://bj.zu.anjuke.com/fangyuan/4606873501674499",
+          "contact_path": {
+            "entry_url": "https://bj.zu.anjuke.com/fangyuan/4606873501674499",
+            "type": "platform_entry"
+          },
+          "evidence_id": "live-anjuke-l0-001",
+          "listing_candidate_status": "candidate_l0",
+          "normalized_fields": {
+            "area_sqm": 60,
+            "bedrooms": 1,
+            "price_monthly": 4300
+          },
+          "observed_at": "2026-06-14T12:10:00+08:00",
+          "page_opened": false,
+          "query": "site:bj.zu.anjuke.com/fangyuan 京东总部 经海路 一居 次渠",
+          "query_id": "near_office-q07",
+          "raw_excerpt": "搜索结果摘要可见：经海路锋创科技园独门独卫一居室，60平，4300元/月，安居客结果。",
+          "reject_reasons": [],
+          "source_domain": "bj.zu.anjuke.com",
+          "source_name": "安居客",
+          "source_tier": "P2",
+          "source_type": "platform_listing",
+          "source_url": "https://bj.zu.anjuke.com/fangyuan/4606873501674499",
+          "url_class": "platform_listing_detail",
+          "visible_fields": {
+            "area_text": "60平",
+            "community": "锋创科技园",
+            "district_hint": "经海路",
+            "layout_text": "一居室",
+            "price_text": "4300元/月"
+          }
+        },
+        {
+          "batch_id": "near_office",
+          "canonical_url": "https://bj.zu.anjuke.com/fangyuan/4606873501674499",
+          "contact_path": {
+            "entry_url": "https://bj.zu.anjuke.com/fangyuan/4606873501674499",
+            "type": "platform_entry"
+          },
+          "evidence_id": "live-anjuke-l0-001",
+          "listing_candidate_status": "candidate_l0",
+          "normalized_fields": {
+            "area_sqm": 60,
+            "bedrooms": 1,
+            "price_monthly": 4300
+          },
+          "observed_at": "2026-06-14T12:10:00+08:00",
+          "page_opened": false,
+          "query": "site:bj.zu.anjuke.com/fangyuan 京东总部 经海路 一居 次渠",
+          "query_id": "near_office-q07",
+          "raw_excerpt": "搜索结果摘要可见：经海路锋创科技园独门独卫一居室，60平，4300元/月，安居客结果。",
+          "reject_reasons": [],
+          "source_domain": "bj.zu.anjuke.com",
+          "source_name": "安居客",
+          "source_tier": "P2",
+          "source_type": "platform_listing",
+          "source_url": "https://bj.zu.anjuke.com/fangyuan/4606873501674499",
+          "url_class": "platform_listing_detail",
+          "visible_fields": {
+            "area_text": "60平",
+            "community": "锋创科技园",
+            "district_hint": "经海路",
+            "layout_text": "一居室",
+            "price_text": "4300元/月"
+          }
+        },
+        {
+          "batch_id": "near_office",
+          "canonical_url": "https://bj.zu.anjuke.com/fangyuan/4606873501674499",
+          "contact_path": {
+            "entry_url": "https://bj.zu.anjuke.com/fangyuan/4606873501674499",
+            "type": "platform_entry"
+          },
+          "evidence_id": "live-anjuke-l0-001",
+          "listing_candidate_status": "candidate_l0",
+          "normalized_fields": {
+            "area_sqm": 60,
+            "bedrooms": 1,
+            "price_monthly": 4300
+          },
+          "observed_at": "2026-06-14T12:10:00+08:00",
+          "page_opened": false,
+          "query": "site:bj.zu.anjuke.com/fangyuan 京东总部 经海路 一居 次渠",
+          "query_id": "near_office-q07",
+          "raw_excerpt": "搜索结果摘要可见：经海路锋创科技园独门独卫一居室，60平，4300元/月，安居客结果。",
+          "reject_reasons": [],
+          "source_domain": "bj.zu.anjuke.com",
+          "source_name": "安居客",
+          "source_tier": "P2",
+          "source_type": "platform_listing",
+          "source_url": "https://bj.zu.anjuke.com/fangyuan/4606873501674499",
+          "url_class": "platform_listing_detail",
+          "visible_fields": {
+            "area_text": "60平",
+            "community": "锋创科技园",
+            "district_hint": "经海路",
+            "layout_text": "一居室",
+            "price_text": "4300元/月"
+          }
+        },
+        {
+          "batch_id": "near_office",
+          "canonical_url": "https://bj.zu.anjuke.com/fangyuan/4606873501674499",
+          "contact_path": {
+            "entry_url": "https://bj.zu.anjuke.com/fangyuan/4606873501674499",
+            "type": "platform_entry"
+          },
+          "evidence_id": "live-anjuke-l0-001",
+          "listing_candidate_status": "candidate_l0",
+          "normalized_fields": {
+            "area_sqm": 60,
+            "bedrooms": 1,
+            "price_monthly": 4300
+          },
+          "observed_at": "2026-06-14T12:10:00+08:00",
+          "page_opened": false,
+          "query": "site:bj.zu.anjuke.com/fangyuan 京东总部 经海路 一居 次渠",
+          "query_id": "near_office-q07",
+          "raw_excerpt": "搜索结果摘要可见：经海路锋创科技园独门独卫一居室，60平，4300元/月，安居客结果。",
+          "reject_reasons": [],
+          "source_domain": "bj.zu.anjuke.com",
+          "source_name": "安居客",
+          "source_tier": "P2",
+          "source_type": "platform_listing",
+          "source_url": "https://bj.zu.anjuke.com/fangyuan/4606873501674499",
+          "url_class": "platform_listing_detail",
+          "visible_fields": {
+            "area_text": "60平",
+            "community": "锋创科技园",
+            "district_hint": "经海路",
+            "layout_text": "一居室",
+            "price_text": "4300元/月"
+          }
+        }
+      ],
+      "price_monthly": 4300,
+      "price_text": "4300元/月",
+      "priority": "A",
+      "recommendation_band": "lead_pool",
+      "risk_flags": [
+        "snippet_only",
+        "missing_contact_path"
+      ],
+      "risk_score": 0.36,
+      "source_domains": [
+        "bj.zu.anjuke.com"
+      ],
+      "source_names": [
+        "安居客"
+      ],
+      "source_tiers": [
+        "P2"
+      ],
+      "source_urls": [
+        "https://bj.zu.anjuke.com/fangyuan/4606873501674499"
+      ],
+      "status": "new",
+      "title": "锋创科技园独门独卫一居室",
+      "trust_level": "L0"
+    },
+    {
+      "area_sqm": 50,
+      "area_text": "50平",
+      "bedrooms": 1,
+      "community": "锋创科技园",
+      "commute_tags": [
+        "经海路"
+      ],
+      "contact_path": {
+        "entry_url": "https://bj.zu.anjuke.com/fangyuan/4560199176683520",
+        "type": "platform_entry"
+      },
+      "district_hint": "经海路",
+      "evidence_count": 4,
+      "first_seen_at": "2026-06-14T12:10:00+08:00",
+      "last_opened_at": null,
+      "last_seen_at": "2026-06-14T12:10:00+08:00",
+      "layout_text": "一居室",
+      "listing_id": "listing-0a3a27572113cd2b",
+      "match_score": 0.65,
+      "next_actions": [
+        "确认仍在租",
+        "确认费用条款",
+        "确认看房时间"
+      ],
+      "observations": [
+        {
+          "batch_id": "near_office",
+          "canonical_url": "https://bj.zu.anjuke.com/fangyuan/4560199176683520",
+          "contact_path": {
+            "entry_url": "https://bj.zu.anjuke.com/fangyuan/4560199176683520",
+            "type": "platform_entry"
+          },
+          "evidence_id": "live-anjuke-l0-002",
+          "listing_candidate_status": "candidate_l0",
+          "normalized_fields": {
+            "area_sqm": 50,
+            "bedrooms": 1,
+            "price_monthly": 4300
+          },
+          "observed_at": "2026-06-14T12:10:00+08:00",
+          "page_opened": false,
+          "query": "site:bj.zu.anjuke.com/fangyuan 京东总部 经海路 一居 次渠",
+          "query_id": "near_office-q08",
+          "raw_excerpt": "搜索结果摘要可见：经海路锋创科技园独门独卫一居室，50平，4300元/月，安居客结果。",
+          "reject_reasons": [],
+          "source_domain": "bj.zu.anjuke.com",
+          "source_name": "安居客",
+          "source_tier": "P2",
+          "source_type": "platform_listing",
+          "source_url": "https://bj.zu.anjuke.com/fangyuan/4560199176683520",
+          "url_class": "platform_listing_detail",
+          "visible_fields": {
+            "area_text": "50平",
+            "community": "锋创科技园",
+            "district_hint": "经海路",
+            "layout_text": "一居室",
+            "price_text": "4300元/月"
+          }
+        },
+        {
+          "batch_id": "near_office",
+          "canonical_url": "https://bj.zu.anjuke.com/fangyuan/4560199176683520",
+          "contact_path": {
+            "entry_url": "https://bj.zu.anjuke.com/fangyuan/4560199176683520",
+            "type": "platform_entry"
+          },
+          "evidence_id": "live-anjuke-l0-002",
+          "listing_candidate_status": "candidate_l0",
+          "normalized_fields": {
+            "area_sqm": 50,
+            "bedrooms": 1,
+            "price_monthly": 4300
+          },
+          "observed_at": "2026-06-14T12:10:00+08:00",
+          "page_opened": false,
+          "query": "site:bj.zu.anjuke.com/fangyuan 京东总部 经海路 一居 次渠",
+          "query_id": "near_office-q08",
+          "raw_excerpt": "搜索结果摘要可见：经海路锋创科技园独门独卫一居室，50平，4300元/月，安居客结果。",
+          "reject_reasons": [],
+          "source_domain": "bj.zu.anjuke.com",
+          "source_name": "安居客",
+          "source_tier": "P2",
+          "source_type": "platform_listing",
+          "source_url": "https://bj.zu.anjuke.com/fangyuan/4560199176683520",
+          "url_class": "platform_listing_detail",
+          "visible_fields": {
+            "area_text": "50平",
+            "community": "锋创科技园",
+            "district_hint": "经海路",
+            "layout_text": "一居室",
+            "price_text": "4300元/月"
+          }
+        },
+        {
+          "batch_id": "near_office",
+          "canonical_url": "https://bj.zu.anjuke.com/fangyuan/4560199176683520",
+          "contact_path": {
+            "entry_url": "https://bj.zu.anjuke.com/fangyuan/4560199176683520",
+            "type": "platform_entry"
+          },
+          "evidence_id": "live-anjuke-l0-002",
+          "listing_candidate_status": "candidate_l0",
+          "normalized_fields": {
+            "area_sqm": 50,
+            "bedrooms": 1,
+            "price_monthly": 4300
+          },
+          "observed_at": "2026-06-14T12:10:00+08:00",
+          "page_opened": false,
+          "query": "site:bj.zu.anjuke.com/fangyuan 京东总部 经海路 一居 次渠",
+          "query_id": "near_office-q08",
+          "raw_excerpt": "搜索结果摘要可见：经海路锋创科技园独门独卫一居室，50平，4300元/月，安居客结果。",
+          "reject_reasons": [],
+          "source_domain": "bj.zu.anjuke.com",
+          "source_name": "安居客",
+          "source_tier": "P2",
+          "source_type": "platform_listing",
+          "source_url": "https://bj.zu.anjuke.com/fangyuan/4560199176683520",
+          "url_class": "platform_listing_detail",
+          "visible_fields": {
+            "area_text": "50平",
+            "community": "锋创科技园",
+            "district_hint": "经海路",
+            "layout_text": "一居室",
+            "price_text": "4300元/月"
+          }
+        },
+        {
+          "batch_id": "near_office",
+          "canonical_url": "https://bj.zu.anjuke.com/fangyuan/4560199176683520",
+          "contact_path": {
+            "entry_url": "https://bj.zu.anjuke.com/fangyuan/4560199176683520",
+            "type": "platform_entry"
+          },
+          "evidence_id": "live-anjuke-l0-002",
+          "listing_candidate_status": "candidate_l0",
+          "normalized_fields": {
+            "area_sqm": 50,
+            "bedrooms": 1,
+            "price_monthly": 4300
+          },
+          "observed_at": "2026-06-14T12:10:00+08:00",
+          "page_opened": false,
+          "query": "site:bj.zu.anjuke.com/fangyuan 京东总部 经海路 一居 次渠",
+          "query_id": "near_office-q08",
+          "raw_excerpt": "搜索结果摘要可见：经海路锋创科技园独门独卫一居室，50平，4300元/月，安居客结果。",
+          "reject_reasons": [],
+          "source_domain": "bj.zu.anjuke.com",
+          "source_name": "安居客",
+          "source_tier": "P2",
+          "source_type": "platform_listing",
+          "source_url": "https://bj.zu.anjuke.com/fangyuan/4560199176683520",
+          "url_class": "platform_listing_detail",
+          "visible_fields": {
+            "area_text": "50平",
+            "community": "锋创科技园",
+            "district_hint": "经海路",
+            "layout_text": "一居室",
+            "price_text": "4300元/月"
+          }
+        }
+      ],
+      "price_monthly": 4300,
+      "price_text": "4300元/月",
+      "priority": "A",
+      "recommendation_band": "lead_pool",
+      "risk_flags": [
+        "snippet_only",
+        "missing_contact_path"
+      ],
+      "risk_score": 0.36,
+      "source_domains": [
+        "bj.zu.anjuke.com"
+      ],
+      "source_names": [
+        "安居客"
+      ],
+      "source_tiers": [
+        "P2"
+      ],
+      "source_urls": [
+        "https://bj.zu.anjuke.com/fangyuan/4560199176683520"
+      ],
+      "status": "new",
+      "title": "锋创科技园独卫一居室",
+      "trust_level": "L0"
+    },
+    {
+      "area_sqm": 60,
+      "area_text": "60平",
+      "bedrooms": 1,
+      "community": "亦城景园",
+      "commute_tags": [
+        "经海路"
+      ],
+      "contact_path": {
+        "entry_url": "https://bj.zu.anjuke.com/fangyuan/3927641885935607",
+        "type": "platform_entry"
+      },
+      "district_hint": "经海路",
+      "evidence_count": 4,
+      "first_seen_at": "2026-06-14T12:10:00+08:00",
+      "last_opened_at": null,
+      "last_seen_at": "2026-06-14T12:10:00+08:00",
+      "layout_text": "一居室",
+      "listing_id": "listing-9ac1f2fe3547273b",
+      "match_score": 0.65,
+      "next_actions": [
+        "确认仍在租",
+        "确认费用条款",
+        "确认看房时间"
+      ],
+      "observations": [
+        {
+          "batch_id": "near_office",
+          "canonical_url": "https://bj.zu.anjuke.com/fangyuan/3927641885935607",
+          "contact_path": {
+            "entry_url": "https://bj.zu.anjuke.com/fangyuan/3927641885935607",
+            "type": "platform_entry"
+          },
+          "evidence_id": "live-anjuke-l0-003",
+          "listing_candidate_status": "candidate_l0",
+          "normalized_fields": {
+            "area_sqm": 60,
+            "bedrooms": 1,
+            "price_monthly": 6000
+          },
+          "observed_at": "2026-06-14T12:10:00+08:00",
+          "page_opened": false,
+          "query": "site:bj.zu.anjuke.com/fangyuan 京东总部 经海路 一居 次渠",
+          "query_id": "near_office-q09",
+          "raw_excerpt": "搜索结果摘要可见：经海路亦城景园独门独卫一居室，60平，6000元/月，安居客结果。",
+          "reject_reasons": [],
+          "source_domain": "bj.zu.anjuke.com",
+          "source_name": "安居客",
+          "source_tier": "P2",
+          "source_type": "platform_listing",
+          "source_url": "https://bj.zu.anjuke.com/fangyuan/3927641885935607",
+          "url_class": "platform_listing_detail",
+          "visible_fields": {
+            "area_text": "60平",
+            "community": "亦城景园",
+            "district_hint": "经海路",
+            "layout_text": "一居室",
+            "price_text": "6000元/月"
+          }
+        },
+        {
+          "batch_id": "near_office",
+          "canonical_url": "https://bj.zu.anjuke.com/fangyuan/3927641885935607",
+          "contact_path": {
+            "entry_url": "https://bj.zu.anjuke.com/fangyuan/3927641885935607",
+            "type": "platform_entry"
+          },
+          "evidence_id": "live-anjuke-l0-003",
+          "listing_candidate_status": "candidate_l0",
+          "normalized_fields": {
+            "area_sqm": 60,
+            "bedrooms": 1,
+            "price_monthly": 6000
+          },
+          "observed_at": "2026-06-14T12:10:00+08:00",
+          "page_opened": false,
+          "query": "site:bj.zu.anjuke.com/fangyuan 京东总部 经海路 一居 次渠",
+          "query_id": "near_office-q09",
+          "raw_excerpt": "搜索结果摘要可见：经海路亦城景园独门独卫一居室，60平，6000元/月，安居客结果。",
+          "reject_reasons": [],
+          "source_domain": "bj.zu.anjuke.com",
+          "source_name": "安居客",
+          "source_tier": "P2",
+          "source_type": "platform_listing",
+          "source_url": "https://bj.zu.anjuke.com/fangyuan/3927641885935607",
+          "url_class": "platform_listing_detail",
+          "visible_fields": {
+            "area_text": "60平",
+            "community": "亦城景园",
+            "district_hint": "经海路",
+            "layout_text": "一居室",
+            "price_text": "6000元/月"
+          }
+        },
+        {
+          "batch_id": "near_office",
+          "canonical_url": "https://bj.zu.anjuke.com/fangyuan/3927641885935607",
+          "contact_path": {
+            "entry_url": "https://bj.zu.anjuke.com/fangyuan/3927641885935607",
+            "type": "platform_entry"
+          },
+          "evidence_id": "live-anjuke-l0-003",
+          "listing_candidate_status": "candidate_l0",
+          "normalized_fields": {
+            "area_sqm": 60,
+            "bedrooms": 1,
+            "price_monthly": 6000
+          },
+          "observed_at": "2026-06-14T12:10:00+08:00",
+          "page_opened": false,
+          "query": "site:bj.zu.anjuke.com/fangyuan 京东总部 经海路 一居 次渠",
+          "query_id": "near_office-q09",
+          "raw_excerpt": "搜索结果摘要可见：经海路亦城景园独门独卫一居室，60平，6000元/月，安居客结果。",
+          "reject_reasons": [],
+          "source_domain": "bj.zu.anjuke.com",
+          "source_name": "安居客",
+          "source_tier": "P2",
+          "source_type": "platform_listing",
+          "source_url": "https://bj.zu.anjuke.com/fangyuan/3927641885935607",
+          "url_class": "platform_listing_detail",
+          "visible_fields": {
+            "area_text": "60平",
+            "community": "亦城景园",
+            "district_hint": "经海路",
+            "layout_text": "一居室",
+            "price_text": "6000元/月"
+          }
+        },
+        {
+          "batch_id": "near_office",
+          "canonical_url": "https://bj.zu.anjuke.com/fangyuan/3927641885935607",
+          "contact_path": {
+            "entry_url": "https://bj.zu.anjuke.com/fangyuan/3927641885935607",
+            "type": "platform_entry"
+          },
+          "evidence_id": "live-anjuke-l0-003",
+          "listing_candidate_status": "candidate_l0",
+          "normalized_fields": {
+            "area_sqm": 60,
+            "bedrooms": 1,
+            "price_monthly": 6000
+          },
+          "observed_at": "2026-06-14T12:10:00+08:00",
+          "page_opened": false,
+          "query": "site:bj.zu.anjuke.com/fangyuan 京东总部 经海路 一居 次渠",
+          "query_id": "near_office-q09",
+          "raw_excerpt": "搜索结果摘要可见：经海路亦城景园独门独卫一居室，60平，6000元/月，安居客结果。",
+          "reject_reasons": [],
+          "source_domain": "bj.zu.anjuke.com",
+          "source_name": "安居客",
+          "source_tier": "P2",
+          "source_type": "platform_listing",
+          "source_url": "https://bj.zu.anjuke.com/fangyuan/3927641885935607",
+          "url_class": "platform_listing_detail",
+          "visible_fields": {
+            "area_text": "60平",
+            "community": "亦城景园",
+            "district_hint": "经海路",
+            "layout_text": "一居室",
+            "price_text": "6000元/月"
+          }
+        }
+      ],
+      "price_monthly": 6000,
+      "price_text": "6000元/月",
+      "priority": "A",
+      "recommendation_band": "lead_pool",
+      "risk_flags": [
+        "snippet_only",
+        "missing_contact_path"
+      ],
+      "risk_score": 0.36,
+      "source_domains": [
+        "bj.zu.anjuke.com"
+      ],
+      "source_names": [
+        "安居客"
+      ],
+      "source_tiers": [
+        "P2"
+      ],
+      "source_urls": [
+        "https://bj.zu.anjuke.com/fangyuan/3927641885935607"
+      ],
+      "status": "new",
+      "title": "亦城景园独门独卫一居室",
+      "trust_level": "L0"
+    }
+  ],
+  "pool_meta": {
+    "created_at": "2026-06-14T02:44:32+00:00",
+    "pool_id": "jd-hq-beijing",
+    "scenario": "jd_hq_beijing_poc",
+    "updated_at": "2026-06-17T15:27:51+00:00"
+  },
+  "profile_summary": {
+    "anchor_id": "beijing-jd-hq-yizhuang",
+    "brief_path": "tests/fixtures/search_briefs/jd_hq_search_brief.json",
+    "budget_max": 6000,
+    "budget_target": 5000,
+    "city": "北京",
+    "office_anchor": "北京京东总部",
+    "preferred_bedrooms": 1,
+    "profile_summary": "北京京东总部，经海路，正规一居，目标 5000，最高 6000，优先 30 分钟内"
+  },
+  "rejected_items": [
+    {
+      "batch_id": "brand_apartment",
+      "evidence_id": "live-58-blocked-001",
+      "observed_at": "2026-06-14T12:20:00+08:00",
+      "query_id": "brand_apartment-q02",
+      "reject_reasons": [
+        "mobile_result_not_extractable",
+        "detail_fields_not_visible"
+      ],
+      "source_name": "58",
+      "source_url": "https://m.58.com/bj/zufang/?key=jingdong-hq-1",
+      "title": "58 移动端结果入口",
+      "url_class": "app_wall"
+    },
+    {
+      "batch_id": "brand_apartment",
+      "evidence_id": "live-58-blocked-002",
+      "observed_at": "2026-06-14T12:20:00+08:00",
+      "query_id": "brand_apartment-q03",
+      "reject_reasons": [
+        "mobile_result_not_extractable",
+        "detail_fields_not_visible"
+      ],
+      "source_name": "58",
+      "source_url": "https://m.58.com/bj/zufang/?key=jingdong-hq-2",
+      "title": "58 次渠南移动端结果入口",
+      "url_class": "app_wall"
+    }
+  ],
+  "source_coverage": {
+    "effective_source_count": 3,
+    "planned_source_count": 10,
+    "source_count": 10,
+    "sources": {
+      "anjuke_58": {
+        "accepted_items": 3,
+        "attempt_status": "inferred_from_items",
+        "attempted_queries": 5,
+        "blocked_reasons": [
+          "detail_fields_not_visible",
+          "mobile_result_not_extractable"
+        ],
+        "detail_pages_opened": 0,
+        "domains": [
+          "bj.zu.anjuke.com",
+          "m.58.com"
+        ],
+        "items_seen": 5,
+        "planned_batches": [
+          "main_residential",
+          "near_office",
+          "space_budget_backup"
+        ],
+        "planned_queries": 16,
+        "rejected_or_blocked": 2,
+        "source_id": "anjuke_58",
+        "source_name": "58/安居客",
+        "source_tiers": [
+          "P0",
+          "P1",
+          "P2"
+        ],
+        "zero_yield_reasons": []
+      },
+      "beike_lianjia": {
+        "accepted_items": 0,
+        "attempt_status": "not_logged",
+        "attempted_queries": null,
+        "blocked_reasons": [],
+        "detail_pages_opened": 0,
+        "domains": [],
+        "items_seen": 0,
+        "planned_batches": [
+          "main_residential",
+          "near_office",
+          "p0_price_anchor",
+          "space_budget_backup"
+        ],
+        "planned_queries": 16,
+        "rejected_or_blocked": 0,
+        "source_id": "beike_lianjia",
+        "source_name": "贝壳/链家",
+        "source_tiers": [
+          "P0",
+          "P1"
+        ],
+        "zero_yield_reasons": []
+      },
+      "brand_apartment_public": {
+        "accepted_items": 0,
+        "attempt_status": "not_logged",
+        "attempted_queries": null,
+        "blocked_reasons": [],
+        "detail_pages_opened": 0,
+        "domains": [],
+        "items_seen": 0,
+        "planned_batches": [
+          "brand_apartment"
+        ],
+        "planned_queries": 3,
+        "rejected_or_blocked": 0,
+        "source_id": "brand_apartment_public",
+        "source_name": "品牌公寓",
+        "source_tiers": [
+          "P1"
+        ],
+        "zero_yield_reasons": []
+      },
+      "douban_public_group": {
+        "accepted_items": 8,
+        "attempt_status": "inferred_from_items",
+        "attempted_queries": 8,
+        "blocked_reasons": [],
+        "detail_pages_opened": 8,
+        "domains": [
+          "www.douban.com",
+          "m.douban.com"
+        ],
+        "items_seen": 8,
+        "planned_batches": [
+          "transfer_personal"
+        ],
+        "planned_queries": 4,
+        "rejected_or_blocked": 0,
+        "source_id": "douban_public_group",
+        "source_name": "豆瓣公开小组",
+        "source_tiers": [
+          "P1"
+        ],
+        "zero_yield_reasons": []
+      },
+      "fang": {
+        "accepted_items": 10,
+        "attempt_status": "inferred_from_items",
+        "attempted_queries": 10,
+        "blocked_reasons": [],
+        "detail_pages_opened": 10,
+        "domains": [
+          "fang.com"
+        ],
+        "items_seen": 10,
+        "planned_batches": [
+          "main_residential",
+          "near_office",
+          "p0_price_anchor",
+          "space_budget_backup"
+        ],
+        "planned_queries": 16,
+        "rejected_or_blocked": 0,
+        "source_id": "fang",
+        "source_name": "房天下",
+        "source_tiers": [
+          "P0",
+          "P1"
+        ],
+        "zero_yield_reasons": []
+      },
+      "inboyu": {
+        "accepted_items": 0,
+        "attempt_status": "not_logged",
+        "attempted_queries": null,
+        "blocked_reasons": [],
+        "detail_pages_opened": 0,
+        "domains": [],
+        "items_seen": 0,
+        "planned_batches": [
+          "brand_apartment"
+        ],
+        "planned_queries": 2,
+        "rejected_or_blocked": 0,
+        "source_id": "inboyu",
+        "source_name": "泊寓",
+        "source_tiers": [
+          "P1"
+        ],
+        "zero_yield_reasons": []
+      },
+      "lefull": {
+        "accepted_items": 0,
+        "attempt_status": "not_logged",
+        "attempted_queries": null,
+        "blocked_reasons": [],
+        "detail_pages_opened": 0,
+        "domains": [],
+        "items_seen": 0,
+        "planned_batches": [
+          "brand_apartment"
+        ],
+        "planned_queries": 2,
+        "rejected_or_blocked": 0,
+        "source_id": "lefull",
+        "source_name": "乐乎",
+        "source_tiers": [
+          "P1"
+        ],
+        "zero_yield_reasons": []
+      },
+      "lianjia_mobile_list": {
+        "accepted_items": 0,
+        "attempt_status": "not_logged",
+        "attempted_queries": null,
+        "blocked_reasons": [],
+        "detail_pages_opened": 0,
+        "domains": [],
+        "items_seen": 0,
+        "planned_batches": [
+          "main_residential",
+          "near_office",
+          "p0_price_anchor",
+          "space_budget_backup"
+        ],
+        "planned_queries": 17,
+        "rejected_or_blocked": 0,
+        "source_id": "lianjia_mobile_list",
+        "source_name": "链家移动列表",
+        "source_tiers": [
+          "P0",
+          "P1"
+        ],
+        "zero_yield_reasons": []
+      },
+      "wellcee": {
+        "accepted_items": 0,
+        "attempt_status": "not_logged",
+        "attempted_queries": null,
+        "blocked_reasons": [],
+        "detail_pages_opened": 0,
+        "domains": [],
+        "items_seen": 0,
+        "planned_batches": [
+          "brand_apartment",
+          "near_office",
+          "p0_price_anchor"
+        ],
+        "planned_queries": 8,
+        "rejected_or_blocked": 0,
+        "source_id": "wellcee",
+        "source_name": "Wellcee",
+        "source_tiers": [
+          "P0",
+          "P1"
+        ],
+        "zero_yield_reasons": []
+      },
+      "ziroom": {
+        "accepted_items": 0,
+        "attempt_status": "not_logged",
+        "attempted_queries": null,
+        "blocked_reasons": [],
+        "detail_pages_opened": 0,
+        "domains": [],
+        "items_seen": 0,
+        "planned_batches": [
+          "brand_apartment"
+        ],
+        "planned_queries": 1,
+        "rejected_or_blocked": 0,
+        "source_id": "ziroom",
+        "source_name": "自如",
+        "source_tiers": [
+          "P1"
+        ],
+        "zero_yield_reasons": []
+      }
+    }
+  }
+}

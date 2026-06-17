@@ -1,0 +1,36 @@
+{
+  "user_goal": {
+    "scenario": "jd_hq_beijing_poc"
+  },
+  "office_anchor": {
+    "anchor_id": "beijing-jd-hq-yizhuang",
+    "company": "京东",
+    "office_name": "北京京东总部",
+    "address_hint": "亦庄经海路科创十一街",
+    "city": "北京",
+    "confidence": 0.9
+  },
+  "commute_preferences": {
+    "strategy": "near_first",
+    "max_minutes": 30,
+    "preferred_modes": [
+      "walk",
+      "bike",
+      "metro"
+    ]
+  },
+  "housing_constraints": {
+    "budget_target": 5000,
+    "budget_max": 6000,
+    "budget_hard_max": 6000,
+    "preferred_bedrooms": 1,
+    "min_bedrooms": 1,
+    "rental_mode": "whole",
+    "allow_shared": false
+  },
+  "risk_preferences": {
+    "source_strategy": "public_all_channels",
+    "risk_filter": "collect_then_user_screen",
+    "require_contact_path": true
+  }
+}

@@ -1,0 +1,254 @@
+{
+  "execution_summary": {
+    "blocked_pages": 1,
+    "detail_pages_opened": 2,
+    "items_emitted": 3,
+    "l1_or_better_estimate": 1,
+    "queries_executed": 6,
+    "search_results_seen": 24
+  },
+  "listings": [
+    {
+      "area_sqm": 45,
+      "area_text": "45平",
+      "bedrooms": 1,
+      "community": "次渠南里",
+      "commute_tags": [
+        "次渠南"
+      ],
+      "contact_path": {
+        "entry_url": "https://example.com/jd/ciqunan-1br",
+        "type": "platform_entry"
+      },
+      "district_hint": "次渠南",
+      "evidence_count": 1,
+      "first_seen_at": "2026-06-14T10:00:00+08:00",
+      "last_opened_at": "2026-06-14T10:00:00+08:00",
+      "last_seen_at": "2026-06-14T10:00:00+08:00",
+      "layout_text": "1室",
+      "listing_id": "listing-fcfb436808813f60",
+      "match_score": 0.85,
+      "next_actions": [
+        "确认仍在租",
+        "确认费用条款",
+        "确认看房时间"
+      ],
+      "observations": [
+        {
+          "batch_id": "main_residential",
+          "canonical_url": "https://example.com/jd/ciqunan-1br",
+          "contact_path": {
+            "entry_url": "https://example.com/jd/ciqunan-1br",
+            "type": "platform_entry"
+          },
+          "evidence_id": "jd-ev-l1-001",
+          "listing_candidate_status": "candidate_l1",
+          "normalized_fields": {
+            "area_sqm": 45,
+            "bedrooms": 1,
+            "price_monthly": 5800
+          },
+          "observed_at": "2026-06-14T10:00:00+08:00",
+          "page_opened": true,
+          "query": "北京 次渠南 一居室 6000以内 租房 京东总部",
+          "query_id": "main_residential-q01",
+          "raw_excerpt": "详情页可见：次渠南里一居室，45平，5800元/月，平台联系入口可用。",
+          "reject_reasons": [],
+          "source_domain": "example.com",
+          "source_name": "房天下",
+          "source_tier": "P0",
+          "source_type": "platform_listing",
+          "source_url": "https://example.com/jd/ciqunan-1br",
+          "url_class": "platform_listing_detail",
+          "visible_fields": {
+            "area_text": "45平",
+            "community": "次渠南里",
+            "district_hint": "次渠南",
+            "layout_text": "1室",
+            "price_text": "5800元/月",
+            "updated_at": "今天维护"
+          }
+        }
+      ],
+      "price_monthly": 5800,
+      "price_text": "5800元/月",
+      "priority": "A",
+      "recommendation_band": "main",
+      "risk_flags": [
+        "fee_items_need_confirmation"
+      ],
+      "risk_score": 0.0,
+      "source_domains": [
+        "example.com"
+      ],
+      "source_names": [
+        "房天下"
+      ],
+      "source_tiers": [
+        "P0"
+      ],
+      "source_urls": [
+        "https://example.com/jd/ciqunan-1br"
+      ],
+      "status": "new",
+      "title": "次渠南里正规一居",
+      "trust_level": "L1"
+    },
+    {
+      "area_sqm": null,
+      "area_text": "待核验",
+      "bedrooms": 1,
+      "community": "经海路",
+      "commute_tags": [
+        "经海路"
+      ],
+      "contact_path": {
+        "entry_url": "https://example.net/search/jinghailu-1br",
+        "type": "platform_entry"
+      },
+      "district_hint": "经海路",
+      "evidence_count": 1,
+      "first_seen_at": "2026-06-14T10:05:00+08:00",
+      "last_opened_at": null,
+      "last_seen_at": "2026-06-14T10:05:00+08:00",
+      "layout_text": "1室",
+      "listing_id": "listing-ae6674e32d6124f9",
+      "match_score": 0.5,
+      "next_actions": [
+        "确认仍在租",
+        "确认费用条款",
+        "确认看房时间"
+      ],
+      "observations": [
+        {
+          "batch_id": "near_office",
+          "canonical_url": "https://example.net/search/jinghailu-1br",
+          "contact_path": {
+            "entry_url": "https://example.net/search/jinghailu-1br",
+            "type": "platform_entry"
+          },
+          "evidence_id": "jd-ev-l0-001",
+          "listing_candidate_status": "candidate_l0",
+          "normalized_fields": {
+            "area_sqm": null,
+            "bedrooms": 1,
+            "price_monthly": 5900
+          },
+          "observed_at": "2026-06-14T10:05:00+08:00",
+          "page_opened": false,
+          "query": "北京 经海路 一居室 6000以内 租房 京东总部",
+          "query_id": "near_office-q01",
+          "raw_excerpt": "搜索结果摘要：经海路附近一居，5900元/月，未打开详情页。",
+          "reject_reasons": [],
+          "source_domain": "example.net",
+          "source_name": "安居客",
+          "source_tier": "P2",
+          "source_type": "platform_listing",
+          "source_url": "https://example.net/search/jinghailu-1br",
+          "url_class": "platform_list_page",
+          "visible_fields": {
+            "community": "经海路",
+            "district_hint": "经海路",
+            "layout_text": "1室",
+            "price_text": "5900元/月"
+          }
+        }
+      ],
+      "price_monthly": 5900,
+      "price_text": "5900元/月",
+      "priority": "A",
+      "recommendation_band": "lead_pool",
+      "risk_flags": [
+        "snippet_only",
+        "missing_contact_path"
+      ],
+      "risk_score": 0.36,
+      "source_domains": [
+        "example.net"
+      ],
+      "source_names": [
+        "安居客"
+      ],
+      "source_tiers": [
+        "P2"
+      ],
+      "source_urls": [
+        "https://example.net/search/jinghailu-1br"
+      ],
+      "status": "new",
+      "title": "经海路附近一居",
+      "trust_level": "L0"
+    }
+  ],
+  "pool_meta": {
+    "created_at": "2026-06-14T02:33:11+00:00",
+    "pool_id": "jd-hq-beijing",
+    "scenario": "jd_hq_beijing_poc",
+    "updated_at": "2026-06-14T02:33:11+00:00"
+  },
+  "profile_summary": {
+    "anchor_id": "beijing-jd-hq-yizhuang",
+    "brief_path": "tests/fixtures/search_briefs/jd_hq_search_brief.json",
+    "budget_max": 6000,
+    "budget_target": 5000,
+    "city": "北京",
+    "office_anchor": "北京京东总部",
+    "preferred_bedrooms": 1,
+    "profile_hash": "jd-fixture-profile",
+    "profile_summary": "北京京东总部，经海路，正规一居，目标 5000，最高 6000，优先 30 分钟内"
+  },
+  "rejected_items": [
+    {
+      "batch_id": "brand_apartment",
+      "evidence_id": "jd-ev-blocked-001",
+      "observed_at": "2026-06-14T10:10:00+08:00",
+      "query_id": "brand_apartment-q01",
+      "reject_reasons": [
+        "app_wall",
+        "detail_fields_not_visible"
+      ],
+      "source_name": "品牌公寓",
+      "source_url": "https://blocked.example.org/app",
+      "title": "品牌公寓 App 下载页",
+      "url_class": "app_wall"
+    }
+  ],
+  "source_coverage": {
+    "source_count": 3,
+    "sources": {
+      "品牌公寓": {
+        "detail_pages_opened": 0,
+        "domains": [
+          "blocked.example.org"
+        ],
+        "items_seen": 1,
+        "rejected_or_blocked": 1,
+        "source_tiers": [
+          "P1"
+        ]
+      },
+      "安居客": {
+        "detail_pages_opened": 0,
+        "domains": [
+          "example.net"
+        ],
+        "items_seen": 1,
+        "rejected_or_blocked": 0,
+        "source_tiers": [
+          "P2"
+        ]
+      },
+      "房天下": {
+        "detail_pages_opened": 1,
+        "domains": [
+          "example.com"
+        ],
+        "items_seen": 1,
+        "rejected_or_blocked": 0,
+        "source_tiers": [
+          "P0"
+        ]
+      }
+    }
+  }
+}
