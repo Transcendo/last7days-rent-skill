@@ -154,7 +154,20 @@ def cmd_profile(args: argparse.Namespace) -> int:
 def cmd_profile_wizard(args: argparse.Namespace) -> int:
     if args.wizard_command == "start":
         state = start_wizard(scenario=args.scenario, goal_seed=args.goal_seed)
-        print(json.dumps({"status": state["status"], "goal_seed": state["goal_seed"], "next": "profile wizard next"}, ensure_ascii=False, indent=2))
+        next_action = "profile wizard commit" if state.get("current_step") == "done" else "profile wizard next"
+        print(
+            json.dumps(
+                {
+                    "status": state["status"],
+                    "goal_seed": state["goal_seed"],
+                    "current_step": state.get("current_step"),
+                    "answered_question_ids": state.get("answered_question_ids", []),
+                    "next": next_action,
+                },
+                ensure_ascii=False,
+                indent=2,
+            )
+        )
         return 0
     if args.wizard_command == "next":
         print(json.dumps(next_question(), ensure_ascii=False, indent=2))

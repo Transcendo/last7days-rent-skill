@@ -62,6 +62,32 @@ def test_profile_wizard_plan_ingest_render_cli_flow(tmp_path):
     assert latest.stdout.strip().endswith(".html")
 
 
+def test_profile_wizard_start_go_on_can_skip_to_commit(tmp_path):
+    result = run_cli(
+        [
+            "profile",
+            "wizard",
+            "start",
+            "--goal-seed",
+            "好的，我在北京京东总部、5000RMB，二居室，通勤越近越好，骑电车通勤是最好的 go on",
+        ],
+        tmp_path,
+    )
+    assert result.returncode == 0, result.stderr
+    payload = json.loads(result.stdout)
+    assert payload["status"] == "ready_to_commit"
+    assert payload["current_step"] == "done"
+    assert payload["next"] == "profile wizard commit"
+    assert payload["answered_question_ids"] == [
+        "office_anchor",
+        "bedroom_scope",
+        "budget_strategy",
+        "commute_strategy",
+        "source_strategy",
+        "risk_filter",
+    ]
+
+
 def test_search_is_deprecated_without_legacy_flags(tmp_path):
     result = run_cli(["search"], tmp_path)
     assert result.returncode == 2

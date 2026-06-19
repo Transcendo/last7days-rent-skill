@@ -87,12 +87,13 @@ python skills/last7days-rent/scripts/last7days_rent.py report --latest
 
 ## Profile 问答规则
 
-1. 一次只问一个决策题。
-2. 推荐项排第一。
-3. 用户回答后只给简短确认和下一题，不默认展示 JSON。
-4. 用户明确说“查看当前 profile / 展示 JSON / 为什么这么搜”时，才调用 inspect 或 plan explain。
-5. 预算、户型、通勤、来源偏好、风险偏好都必须写入 profile，后续 search brief 必须从 profile 派生。
-6. 不要在 search brief 中硬编码用户已经改过的预算、户型、位置锚点或通勤策略。
+1. 不要为了走完流程重复询问用户已经在自然语言里明确给出的字段；`goal_seed` 里已有城市/公司/办公点、预算、户型、通勤偏好时，应直接视为已确认。
+2. 只有字段缺失、冲突或会显著改变结果时才继续问；确实需要问时，一次只问一个决策题，推荐项排第一。
+3. 用户说“go on / 继续 / 直接开始 / 帮我跑”且核心字段已齐时，使用默认来源策略和风险策略继续，不要继续抛 A/B/C 题。
+4. 用户回答后只给简短确认和下一步，不默认展示 JSON。
+5. 用户明确说“查看当前 profile / 展示 JSON / 为什么这么搜”时，才调用 inspect 或 plan explain。
+6. 预算、户型、通勤、来源偏好、风险偏好都必须写入 profile，后续 search brief 必须从 profile 派生。
+7. 不要在 search brief 中硬编码用户已经改过的预算、户型、位置锚点或通勤策略。
 
 ## Runtime 使用原则
 

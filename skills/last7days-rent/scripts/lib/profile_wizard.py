@@ -118,18 +118,27 @@ def wizard_state_path():
 def start_wizard(scenario: str = DEFAULT_ANCHOR_SCENARIO, goal_seed: str | None = None) -> dict[str, Any]:
     ensure_local_dirs()
     goal_seed = goal_seed or "北京京东总部亦庄经海路，一居室，预算 6000 RMB 以内，通勤 45 分钟内"
-    draft = _default_profile(scenario, goal_seed)
+    parsed = _parse_goal_seed(goal_seed)
+    draft = _default_profile(scenario, goal_seed, parsed=parsed)
+    inferred_answers = _inferred_answers_from_goal_seed(parsed)
+    for question_id, value in inferred_answers:
+        _apply_answer(draft, question_id, value)
+    answered = [question_id for question_id, _value in inferred_answers]
+    current_step = _next_step(answered)
     state = {
         "schema_version": WIZARD_SCHEMA_VERSION,
         "scenario": scenario,
         "goal_seed": goal_seed,
         "started_at": now_iso(),
         "updated_at": now_iso(),
-        "answered_question_ids": [],
-        "answers": {},
+        "answered_question_ids": answered,
+        "answers": {
+            question_id: {"value": value, "answer_note": "inferred_from_goal_seed"}
+            for question_id, value in inferred_answers
+        },
         "draft_profile": draft,
-        "current_step": "office_anchor",
-        "status": "in_progress",
+        "current_step": current_step,
+        "status": "ready_to_commit" if current_step == "done" else "in_progress",
     }
     write_json(wizard_state_path(), state)
     return state
@@ -170,7 +179,8 @@ def answer_question(question_id: str, value: str, answer_note: str | None = None
     state["answered_question_ids"] = answered
     state.setdefault("answers", {})[question_id] = {"value": value, "answer_note": answer_note}
     state["updated_at"] = now_iso()
-    state["current_step"] = "done" if len(answered) >= len(QUESTIONS) else next(q.question_id for q in QUESTIONS if q.question_id not in answered)
+    state["current_step"] = _next_step(answered)
+    state["status"] = "ready_to_commit" if state["current_step"] == "done" else "in_progress"
     write_json(wizard_state_path(), state)
     return {
         "question_id": question_id,
@@ -206,8 +216,8 @@ def commit_wizard() -> RentProfile:
     return profile
 
 
-def _default_profile(scenario: str, goal_seed: str) -> dict[str, Any]:
-    parsed = _parse_goal_seed(goal_seed)
+def _default_profile(scenario: str, goal_seed: str, parsed: dict[str, Any] | None = None) -> dict[str, Any]:
+    parsed = parsed or _parse_goal_seed(goal_seed)
     budget_target = parsed.get("budget_max") or 5000
     bedrooms = parsed.get("bedrooms") or 1
     return {
@@ -257,15 +267,81 @@ def _default_profile(scenario: str, goal_seed: str) -> dict[str, Any]:
 
 
 def _parse_goal_seed(text: str) -> dict[str, Any]:
+    text = text or ""
     parsed: dict[str, Any] = {}
+    if any(token in text for token in ["京东总部", "北京京东", "亦庄", "经海路"]):
+        parsed["office_anchor"] = "jd_hq_jinghailu"
     if any(token in text for token in ["二居", "两居", "2居", "2室"]):
         parsed["bedrooms"] = 2
+        parsed["bedroom_scope"] = "two_bedroom"
     elif any(token in text for token in ["一居", "1居", "1室"]):
         parsed["bedrooms"] = 1
+        parsed["bedroom_scope"] = "one_bedroom"
+    elif any(token in text for token in ["整租开间", "独立整租", "开间"]):
+        parsed["bedrooms"] = 1
+        parsed["bedroom_scope"] = "independent_any"
     budget = re.search(r"(\d{4,5})\s*(?:rmb|RMB|元)?\s*(?:以内|以下|内)?", text)
     if budget:
         parsed["budget_max"] = int(budget.group(1))
+        parsed["budget_strategy"] = "strict_target"
+    if any(token in text for token in ["最高可到6000", "最高到6000", "最高 6000", "可到6000"]):
+        parsed["budget_strategy"] = "backup_6000"
+    elif any(token in text for token in ["最高可到5500", "最高到5500", "最高 5500", "可到5500"]):
+        parsed["budget_strategy"] = "backup_5500"
+    if any(token in text for token in ["通勤越近越好", "越近越好", "尽量近", "骑电车", "电动车", "骑车", "自行车"]):
+        parsed["commute_strategy"] = "near_first"
+    elif "地铁" in text:
+        parsed["commute_strategy"] = "metro_only"
+    elif any(token in text for token in ["便宜优先", "预算优先", "尽量便宜"]):
+        parsed["commute_strategy"] = "budget_first"
+    elif re.search(r"(35|40|45)\s*分钟", text):
+        parsed["commute_strategy"] = "balanced"
+    if any(token in text for token in ["全渠道", "都要", "全都要"]):
+        parsed["source_strategy"] = "public_all_channels"
+    elif any(token in text for token in ["只看平台", "平台优先"]):
+        parsed["source_strategy"] = "platform_only" if "只看平台" in text else "platforms_plus_personal"
+    elif any(token in text for token in ["个人直租", "个人转租优先", "房东直租"]):
+        parsed["source_strategy"] = "personal_first"
+    if any(token in text for token in ["先都收", "我筛", "自己筛"]):
+        parsed["risk_filter"] = "collect_then_user_screen"
+    elif any(token in text for token in ["只要能联系", "能联系"]):
+        parsed["risk_filter"] = "contactable_first"
+    elif any(token in text for token in ["稳妥", "严格过滤", "风险低"]):
+        parsed["risk_filter"] = "stable_filter"
+    if any(token in text for token in ["go on", "继续", "直接开始", "开始吧", "帮我跑", "你来跑"]):
+        parsed["proceed_with_defaults"] = True
     return parsed
+
+
+def _inferred_answers_from_goal_seed(parsed: dict[str, Any]) -> list[tuple[str, str]]:
+    inferred: list[tuple[str, str]] = []
+    if parsed.get("office_anchor"):
+        inferred.append(("office_anchor", parsed["office_anchor"]))
+    if parsed.get("bedroom_scope"):
+        inferred.append(("bedroom_scope", parsed["bedroom_scope"]))
+    if parsed.get("budget_strategy"):
+        inferred.append(("budget_strategy", parsed["budget_strategy"]))
+    if parsed.get("commute_strategy"):
+        inferred.append(("commute_strategy", parsed["commute_strategy"]))
+    if parsed.get("source_strategy"):
+        inferred.append(("source_strategy", parsed["source_strategy"]))
+    if parsed.get("risk_filter"):
+        inferred.append(("risk_filter", parsed["risk_filter"]))
+    core_complete = {"office_anchor", "bedroom_scope", "budget_strategy", "commute_strategy"} <= set(parsed)
+    if parsed.get("proceed_with_defaults") and core_complete:
+        if not parsed.get("source_strategy"):
+            inferred.append(("source_strategy", "platforms_plus_personal"))
+        if not parsed.get("risk_filter"):
+            inferred.append(("risk_filter", "stable_filter"))
+    return inferred
+
+
+def _next_step(answered: list[str]) -> str:
+    answered_set = set(answered)
+    for question in QUESTIONS:
+        if question.question_id not in answered_set:
+            return question.question_id
+    return "done"
 
 
 def _question_by_id(question_id: str) -> WizardQuestion:

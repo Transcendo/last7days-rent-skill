@@ -18,6 +18,8 @@ def test_skill_self_intro_contract_is_bigtech_office_anchor_first():
     assert "用户问“怎么使用”时" in skill
     assert "我帮一线/新一线互联网公司同学围绕办公点找房" in skill
     assert "你在哪个城市、哪个公司/办公点上班" in skill
+    assert "不要为了走完流程重复询问用户已经在自然语言里明确给出的字段" in skill
+    assert "go on / 继续 / 直接开始 / 帮我跑" in skill
     assert "不要在默认示例" not in skill
     assert "公司附近，一居室" not in skill
 
