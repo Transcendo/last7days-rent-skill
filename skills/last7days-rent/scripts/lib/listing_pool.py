@@ -10,7 +10,7 @@ from .schema import now_iso
 from .store import read_json, write_json
 
 
-def empty_pool(pool_id: str = "jd-hq-beijing", scenario: str = "jd_hq_beijing_poc") -> dict[str, Any]:
+def empty_pool(pool_id: str = "jd-hq-beijing", scenario: str = "beijing_jd_hq_anchor_example") -> dict[str, Any]:
     now = now_iso()
     return {
         "pool_meta": {"pool_id": pool_id, "scenario": scenario, "created_at": now, "updated_at": now},

@@ -25,7 +25,7 @@ def test_profile_wizard_low_exposure_flow(tmp_path, monkeypatch):
     assert state["draft_profile"]["housing_constraints"]["budget_max"] == 5500
 
     profile = commit_wizard()
-    assert profile.profile_meta["schema_version"] == "0.2.0-poc"
+    assert profile.profile_meta["schema_version"] == "0.3.0"
     assert profile.wizard_state["current_step"] == "done"
     assert (tmp_path / "profile.json").exists()
 

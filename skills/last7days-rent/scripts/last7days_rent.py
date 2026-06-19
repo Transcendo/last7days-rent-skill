@@ -26,7 +26,7 @@ from lib.sources.registry import source_registry
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="last7days_rent.py",
-        description="last7days = 帮助用户 7 天完成租房。Agent-native profile wizard + runtime evidence + HTML 工作台。",
+        description="last7days = 面向一线/新一线互联网大厂同学的办公点锚定租房助手。Agent-native profile wizard + runtime evidence + HTML 工作台。",
     )
     subparsers = parser.add_subparsers(dest="command")
 
@@ -54,8 +54,8 @@ def build_parser() -> argparse.ArgumentParser:
     wizard = profile_sub.add_parser("wizard", help="问答式 profile wizard")
     wizard_sub = wizard.add_subparsers(dest="wizard_command")
     wizard_start = wizard_sub.add_parser("start", help="启动 profile wizard")
-    wizard_start.add_argument("--scenario", default="jd_hq_beijing_poc")
-    wizard_start.add_argument("--goal-seed", help="例如：北京京东总部，二居室，5500以内")
+    wizard_start.add_argument("--scenario", default="beijing_jd_hq_anchor_example")
+    wizard_start.add_argument("--goal-seed", help="例如：北京京东总部亦庄经海路，一居室，预算 6000 RMB 以内，通勤 45 分钟内")
     wizard_sub.add_parser("next", help="输出下一道问题 JSON")
     wizard_answer = wizard_sub.add_parser("answer", help="提交一道问题的答案")
     wizard_answer.add_argument("--question-id", required=True)
@@ -136,7 +136,7 @@ def cmd_profile(args: argparse.Namespace) -> int:
     if args.profile_command == "show":
         profile = load_profile()
         if not profile:
-            print("尚未找到本地 profile。请先运行 profile init，并从公司/办公点/园区开始建档。", file=sys.stderr)
+            print("尚未找到本地 profile。请先运行 profile wizard start，并从城市、公司/办公点/园区开始建档。", file=sys.stderr)
             return 1
         data = redact_profile(profile.to_dict()) if args.redacted else profile.to_dict()
         print(json.dumps(data, ensure_ascii=False, indent=2, sort_keys=True))
@@ -200,7 +200,7 @@ def cmd_plan(args: argparse.Namespace) -> int:
         data = profile.to_dict()
     brief = build_search_brief(data, load_anchor_pack(args.anchor_id))
     if args.explain:
-        brief["explain"] = "Search brief 由 profile + anchor pack 派生；POC fixture 不能替代真实 profile 字段。"
+        brief["explain"] = "Search brief 由 profile + anchor pack 派生；静态 fixture 不能替代真实 profile 字段。"
     output = json.dumps(brief, ensure_ascii=False, indent=2, sort_keys=True)
     if args.output:
         Path(args.output).expanduser().write_text(output + "\n", encoding="utf-8")

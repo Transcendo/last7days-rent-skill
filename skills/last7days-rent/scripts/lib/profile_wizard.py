@@ -10,8 +10,8 @@ from .schema import RentProfile, now_iso
 from .store import read_json, write_json
 
 
-JD_SCENARIO = "jd_hq_beijing_poc"
-WIZARD_SCHEMA_VERSION = "0.2.0-poc"
+DEFAULT_ANCHOR_SCENARIO = "beijing_jd_hq_anchor_example"
+WIZARD_SCHEMA_VERSION = "0.3.0"
 
 
 @dataclass(frozen=True)
@@ -115,9 +115,9 @@ def wizard_state_path():
     return get_paths().state_dir / "profile_wizard.json"
 
 
-def start_wizard(scenario: str = JD_SCENARIO, goal_seed: str | None = None) -> dict[str, Any]:
+def start_wizard(scenario: str = DEFAULT_ANCHOR_SCENARIO, goal_seed: str | None = None) -> dict[str, Any]:
     ensure_local_dirs()
-    goal_seed = goal_seed or "北京京东总部，一居室，5000 RMB 以内"
+    goal_seed = goal_seed or "北京京东总部亦庄经海路，一居室，预算 6000 RMB 以内，通勤 45 分钟内"
     draft = _default_profile(scenario, goal_seed)
     state = {
         "schema_version": WIZARD_SCHEMA_VERSION,

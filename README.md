@@ -3,13 +3,45 @@
 ![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white)
 ![Local](https://img.shields.io/badge/local--first-agent%20skill-0f766e)
 
-`last7days-rent-skill` 是一个面向 Agent runtime 的租房 Skill。它帮助用户在 7 天内完成从偏好确认、公开房源线索发现、候选整理到下一步核验的租房工作流。
+`last7days-rent-skill` 是一个面向一线/新一线互联网大厂同学的办公点锚定租房 Skill。它帮助用户在 7 天内完成从公司/办公点确认、通勤圈拆解、公开房源线索发现、候选整理到下一步核验的租房工作流。
 
 这个仓库提供：
 
 - 一个可安装的 `last7days-rent` Skill。
 - 一个本地 CLI engine，用于保存 private profile、生成搜索计划、导入公开 evidence、去重排序并渲染 HTML 房源列表。
 - 一套公开来源和隐私边界规则，避免把租房助手做成平台爬虫或私域采集器。
+
+## 适合谁
+
+- 在北京、上海、深圳、杭州、广州、成都、南京、武汉、西安等一线/新一线城市租房的互联网公司员工。
+- 需要围绕公司、办公园区、楼宇、地铁站或班车点评估通勤圈的人。
+- 想把公开房源、平台入口、个人转租线索和风险标签整理成一个可更新候选池的人。
+
+## 能做什么
+
+- 用短问答确认城市、公司/办公点、预算、户型、通勤、来源偏好和风险偏好。
+- 根据办公点生成通勤圈和搜索计划，例如当前内置样例 Anchor：北京京东总部 / 亦庄经海路。
+- 使用 Agent runtime 的公开 web search/browser，或用户提供的公开链接、截图、复制文本，整理房源 evidence。
+- 为候选做去重、可信等级、风险标签、联系路径和下一步核验动作。
+- 输出本地可更新 HTML 房源候选池；JSON 只作为 profile、evidence 和 listing pool 状态。
+
+字节、腾讯、阿里、美团、百度、网易、小米等办公点可以作为后续 Anchor Pack 扩展方向；当前仓库只把北京京东总部样例作为完整可执行先验包。
+
+## 怎么开始
+
+普通用户不需要先学 CLI，直接把租房目标告诉 Agent：
+
+```text
+我在北京京东总部亦庄经海路上班，预算 6000 内，想找一居或整租开间，通勤 45 分钟内。
+```
+
+也可以这样说：
+
+```text
+我在上海张江某互联网公司上班，想找整租开间，预算 5500 内，地铁通勤优先。
+```
+
+Agent 会先补齐 profile，再生成搜索计划、收集公开 evidence，最后给出本地 HTML 候选池。
 
 默认工作流：
 
@@ -19,7 +51,7 @@ profile wizard -> search plan -> runtime web search/browser -> evidence ingest -
 
 ## 适用场景
 
-- 基于公司、园区、学校、医院、商圈或地铁站附近找房。
+- 基于互联网公司、办公园区、楼宇、班车点、商圈或地铁站附近找房。
 - 按预算、户型、通勤时间、入住时间和风险偏好整理候选。
 - 把公开网页、搜索结果、用户提供链接、截图或复制文本整理成可筛选房源列表。
 - 为每条候选保留来源链接、可信等级、风险标签、联系路径和下一步核验动作。
@@ -42,7 +74,7 @@ python skills/last7days-rent/scripts/last7days_rent.py --help
 
 ```bash
 python skills/last7days-rent/scripts/last7days_rent.py profile wizard start \
-  --goal-seed "公司附近，一居室，预算 5000 RMB 以内"
+  --goal-seed "北京京东总部亦庄经海路，一居室，预算 6000 RMB 以内，通勤 45 分钟内"
 ```
 
 逐题确认偏好：

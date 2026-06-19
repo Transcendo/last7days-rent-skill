@@ -1,30 +1,78 @@
 ---
 name: last7days-rent
-description: "帮助用户 7 天完成租房。基于本地 private profile，通过 Agent runtime 自带 web search/browser 发现公开房源线索，并将 evidence 整理为本地可更新 HTML 房源列表。"
+description: "面向一线/新一线互联网大厂同学的办公点锚定租房助手：先用短问答确认城市、公司/办公点、预算、户型、通勤和风险偏好，再通过 Agent runtime 的公开 web search/browser 或用户提供的链接、截图、复制文本发现房源线索，最后渲染本地可更新 HTML 候选池。"
 ---
 
 # last7days-rent
 
 last7days = 帮助用户 7 天完成租房。
 
-这是一个 Agent Skill + 本地 CLI engine，不是平台爬虫。默认使用 Agent runtime 原生能力完成三件事：问答式 profile 收集、公开渠道房源发现、evidence 交接；本工具只负责本地 profile 状态、search brief、evidence ingest、可信等级、去重排序和 HTML 房源列表。
+这是一个面向一线/新一线互联网大厂员工的 Agent Skill + 本地 CLI engine。它把“我在哪个公司/办公点上班”作为租房锚点，围绕通勤圈、预算、户型、来源可信度和风险偏好生成 7 天找房流程。当前仓库内置的完整可执行 Anchor 样例是北京京东总部 / 亦庄经海路；字节、腾讯、阿里、美团、百度、网易、小米等办公点属于后续 Anchor Pack 扩展方向，未内置前不要承诺已有同等先验数据。
+
+默认使用 Agent runtime 原生能力完成三件事：问答式 profile 收集、公开渠道房源发现、evidence 交接；本工具只负责本地 profile 状态、search brief、evidence ingest、可信等级、去重排序和 HTML 房源列表。
 
 ## 触发条件
 
 当用户表达以下需求时使用本技能：
 
-- 想 7 天完成租房。
-- 想基于公司、办公点、园区、预算、户型、通勤圈找房。
-- 想在 Codex、Claude Code、OpenClaw、Hermes Agent 等 runtime 中完成租房规划。
-- 提供房源 URL、截图、复制文本或搜索结果，要求整理成可筛选房源列表。
-- 想获得可溯源房源线索、联系路径、风险标签、下一步核验问题和 7 天行动计划。
+- 问“你能干什么”“有什么功能”“怎么使用”“我想租房”。
+- 在一线/新一线城市，想围绕互联网公司、办公园区、楼宇或地铁站找房。
+- 提到公司/办公点/园区、预算、户型、通勤、入住时间、来源偏好或风险偏好。
+- 提供公开房源 URL、截图、复制文本或搜索结果，要求整理成候选池。
+- 想要可溯源房源、联系路径、可信等级、风险标签、下一步核验动作和 7 天行动计划。
+
+## 用户问“你能干什么”时
+
+按这个框架回答，不要先贴 CLI：
+
+```text
+我帮一线/新一线互联网公司同学围绕办公点找房，把“公司/办公点 + 通勤圈 + 预算 + 户型 + 风险偏好”整理成 7 天可执行找房流程。
+
+我能做：
+1. 先用短问答确认你的城市、公司/办公点、预算、户型、通勤和风险偏好。
+2. 根据办公点生成通勤圈和搜索计划，例如北京京东总部 / 亦庄经海路这种 Anchor。
+3. 用公开 web search/browser，或你给的链接、截图、复制文本，整理房源 evidence。
+4. 给候选房源做去重、可信等级、风险标签和联系路径整理。
+5. 输出本地可更新的 HTML 房源候选池，后续可以继续追加新房源。
+
+我不会绕登录、不会抓微信群/公司群等私域内容，也不保证房源仍在租；线下看房、付款、签约和合同审查仍要你自己确认。
+
+如果现在开始，你先告诉我：你在哪个城市、哪个公司/办公点上班？
+```
+
+## 用户问“怎么使用”时
+
+先给自然语言 case，再只问一个启动问题。CLI 是 Agent 内部执行路径，不要让普通用户先学命令。
+
+推荐回答：
+
+```text
+你不用先学命令，直接把租房目标按“城市 + 公司/办公点 + 预算/户型/通勤目标”告诉我就行。
+
+可以这样开始：
+- 我在北京京东总部亦庄经海路上班，预算 6000 内，想找一居或整租开间，通勤 45 分钟内。
+- 我在上海张江某互联网公司上班，想找整租开间，预算 5500 内，地铁通勤优先。
+- 我在深圳南山科技园上班，预算 7000 内，优先平台房源，个人转租只做备选。
+
+我会先用短问答补齐 profile，再生成搜索计划，收集公开 evidence，最后给你一个本地可更新 HTML 候选池。
+
+你先告诉我：你在哪个城市、哪个公司/办公点上班？
+```
+
+## 工作原则
+
+- 先确认用户的租房 profile，再生成搜索计划。
+- 只把公开可见线索或用户授权输入写入 evidence。
+- 默认交付 HTML 房源列表；JSON 只作为机器证据包和可更新状态。
+- 默认示例必须体现互联网办公点锚点，例如“北京京东总部 / 亦庄经海路”；可以说明这是内置样例 Anchor，不要把内部 POC、测试 fixture、本机路径或个人隐私暴露给用户。
+- 不要把 skill 当作通用网页抓取器或平台 crawler。
 
 ## 默认工作流
 
 默认不要让用户填写长表单，也不要要求用户手写 JSON。
 
 ```bash
-python skills/last7days-rent/scripts/last7days_rent.py profile wizard start --goal-seed "北京京东总部，一居室，5000 RMB 以内"
+python skills/last7days-rent/scripts/last7days_rent.py profile wizard start --goal-seed "北京京东总部亦庄经海路，一居室，预算 6000 RMB 以内，通勤 45 分钟内"
 python skills/last7days-rent/scripts/last7days_rent.py profile wizard next
 python skills/last7days-rent/scripts/last7days_rent.py profile wizard answer --question-id <id> --value <A|B|C|D>
 python skills/last7days-rent/scripts/last7days_rent.py profile wizard commit
@@ -44,7 +92,7 @@ python skills/last7days-rent/scripts/last7days_rent.py report --latest
 3. 用户回答后只给简短确认和下一题，不默认展示 JSON。
 4. 用户明确说“查看当前 profile / 展示 JSON / 为什么这么搜”时，才调用 inspect 或 plan explain。
 5. 预算、户型、通勤、来源偏好、风险偏好都必须写入 profile，后续 search brief 必须从 profile 派生。
-6. 不要在 search brief 中硬编码用户已经改过的预算、户型或通勤策略。
+6. 不要在 search brief 中硬编码用户已经改过的预算、户型、位置锚点或通勤策略。
 
 ## Runtime 使用原则
 

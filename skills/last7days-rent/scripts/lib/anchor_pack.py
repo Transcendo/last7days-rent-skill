@@ -34,11 +34,11 @@ def build_search_brief(profile: RentProfile | dict[str, Any], anchor_pack: dict[
     search_batches = _search_batches(anchor_pack, profile_constraints, zones)
     runtime_budget = _runtime_budget(anchor_pack)
     return {
-        "schema_version": "0.3.0-poc",
+        "schema_version": "0.3.0",
         "anchor_id": anchor_pack.get("anchor_id", anchor_id),
         "profile_id": "local-current",
         "profile_hash": _profile_hash(data),
-        "scenario": data.get("user_goal", {}).get("scenario") or "jd_hq_beijing_poc",
+        "scenario": data.get("user_goal", {}).get("scenario") or "beijing_jd_hq_anchor_example",
         "generated_at": now_iso(),
         "guide_sources": anchor_pack.get("guide_sources", []),
         "profile_summary": _profile_summary(profile_constraints),
