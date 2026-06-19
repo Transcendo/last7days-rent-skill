@@ -81,9 +81,8 @@ def validate_evidence_file(path: str | Path) -> list[dict[str, str]]:
     return validate_evidence(load_evidence(path))
 
 
-def ingest_evidence_file(path: str | Path, pool_path: str | Path | None = None) -> tuple[dict[str, Any], Path]:
+def ingest_evidence_data(data: dict[str, Any], pool_path: str | Path | None = None) -> tuple[dict[str, Any], Path]:
     ensure_local_dirs()
-    data = load_evidence(path)
     errors = validate_evidence(data)
     if errors:
         raise ValueError(json.dumps({"errors": errors}, ensure_ascii=False))
@@ -92,6 +91,10 @@ def ingest_evidence_file(path: str | Path, pool_path: str | Path | None = None) 
     pool = merge_items(current, data)
     save_pool(output, pool)
     return pool, output
+
+
+def ingest_evidence_file(path: str | Path, pool_path: str | Path | None = None) -> tuple[dict[str, Any], Path]:
+    return ingest_evidence_data(load_evidence(path), pool_path=pool_path)
 
 
 def _valid_url(url: str) -> bool:

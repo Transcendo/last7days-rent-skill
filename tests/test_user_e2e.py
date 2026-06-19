@@ -42,26 +42,34 @@ def test_user_can_complete_runtime_first_poc_flow(tmp_path):
     assert (state_dir / "profile.json").exists()
     assert (state_dir / "profiles" / "jd-hq-beijing.profile.json").exists()
 
-    brief_file = state_dir / "brief.json"
-    plan = run_cli(["plan", "--output", str(brief_file)], state_dir)
-    assert plan.returncode == 0, plan.stderr
+    prepare = run_cli(["refresh", "--prepare"], state_dir)
+    assert prepare.returncode == 0, prepare.stderr
+    brief_file = next((state_dir / "refresh").glob("*.search-brief.json"))
     brief = json.loads(brief_file.read_text(encoding="utf-8"))
     assert brief["profile_summary"]["budget_max"] == 5500
     assert brief["profile_summary"]["bedroom_label"] == "二居室"
+    assert brief["refresh_meta"]["brief_path"] == str(brief_file)
+    assert "attempted_queries" in brief["runtime_audit_required_fields"]
 
     evidence = Path("tests/fixtures/evidence/jd_hq_runtime_evidence.json")
-    ingest = run_cli(["ingest", "--evidence", str(evidence)], state_dir)
-    assert ingest.returncode == 0, ingest.stderr
-    pool_path = state_dir / "pools" / "jd-hq-beijing.listing-pool.json"
+    refresh = run_cli(["refresh", "--evidence", str(evidence)], state_dir)
+    assert refresh.returncode == 0, refresh.stderr
+    refresh_result = json.loads(refresh.stdout)
+    assert "audit_warnings" in refresh_result
+    assert refresh_result["coverage_summary"]["planned"] >= 10
+    pool_path = Path(refresh_result["pool"])
     assert pool_path.exists()
     pool = json.loads(pool_path.read_text(encoding="utf-8"))
     assert pool["listings"]
     assert any(item["trust_level"] == "L2" for item in pool["listings"])
+    assert pool["source_coverage"]["sources"]["wellcee"]["status"] == "not_attempted"
 
-    render = run_cli(["render"], state_dir)
-    assert render.returncode == 0, render.stderr
-    html_path = state_dir / "reports" / "jd-hq-beijing-rentals.html"
+    html_path = Path(refresh_result["report"])
     assert html_path.exists()
     html = html_path.read_text(encoding="utf-8")
-    assert "北京京东总部" in html
+    assert "京东总部" in html
     assert "次渠锦园" in html
+    assert "渠道覆盖" in html
+    assert "避坑指南" in html
+    assert "下一步策略" in html
+    assert "风险指南" in html

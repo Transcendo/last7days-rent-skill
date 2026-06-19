@@ -51,8 +51,10 @@ def test_jd_runtime_fixture_ingests_l1_l0_and_blocked_paths(tmp_path):
     assert pool["source_coverage"]["sources"]["wellcee"]["planned_queries"] > 0
     assert pool["source_coverage"]["sources"]["wellcee"]["attempted_queries"] is None
     assert pool["source_coverage"]["sources"]["wellcee"]["attempt_status"] == "not_logged"
+    assert pool["source_coverage"]["sources"]["wellcee"]["status"] == "not_attempted"
     assert pool["source_coverage"]["sources"]["fang"]["accepted_items"] == 1
     assert pool["source_coverage"]["sources"]["brand_apartment_public"]["rejected_or_blocked"] == 1
+    assert pool["source_coverage"]["sources"]["brand_apartment_public"]["status"] == "blocked"
 
     main = next(item for item in pool["listings"] if item["recommendation_band"] == "main")
     assert main["trust_level"] == "L1"
@@ -70,8 +72,15 @@ def test_jd_runtime_fixture_ingests_l1_l0_and_blocked_paths(tmp_path):
     assert "线索池" in html
     assert "拒收 / 阻断" in html
     assert "来源覆盖" in html
+    assert "下一步策略" in html
+    assert "风险指南" in html
+    assert "避坑指南" in html
+    assert "https://nest-hub.eggcampus.com/" in html
+    assert "京东总部租房避坑指南" not in html
     assert "计划" in html
     assert "尝试" in html
     assert "入池" in html
-    assert "待记录" in html
+    assert "未记录" in html
+    assert "未执行" in html
+    assert "下一步：确认仍在租" not in html
     assert "L0 不代表已验证房源" in html

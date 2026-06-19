@@ -23,3 +23,5 @@ def test_search_brief_contains_runtime_budget_and_collection_rules():
     assert brief["collection_rules"]["main_recommendation_min_trust"] == "L1"
     assert "batch_id" in brief["collection_rules"]["must_capture"]
     assert "raw_excerpt" in brief["collection_rules"]["must_capture"]
+    assert "risk_checks" in brief
+    assert "商水商电" in brief["risk_checks"]

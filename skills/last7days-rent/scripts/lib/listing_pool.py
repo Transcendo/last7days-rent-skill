@@ -38,6 +38,12 @@ def merge_items(pool: dict[str, Any], evidence: dict[str, Any]) -> dict[str, Any
     pool["profile_summary"] = evidence.get("query_context", {})
     pool["execution_summary"] = evidence.get("execution_summary", {})
     pool["source_coverage"] = _source_coverage(evidence)
+    brief = _brief_for_evidence(evidence)
+    if brief:
+        pool["guide_sources"] = brief.get("guide_sources", [])
+        pool["risk_checks"] = brief.get("risk_checks", [])
+        pool["all_channel_matrix"] = brief.get("all_channel_matrix", [])
+        pool["source_policy_matrix"] = brief.get("source_policy_matrix", [])
     rejected = {item.get("evidence_id"): dict(item) for item in pool.get("rejected_items", []) if item.get("evidence_id")}
     listings = {item["listing_id"]: dict(item) for item in pool.get("listings", [])}
     by_weak = {_weak_key(item): item["listing_id"] for item in listings.values() if _weak_key(item)}
@@ -218,7 +224,7 @@ def _is_rejected_evidence(item: dict[str, Any]) -> bool:
     status = str(item.get("listing_candidate_status") or "").lower()
     url_class = str(item.get("url_class") or "").lower()
     return status in {"blocked", "rejected", "blocked_page", "rejected_page"} or any(
-        token in url_class for token in ["login", "captcha", "app_wall", "app-wall"]
+        token in url_class for token in ["login", "captcha", "app_wall", "app-wall", "safety", "security", "forbidden"]
     )
 
 
@@ -232,7 +238,7 @@ def _rejected_from_evidence(item: dict[str, Any]) -> dict[str, Any]:
         "url_class": item.get("url_class"),
         "observed_at": item.get("observed_at") or now_iso(),
         "title": item.get("title"),
-        "reject_reasons": item.get("reject_reasons") or [item.get("listing_candidate_status") or "blocked_or_rejected"],
+        "reject_reasons": _reject_reasons(item),
     }
 
 
@@ -243,6 +249,12 @@ def _source_coverage(evidence: dict[str, Any]) -> dict[str, Any]:
         entry["planned_queries"] += int(info.get("planned_queries") or 0)
         entry["planned_batches"] = sorted(set(entry.get("planned_batches", [])) | set(info.get("planned_batches", [])))
         entry["source_tiers"] = sorted(set(entry.get("source_tiers", [])) | set(info.get("source_tiers", [])))
+        if info.get("status_override"):
+            entry["status_override"] = str(info["status_override"])
+        if info.get("policy_note"):
+            entry["policy_note"] = str(info["policy_note"])
+        if info.get("source_name"):
+            entry["source_name"] = str(info["source_name"])
 
     _apply_source_attempts(by_source, evidence)
 
@@ -256,7 +268,7 @@ def _source_coverage(evidence: dict[str, Any]) -> dict[str, Any]:
             entry["detail_pages_opened"] += 1
         if _is_rejected_evidence(item):
             entry["rejected_or_blocked"] += 1
-            _append_unique(entry["blocked_reasons"], *(item.get("reject_reasons") or [item.get("listing_candidate_status") or item.get("url_class") or "blocked_or_rejected"]))
+            _append_unique(entry["blocked_reasons"], *_reject_reasons(item))
         query_id = item.get("query_id")
         if query_id:
             entry.setdefault("_attempted_query_ids", set()).add(str(query_id))
@@ -271,10 +283,14 @@ def _source_coverage(evidence: dict[str, Any]) -> dict[str, Any]:
         entry.pop("_attempted_query_ids", None)
         entry["blocked_reasons"] = sorted(set(str(reason) for reason in entry.get("blocked_reasons", []) if reason))
         entry["zero_yield_reasons"] = sorted(set(str(reason) for reason in entry.get("zero_yield_reasons", []) if reason))
+        entry["status"] = _coverage_status(entry)
     return {
         "source_count": len(by_source),
         "planned_source_count": sum(1 for info in by_source.values() if info.get("planned_queries", 0) > 0),
+        "attempted_source_count": sum(1 for info in by_source.values() if int(info.get("attempted_queries") or 0) > 0),
         "effective_source_count": sum(1 for info in by_source.values() if info.get("accepted_items", 0) > 0),
+        "blocked_source_count": sum(1 for info in by_source.values() if info.get("status") == "blocked"),
+        "not_attempted_source_count": sum(1 for info in by_source.values() if info.get("status") == "not_attempted"),
         "sources": by_source,
     }
 
@@ -291,6 +307,13 @@ SOURCE_LABELS = {
     "inboyu": "泊寓",
     "brand_apartment_public": "品牌公寓",
     "official_verifier": "官方核验",
+    "public_platforms": "公开租房平台",
+    "douban_wellcee_public": "公开转租社区",
+    "user_authorized_import": "用户授权导入",
+    "xiaohongshu": "小红书",
+    "wechat_public": "公众号/微信公开内容",
+    "weibo": "微博",
+    "private_groups": "微信群/公司群/朋友圈",
 }
 
 
@@ -305,6 +328,9 @@ def _coverage_entry(by_source: dict[str, dict[str, Any]], source_id: str, source
             "planned_batches": [],
             "attempted_queries": None,
             "attempt_status": "not_logged",
+            "status": "planned",
+            "status_override": None,
+            "policy_note": None,
             "items_seen": 0,
             "accepted_items": 0,
             "detail_pages_opened": 0,
@@ -318,9 +344,7 @@ def _coverage_entry(by_source: dict[str, dict[str, Any]], source_id: str, source
 
 
 def _planned_sources(evidence: dict[str, Any]) -> dict[str, dict[str, Any]]:
-    brief = evidence.get("search_brief") if isinstance(evidence.get("search_brief"), dict) else None
-    if brief is None:
-        brief = _load_brief_from_context(evidence.get("query_context") or {})
+    brief = _brief_for_evidence(evidence)
     planned: dict[str, dict[str, Any]] = {}
     if not isinstance(brief, dict):
         return planned
@@ -339,7 +363,24 @@ def _planned_sources(evidence: dict[str, Any]) -> dict[str, dict[str, Any]]:
                 _append_unique(entry["planned_batches"], batch_id)
                 if source_tier:
                     _append_unique(entry["source_tiers"], source_tier)
+    for row in brief.get("source_policy_matrix", []):
+        if not isinstance(row, dict):
+            continue
+        if row.get("status") not in {"policy_disabled", "roadmap_not_enabled", "user_authorized_only"}:
+            continue
+        source_id = _normalize_source_id(row.get("source_id") or row.get("source_name"))
+        entry = planned.setdefault(source_id, {"planned_queries": 0, "planned_batches": [], "source_tiers": []})
+        entry["source_name"] = row.get("source_name") or row.get("channel") or SOURCE_LABELS.get(source_id) or source_id
+        entry["status_override"] = row.get("status")
+        entry["policy_note"] = row.get("policy_note") or row.get("discovery")
     return planned
+
+
+def _brief_for_evidence(evidence: dict[str, Any]) -> dict[str, Any] | None:
+    brief = evidence.get("search_brief") if isinstance(evidence.get("search_brief"), dict) else None
+    if brief is not None:
+        return brief
+    return _load_brief_from_context(evidence.get("query_context") or {})
 
 
 def _load_brief_from_context(query_context: dict[str, Any]) -> dict[str, Any] | None:
@@ -413,7 +454,62 @@ def _normalize_source_id(value: Any) -> str:
         return "ziroom"
     if "brand_apartment" in lower or "品牌公寓" in text or "蜂客" in text or "城家" in text or "有巢" in text:
         return "brand_apartment_public"
+    if "小红书" in text or "xiaohongshu" in lower:
+        return "xiaohongshu"
+    if "公众号" in text or "wechat" in lower:
+        return "wechat_public"
+    if "微博" in text or "weibo" in lower:
+        return "weibo"
+    if "私域" in text or "微信群" in text or "公司群" in text or "朋友圈" in text:
+        return "private_groups"
     return lower.replace(" ", "_")
+
+
+def _reject_reasons(item: dict[str, Any]) -> list[str]:
+    explicit = item.get("reject_reasons")
+    if isinstance(explicit, list) and explicit:
+        return [str(reason) for reason in explicit if reason]
+    if explicit:
+        return [str(explicit)]
+    url_class = str(item.get("url_class") or "").lower()
+    class_reasons: list[str] = []
+    for token, reason in [
+        ("app_wall", "app_wall"),
+        ("app-wall", "app_wall"),
+        ("captcha", "captcha"),
+        ("safety", "safety_block"),
+        ("security", "safety_block"),
+        ("login", "login_required"),
+        ("forbidden", "access_forbidden"),
+        ("search_result", "search_result_only"),
+    ]:
+        if token in url_class and reason not in class_reasons:
+            class_reasons.append(reason)
+    if class_reasons:
+        return class_reasons
+    status = item.get("listing_candidate_status")
+    if status:
+        return [str(status)]
+    return ["blocked_or_rejected"]
+
+
+def _coverage_status(entry: dict[str, Any]) -> str:
+    if entry.get("status_override") in {"policy_disabled", "roadmap_not_enabled", "user_authorized_only"}:
+        return str(entry["status_override"])
+    if int(entry.get("accepted_items") or 0) > 0:
+        return "effective"
+    if int(entry.get("rejected_or_blocked") or 0) > 0:
+        return "blocked"
+    attempted = entry.get("attempted_queries")
+    if attempted is not None and int(attempted or 0) > 0:
+        if entry.get("zero_yield_reasons"):
+            return "zero_yield"
+        return "attempted"
+    if int(entry.get("planned_queries") or 0) > 0:
+        return "not_attempted"
+    if entry.get("status_override"):
+        return str(entry["status_override"])
+    return "planned"
 
 
 def _append_unique(values: list[Any], *incoming: Any) -> None:

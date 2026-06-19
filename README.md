@@ -3,13 +3,20 @@
 ![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white)
 ![Local](https://img.shields.io/badge/local--first-agent%20skill-0f766e)
 
-`last7days-rent-skill` 是一个面向一线/新一线互联网大厂同学的办公点锚定租房 Skill。它帮助用户在 7 天内完成从公司/办公点确认、通勤圈拆解、公开房源线索发现、候选整理到下一步核验的租房工作流。
+`last7days-rent-skill` 是一个面向一线/新一线城市互联网大厂同学的 7 天快速租房 Skill。它基于用户自己的租房需求，全渠道聚合公开可用和用户授权输入的房源信息，帮助用户建立本地 profile、持续刷新候选池，并生成个人租房 HTML。
 
 这个仓库提供：
 
 - 一个可安装的 `last7days-rent` Skill。
-- 一个本地 CLI engine，用于保存 private profile、生成搜索计划、导入公开 evidence、去重排序并渲染 HTML 房源列表。
+- 一个本地 CLI engine，用于保存 private profile、生成全渠道 search brief、导入公开 evidence、去重排序并渲染个人 HTML 房源列表。
 - 一套公开来源和隐私边界规则，避免把租房助手做成平台爬虫或私域采集器。
+
+仓库职责固定为四件事：
+
+1. 本地化收集用户租房需求，生成专属租房 profile。
+2. 基于最新 profile 生成全渠道搜索 brief，并适配公开房源信息。
+3. 生成专属个人租房 HTML 候选池。
+4. 基于本地最新 profile 持续更新全渠道房源信息。
 
 ## 适合谁
 
@@ -19,11 +26,12 @@
 
 ## 能做什么
 
-- 用短问答确认城市、公司/办公点、预算、户型、通勤、来源偏好和风险偏好。
-- 根据办公点生成通勤圈和搜索计划，例如当前内置样例 Anchor：北京京东总部 / 亦庄经海路。
-- 使用 Agent runtime 的公开 web search/browser，或用户提供的公开链接、截图、复制文本，整理房源 evidence。
+- 本地化收集租房需求，生成专属 profile：城市、公司/办公点、预算、户型、通勤、来源偏好和风险偏好。
+- 根据 profile 生成全渠道搜索 brief，例如当前内置样例 Anchor：北京京东总部 / 亦庄经海路。
+- 使用 Agent runtime 的公开 web search/browser，或用户授权导入的公开链接、截图、复制文本，整理房源 evidence。
 - 为候选做去重、可信等级、风险标签、联系路径和下一步核验动作。
-- 输出本地可更新 HTML 房源候选池；JSON 只作为 profile、evidence 和 listing pool 状态。
+- 输出本地可更新的个人租房 HTML 候选池；JSON 只作为 profile、evidence 和 listing pool 状态。
+- 后续基于本地最新 profile 继续 refresh，不覆盖用户反馈状态。
 
 字节、腾讯、阿里、美团、百度、网易、小米等办公点可以作为后续 Anchor Pack 扩展方向；当前仓库只把北京京东总部样例作为完整可执行先验包。
 
@@ -41,12 +49,12 @@
 我在上海张江某互联网公司上班，想找整租开间，预算 5500 内，地铁通勤优先。
 ```
 
-Agent 会先补齐 profile，再生成搜索计划、收集公开 evidence，最后给出本地 HTML 候选池。
+Agent 会先补齐 profile，再执行全渠道 refresh：生成搜索 brief、收集公开 evidence，最后给出本地个人 HTML 候选池。
 
 默认工作流：
 
 ```text
-profile wizard -> search plan -> runtime web search/browser -> evidence ingest -> HTML report
+profile wizard -> refresh --prepare -> runtime web search/browser -> refresh --evidence -> report
 ```
 
 ## 适用场景
@@ -88,26 +96,23 @@ python skills/last7days-rent/scripts/last7days_rent.py profile wizard answer --q
 
 ```bash
 python skills/last7days-rent/scripts/last7days_rent.py profile wizard commit
-python skills/last7days-rent/scripts/last7days_rent.py plan --explain
+python skills/last7days-rent/scripts/last7days_rent.py refresh --prepare
 ```
 
-导入 Agent runtime 整理出的 evidence：
+导入 Agent runtime 整理出的 evidence，并自动更新个人 HTML：
 
 ```bash
-python skills/last7days-rent/scripts/last7days_rent.py ingest \
-  --evidence <runtime-evidence.json> \
-  --validate
-
-python skills/last7days-rent/scripts/last7days_rent.py ingest \
+python skills/last7days-rent/scripts/last7days_rent.py refresh \
   --evidence <runtime-evidence.json>
 ```
 
-生成并打开最近的 HTML 房源列表：
+查看最近的 HTML 房源列表：
 
 ```bash
-python skills/last7days-rent/scripts/last7days_rent.py render
 python skills/last7days-rent/scripts/last7days_rent.py report --latest
 ```
+
+`plan`、`ingest`、`render` 仍保留为底层调试命令；普通用户主路径是 `refresh`。
 
 默认本地输出路径：
 
@@ -124,10 +129,10 @@ python skills/last7days-rent/scripts/last7days_rent.py report --latest
 这个 skill 不内置通用搜索引擎，也不要求搜索 API key。Agent runtime 负责使用自身可用能力发现公开线索：
 
 - 用短问答确认用户的租房 profile。
-- 按 `plan` 生成的 brief 执行公开 web search 和页面核验。
+- 按 `refresh --prepare` 生成的 brief 执行公开 web search 和页面核验。
 - 只记录公开可见字段、来源链接、采集时间和必要摘要。
-- 将结构化 evidence 交给 CLI 的 `ingest` 命令。
-- 由本地 CLI 负责去重、可信等级、排序、风险标签和 HTML 渲染。
+- 将结构化 evidence 交给 CLI 的 `refresh --evidence` 命令。
+- 由本地 CLI 负责校验 evidence、去重、可信等级、排序、风险标签和 HTML 渲染。
 
 如果 runtime 没有 web search/browser 能力，可以让用户提供公开链接、截图或复制文本，再导入为 evidence。
 

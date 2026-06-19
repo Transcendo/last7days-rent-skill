@@ -41,6 +41,7 @@ def build_search_brief(profile: RentProfile | dict[str, Any], anchor_pack: dict[
         "scenario": data.get("user_goal", {}).get("scenario") or "beijing_jd_hq_anchor_example",
         "generated_at": now_iso(),
         "guide_sources": anchor_pack.get("guide_sources", []),
+        "risk_checks": anchor_pack.get("risk_checks", []),
         "profile_summary": _profile_summary(profile_constraints),
         "profile_constraints": profile_constraints,
         "search_batches": search_batches,
